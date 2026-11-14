@@ -16,7 +16,7 @@ CARGO_TARGET_DIR=bench/target/tools cargo install oha rustfilt --locked --root b
 ## Chạy
 
 ```bash
-node bench/run.mjs                  # đầy đủ, ~1 giờ
+node bench/run.mjs                  # đầy đủ, ~75 phút
 node bench/run.mjs --quick          # thử nhanh, ~4 phút (1 lần lặp, cửa sổ 2 s)
 node bench/run.mjs --only s1,s5 --servers fastopm,verdaccio
 node bench/profile.mjs abbr-ms abbr-ts tarball-50   # macOS `sample` trên fastopm dưới tải

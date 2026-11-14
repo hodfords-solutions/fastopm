@@ -21,8 +21,10 @@ export function ohaBin() {
  * latencies in ms. A time-boxed run cuts in-flight requests at the deadline (not counted);
  * the server may still be working on them afterwards, see `waitIdle`.
  */
-export async function oha({ url, headers = {}, conns, seconds, count }) {
+export async function oha({ url, headers = {}, conns, seconds, count, noCompression = false }) {
   const args = count ? ['-n', String(count)] : ['-z', `${seconds}s`];
+  // oha sends its own Accept-Encoding unless told not to
+  if (noCompression) args.push('--disable-compression');
   args.push('-c', String(conns), '--no-tui', '--output-format', 'json');
   for (const [k, v] of Object.entries(headers)) args.push('-H', `${k}: ${v}`);
   args.push(url);

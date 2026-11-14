@@ -1,0 +1,181 @@
+[05:15:38] work dir bench/.work/run-2026-11-14T05-15-38-662Z; options {"warmup":3,"seconds":10,"reps":3,"quick":false,"only":["s1","s1i","s2","s3","s4","s5","s6","s7","checks"],"servers":["fastopm","verdaccio","fastopm-1t"],"herd":100,"distinct":100}
+[05:15:39] building storage template with verdaccio
+[05:15:43] s1 fastopm {"pkg":"ms","conns":1}
+[05:21:31]   [10s] rps 9530 (±5.8%) p50 0.09ms p99 0.22ms cpu 47% rss 10MiB foreign 274%
+[05:21:31] s1 fastopm {"pkg":"ms","conns":16}
+[05:22:57]   [10s] rps 55776 (±39.5%) p50 0.26ms p99 0.69ms cpu 523% rss 12MiB foreign 394%
+[05:22:57] s1 fastopm {"pkg":"ms","conns":128}
+[05:23:37]   [10s] rps 58781 (±4.3%) p50 2.04ms p99 5.52ms cpu 529% rss 18MiB foreign 121%
+[05:23:37] s1 fastopm {"pkg":"express","conns":1}
+[05:24:22]   [10s] rps 7187 (±35.4%) p50 0.12ms p99 0.26ms cpu 54% rss 19MiB foreign 238%
+[05:24:22] s1 fastopm {"pkg":"express","conns":16}
+[05:25:20]   [10s] rps 34817 (±1.6%) p50 0.40ms p99 1.32ms cpu 562% rss 17MiB foreign 136%
+[05:25:20] s1 fastopm {"pkg":"express","conns":128}
+[05:26:38]   [10s] rps 33508 (±15.1%) p50 3.53ms p99 9.70ms cpu 569% rss 19MiB foreign 231%
+[05:26:38] s1 fastopm {"pkg":"typescript","conns":1}
+[05:27:24]   [10s] rps 2775 (±4.5%) p50 0.35ms p99 0.63ms cpu 83% rss 21MiB foreign 168%
+[05:27:24] s1 fastopm {"pkg":"typescript","conns":16}
+[05:28:21]   [10s] rps 5212 (±3.2%) p50 3.01ms p99 4.77ms cpu 312% rss 21MiB foreign 227%
+[05:28:21] s1 fastopm {"pkg":"typescript","conns":128}
+[05:31:50]   [10s] rps 4337 (±5.4%) p50 29.57ms p99 53.25ms cpu 244% rss 20MiB foreign 257%
+[05:31:50] s1i fastopm {"pkg":"ms","conns":16}
+[05:33:04]   [10s] rps 52370 (±2.3%) p50 0.28ms p99 0.77ms cpu 472% rss 20MiB foreign 183%
+[05:33:04] s1i fastopm {"pkg":"express","conns":16}
+[05:33:47]   [10s] rps 33868 (±2.1%) p50 0.41ms p99 1.41ms cpu 531% rss 31MiB foreign 162%
+[05:33:47] s1i fastopm {"pkg":"typescript","conns":16}
+[05:34:30]   [10s] rps 5446 (±0.8%) p50 2.92ms p99 4.94ms cpu 311% rss 51MiB foreign 206%
+[05:34:30] s2 fastopm {"pkg":"ms","conns":1}
+[05:35:16]   [10s] rps 9979 (±0.5%) p50 0.09ms p99 0.19ms cpu 48% rss 41MiB foreign 151%
+[05:35:16] s2 fastopm {"pkg":"ms","conns":16}
+[05:36:14]   [10s] rps 51837 (±5.1%) p50 0.28ms p99 0.75ms cpu 474% rss 39MiB foreign 203%
+[05:36:14] s2 fastopm {"pkg":"express","conns":1}
+[05:36:56]   [10s] rps 7423 (±0.4%) p50 0.12ms p99 0.24ms cpu 53% rss 43MiB foreign 164%
+[05:36:56] s2 fastopm {"pkg":"express","conns":16}
+[05:37:37]   [10s] rps 32771 (±0.6%) p50 0.43ms p99 1.38ms cpu 509% rss 43MiB foreign 154%
+[05:37:37] s2 fastopm {"pkg":"typescript","conns":1}
+[05:38:21]   [10s] rps 2439 (±1.5%) p50 0.40ms p99 0.67ms cpu 85% rss 226MiB foreign 164%
+[05:38:21] s2 fastopm {"pkg":"typescript","conns":16}
+[05:39:04]   [10s] rps 4440 (±0.8%) p50 3.61ms p99 5.00ms cpu 311% rss 176MiB foreign 180%
+[05:39:04] s3 fastopm {"pkg":"ms","conns":16,"etag":"\"6d3f04550d83723ef13f88963f32af10\""}
+[05:39:50]   [10s] rps 55738 (±1.4%) p50 0.25ms p99 0.81ms cpu 509% rss 176MiB foreign 154%
+[05:39:50] s3 fastopm {"pkg":"express","conns":16,"etag":"\"1681f670ad0f34ff4fd43e0bb2cbd3b6\""}
+[05:40:39]   [10s] rps 55759 (±2.6%) p50 0.25ms p99 0.80ms cpu 514% rss 163MiB foreign 170%
+[05:40:39] s3 fastopm {"pkg":"typescript","conns":16,"etag":"\"22bbe1dd73eb60b567d57a5ca492c902\""}
+[05:41:28]   [10s] rps 55585 (±2.8%) p50 0.26ms p99 0.79ms cpu 523% rss 186MiB foreign 169%
+[05:41:28] s4 fastopm {"pkg":"1MiB","conns":1}
+[05:42:13]   [10s] rps 2698 (±3.0%) p50 0.36ms p99 0.58ms cpu 100% rss 157MiB foreign 272%
+[05:42:13] s4 fastopm {"pkg":"1MiB","conns":16}
+[05:43:00]   [10s] rps 7520 (±1.8%) p50 1.85ms p99 6.58ms cpu 466% rss 172MiB foreign 185%
+[05:43:00] s4 fastopm {"pkg":"50MiB","conns":1}
+[05:43:41]   [10s] rps 80 (±1.4%) p50 12.48ms p99 15.34ms cpu 153% rss 162MiB foreign 162%
+[05:43:41] s4 fastopm {"pkg":"50MiB","conns":8}
+[05:44:25]   [10s] rps 128 (±2.8%) p50 67.40ms p99 78.24ms cpu 366% rss 163MiB foreign 186%
+[05:44:30] s1 verdaccio {"pkg":"ms","conns":1}
+[05:45:17]   [10s] rps 476 (±7.3%) p50 2.00ms p99 4.15ms cpu 120% rss 447MiB foreign 163%
+[05:45:17] s1 verdaccio {"pkg":"ms","conns":16}
+[05:46:00]   [10s] rps 844 (±1.1%) p50 18.64ms p99 25.01ms cpu 147% rss 447MiB foreign 166%
+[05:46:00] s1 verdaccio {"pkg":"ms","conns":128}
+[05:46:43]   [10s] rps 824 (±0.3%) p50 152.03ms p99 192.26ms cpu 154% rss 530MiB foreign 158%
+[05:46:43] s1 verdaccio {"pkg":"express","conns":1}
+[05:47:25]   [10s] rps 70 (±1.6%) p50 13.86ms p99 18.11ms cpu 104% rss 592MiB foreign 141%
+[05:47:25] s1 verdaccio {"pkg":"express","conns":16}
+[05:48:12]   [10s] rps 95 (±1.2%) p50 166.07ms p99 200.10ms cpu 141% rss 651MiB foreign 148%
+[05:48:12] s1 verdaccio {"pkg":"express","conns":128}
+[05:49:00]   [n=922] rps 94 (±2.5%) p50 1309.75ms p99 5566.98ms cpu 155% rss 830MiB foreign 177%
+[05:49:00] s1 verdaccio {"pkg":"typescript","conns":1}
+[05:49:49]   [n=44] rps 4 (±1.3%) p50 233.30ms p99 253.39ms cpu 112% rss 743MiB foreign 150%
+[05:49:49] s1 verdaccio {"pkg":"typescript","conns":16}
+[05:50:45]   [n=55] rps 5 (±1.0%) p50 2992.52ms p99 3027.58ms cpu 156% rss 1537MiB foreign 149%
+[05:50:45] s1 verdaccio {"pkg":"typescript","conns":128}
+[05:55:52]   [n=384] rps 5 (±1.3%) p50 24173.71ms p99 35634.84ms cpu 188% rss 3785MiB foreign 168%
+[05:55:52] s1i verdaccio {"pkg":"ms","conns":16}
+[05:56:36]   [10s] rps 868 (±1.9%) p50 18.12ms p99 25.11ms cpu 145% rss 1635MiB foreign 157%
+[05:56:36] s1i verdaccio {"pkg":"express","conns":16}
+[05:57:21]   [10s] rps 90 (±2.2%) p50 175.96ms p99 203.00ms cpu 154% rss 1357MiB foreign 144%
+[05:57:21] s1i verdaccio {"pkg":"typescript","conns":16}
+[05:58:10]   [n=54] rps 5 (±1.3%) p50 2924.44ms p99 4473.12ms cpu 155% rss 2450MiB foreign 144%
+[05:58:10] s2 verdaccio {"pkg":"ms","conns":1}
+[05:58:57]   [10s] rps 310 (±0.1%) p50 3.09ms p99 6.47ms cpu 110% rss 1563MiB foreign 161%
+[05:58:57] s2 verdaccio {"pkg":"ms","conns":16}
+[05:59:37]   [10s] rps 607 (±2.7%) p50 25.59ms p99 37.06ms cpu 168% rss 1322MiB foreign 148%
+[05:59:37] s2 verdaccio {"pkg":"express","conns":1}
+[06:00:45]   [10s] rps 57 (±1.6%) p50 17.11ms p99 22.42ms cpu 111% rss 1104MiB foreign 99%
+[06:00:45] s2 verdaccio {"pkg":"express","conns":16}
+[06:02:48]   [10s] rps 82 (±2.9%) p50 188.71ms p99 288.75ms cpu 147% rss 634MiB foreign 217%
+[06:02:48] s2 verdaccio {"pkg":"typescript","conns":1}
+[06:03:38]   [n=33] rps 3 (±0.2%) p50 289.66ms p99 313.89ms cpu 107% rss 644MiB foreign 97%
+[06:03:38] s2 verdaccio {"pkg":"typescript","conns":16}
+[06:04:30]   [n=48] rps 5 (±3.8%) p50 3476.29ms p99 3681.59ms cpu 165% rss 1587MiB foreign 135%
+[06:04:30] s3 verdaccio {"pkg":"ms","conns":16,"etag":"\"4e64a592dd88b48ad76ec5266cb0fca6\""}
+[06:05:10]   [10s] rps 979 (±0.6%) p50 16.11ms p99 21.49ms cpu 113% rss 1049MiB foreign 180%
+[06:05:10] s3 verdaccio {"pkg":"express","conns":16,"etag":"\"639dd71c74f133e7a9b1bedb6177a57b\""}
+[06:06:07]   [10s] rps 101 (±8.5%) p50 153.84ms p99 250.25ms cpu 104% rss 888MiB foreign 196%
+[06:06:07] s3 verdaccio {"pkg":"typescript","conns":16,"etag":"\"5919c99c76060760c99d50317a00b678\""}
+[06:07:48]   [n=54] rps 5 (±6.2%) p50 2859.11ms p99 3081.25ms cpu 120% rss 1979MiB foreign 228%
+[06:07:48] s4 verdaccio {"pkg":"1MiB","conns":1}
+[06:08:41]   [10s] rps 734 (±11.7%) p50 1.24ms p99 3.48ms cpu 138% rss 1117MiB foreign 156%
+[06:08:41] s4 verdaccio {"pkg":"1MiB","conns":16}
+[06:09:26]   [10s] rps 1698 (±5.0%) p50 8.67ms p99 14.40ms cpu 228% rss 758MiB foreign 141%
+[06:09:26] s4 verdaccio {"pkg":"50MiB","conns":1}
+[06:10:11]   [10s] rps 21 (±6.3%) p50 46.64ms p99 84.63ms cpu 130% rss 379MiB foreign 200%
+[06:10:11] s4 verdaccio {"pkg":"50MiB","conns":8}
+[06:10:52]   [10s] rps 46 (±8.2%) p50 170.05ms p99 221.46ms cpu 250% rss 406MiB foreign 189%
+[06:10:56] s1 fastopm-1t {"pkg":"ms","conns":1}
+[06:11:46]   [10s] rps 10761 (±6.4%) p50 0.08ms p99 0.19ms cpu 44% rss 175MiB foreign 146%
+[06:11:46] s1 fastopm-1t {"pkg":"ms","conns":16}
+[06:14:22]   [10s] rps 32516 (±0.8%) p50 0.49ms p99 0.80ms cpu 132% rss 17MiB foreign 188%
+[06:14:22] s1 fastopm-1t {"pkg":"ms","conns":128}
+[06:15:16]   [10s] rps 31663 (±2.9%) p50 4.21ms p99 5.27ms cpu 128% rss 25MiB foreign 169%
+[06:15:16] s1 fastopm-1t {"pkg":"express","conns":1}
+[06:16:00]   [10s] rps 8301 (±1.2%) p50 0.11ms p99 0.23ms cpu 50% rss 18MiB foreign 154%
+[06:16:00] s1 fastopm-1t {"pkg":"express","conns":16}
+[06:16:51]   [10s] rps 23092 (±1.4%) p50 0.67ms p99 1.23ms cpu 132% rss 18MiB foreign 173%
+[06:16:51] s1 fastopm-1t {"pkg":"express","conns":128}
+[06:17:38]   [10s] rps 22232 (±2.3%) p50 6.07ms p99 8.62ms cpu 133% rss 19MiB foreign 155%
+[06:17:38] s1 fastopm-1t {"pkg":"typescript","conns":1}
+[06:18:21]   [10s] rps 3771 (±5.0%) p50 0.25ms p99 0.44ms cpu 76% rss 22MiB foreign 103%
+[06:18:21] s1 fastopm-1t {"pkg":"typescript","conns":16}
+[06:19:01]   [10s] rps 4691 (±1.2%) p50 3.49ms p99 5.59ms cpu 108% rss 16MiB foreign 95%
+[06:19:01] s1 fastopm-1t {"pkg":"typescript","conns":128}
+[06:19:47]   [10s] rps 3628 (±26.4%) p50 34.09ms p99 59.31ms cpu 101% rss 21MiB foreign 297%
+[06:19:51] checks fastopm hot 10.09ms newBase 76.91ms fileChanged 194.08ms (seen 10) 304 0.20ms
+[06:20:06] checks verdaccio hot 212.74ms newBase 214.79ms fileChanged 209.31ms (seen 10) 304 200.72ms
+[06:20:06] s5 fastopm herd metadata bench-cold-fastopm-herd-0 x100
+[06:20:06]   wall 94ms uplink 1 statuses {"200":100}
+[06:20:06] s5 fastopm herd metadata bench-cold-fastopm-herd-1 x100
+[06:20:06]   wall 84ms uplink 1 statuses {"200":100}
+[06:20:06] s5 fastopm herd metadata bench-cold-fastopm-herd-2 x100
+[06:20:06]   wall 83ms uplink 1 statuses {"200":100}
+[06:20:06] s5 fastopm herd tarball /bench-tgz-fastopm-0/-/bench-tgz-fastopm-0-1.0.0.tgz x100
+[06:20:07]   wall 101ms uplink 1 complete 100/100
+[06:20:07] s5 fastopm herd tarball /bench-tgz-fastopm-1/-/bench-tgz-fastopm-1-1.0.0.tgz x100
+[06:20:07]   wall 101ms uplink 1 complete 100/100
+[06:20:07] s5 fastopm herd tarball /bench-tgz-fastopm-2/-/bench-tgz-fastopm-2-1.0.0.tgz x100
+[06:20:07]   wall 97ms uplink 1 complete 100/100
+[06:20:07] s5 fastopm 100 distinct packages, sequential
+[06:20:09]   wall 2412ms p50 23.6ms uplink 100
+[06:20:09] s5 fastopm 100 distinct packages, 16 in parallel
+[06:20:10]   wall 717ms p50 101.0ms uplink 100
+[06:20:11] s5 verdaccio herd metadata bench-cold-verdaccio-herd-0 x100
+[06:20:13]   wall 1390ms uplink 100 statuses {"200":100}
+[06:20:13] s5 verdaccio herd metadata bench-cold-verdaccio-herd-1 x100
+[06:20:14]   wall 1591ms uplink 100 statuses {"200":100}
+[06:20:14] s5 verdaccio herd metadata bench-cold-verdaccio-herd-2 x100
+[06:20:16]   wall 1437ms uplink 100 statuses {"200":100}
+[06:20:16] s5 verdaccio herd tarball /bench-tgz-verdaccio-0/-/bench-tgz-verdaccio-0-1.0.0.tgz x100
+[06:20:16]   wall 263ms uplink 100 complete 100/100
+[06:20:16] s5 verdaccio herd tarball /bench-tgz-verdaccio-1/-/bench-tgz-verdaccio-1-1.0.0.tgz x100
+[06:20:17]   wall 250ms uplink 100 complete 100/100
+[06:20:17] s5 verdaccio herd tarball /bench-tgz-verdaccio-2/-/bench-tgz-verdaccio-2-1.0.0.tgz x100
+[06:20:17]   wall 250ms uplink 100 complete 100/100
+[06:20:17] s5 verdaccio 100 distinct packages, sequential
+[06:20:19]   wall 1945ms p50 18.7ms uplink 100
+[06:20:19] s5 verdaccio 100 distinct packages, 16 in parallel
+[06:20:20]   wall 1272ms p50 193.8ms uplink 100
+[06:20:20] s6 fastopm {"pkg":"ms","conns":1,"uplinkDelayMs":0}
+[06:21:08]   rps 448 p50 2.17ms p99 2.76ms uplink/req 1.000 cpu 92%
+[06:21:08] s6 fastopm {"pkg":"ms","conns":32,"uplinkDelayMs":0}
+[06:21:50]   rps 10879 p50 2.94ms p99 3.78ms uplink/req 0.031 cpu 347%
+[06:21:50] s6 fastopm {"pkg":"ms","conns":32,"uplinkDelayMs":20}
+[06:22:34]   rps 1232 p50 25.87ms p99 30.11ms uplink/req 0.031 cpu 66%
+[06:22:34] s6 fastopm {"pkg":"express","conns":1,"uplinkDelayMs":0}
+[06:23:17]   rps 60 p50 16.59ms p99 20.26ms uplink/req 1.002 cpu 97%
+[06:23:17] s6 fastopm {"pkg":"express","conns":32,"uplinkDelayMs":0}
+[06:24:21]   rps 1775 p50 17.66ms p99 25.40ms uplink/req 0.031 cpu 487%
+[06:24:21] s6 fastopm {"pkg":"express","conns":32,"uplinkDelayMs":20}
+[06:26:12]   rps 809 p50 39.09ms p99 50.90ms uplink/req 0.031 cpu 220%
+[06:26:13] s6 verdaccio {"pkg":"ms","conns":1,"uplinkDelayMs":0}
+[06:27:11]   rps 284 p50 3.43ms p99 6.21ms uplink/req 1.000 cpu 125%
+[06:27:11] s6 verdaccio {"pkg":"ms","conns":32,"uplinkDelayMs":0}
+[06:27:52]   rps 564 p50 55.13ms p99 78.22ms uplink/req 1.006 cpu 161%
+[06:27:52] s6 verdaccio {"pkg":"ms","conns":32,"uplinkDelayMs":20}
+[06:28:42]   rps 600 p50 52.77ms p99 65.71ms uplink/req 1.005 cpu 161%
+[06:28:42] s6 verdaccio {"pkg":"express","conns":1,"uplinkDelayMs":0}
+[06:29:22]   rps 62 p50 15.83ms p99 22.17ms uplink/req 1.002 cpu 102%
+[06:29:22] s6 verdaccio {"pkg":"express","conns":32,"uplinkDelayMs":0}
+[06:30:06]   rps 79 p50 397.56ms p99 502.77ms uplink/req 1.041 cpu 151%
+[06:30:06] s6 verdaccio {"pkg":"express","conns":32,"uplinkDelayMs":20}
+[06:30:48]   rps 80 p50 394.79ms p99 470.52ms uplink/req 1.040 cpu 151%
+[06:30:53] s7 fastopm startup 16ms idle rss 9.4MiB
+[06:31:01] s7 verdaccio startup 411ms idle rss 138.8MiB
+[06:31:01] wrote results/latest.json and results/latest.md

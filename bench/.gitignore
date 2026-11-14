@@ -5,3 +5,4 @@ target/
 # per-run scratch (storage copies, configs); removed after a run unless --keep
 .work/
 node_modules/
+results/profile/*.sample.txt

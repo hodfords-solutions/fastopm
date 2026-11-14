@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // fastopm vs verdaccio@7.1.0 benchmark. See bench/README.md.
 //
-//   node bench/run.mjs                      full run (~45 min)
+//   node bench/run.mjs                      full run (~75 min on an M1 Pro)
 //   node bench/run.mjs --quick              smoke run (~4 min): short runs, 1 repetition
 //   node bench/run.mjs --only s1,s3         some scenarios (s1 s1i s2 s3 s4 s5 s6 s7 checks)
 //   node bench/run.mjs --servers fastopm    some servers (fastopm, verdaccio, fastopm-1t)
@@ -179,7 +179,7 @@ async function warmPhase(kind, ctx) {
     if (kind === 'fastopm-1t') return;
     if (want('s1i'))
       for (const pkg of PKGS)
-        await cell(srv, 's1i', { pkg, conns: 16 }, { url: `${base}/${pkg}`, headers: { accept: NPM_ACCEPT_ABBR }, conns: 16 });
+        await cell(srv, 's1i', { pkg, conns: 16 }, { url: `${base}/${pkg}`, headers: { accept: NPM_ACCEPT_ABBR }, conns: 16, noCompression: true });
     if (want('s2'))
       for (const pkg of PKGS)
         for (const conns of CONNS_S2)
