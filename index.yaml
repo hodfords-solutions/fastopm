@@ -3,6 +3,33 @@ entries:
   fastopm:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2026-11-14T11:08:13.193349759Z"
+    description: Read-only npm proxy cache written in Rust that reads Verdaccio's
+      config.yaml and storage layout (no publishing, no client authentication, no
+      web UI).
+    digest: ce44c0ede379635026be6786d6f32269d108dcf68a585136e7dc3c3cd422dcdb
+    home: https://github.com/hodfords-solutions/fastopm
+    keywords:
+    - npm
+    - registry
+    - proxy
+    - cache
+    - verdaccio
+    - pnpm
+    - yarn
+    kubeVersion: '>=1.23.0-0'
+    maintainers:
+    - name: hodfords-solutions
+      url: https://github.com/hodfords-solutions
+    name: fastopm
+    sources:
+    - https://github.com/hodfords-solutions/fastopm
+    type: application
+    urls:
+    - https://github.com/hodfords-solutions/fastopm/releases/download/fastopm-chart-0.1.1/fastopm-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2026-11-14T07:18:36.475625915Z"
     description: Read-only npm proxy cache written in Rust that reads Verdaccio's
       config.yaml and storage layout (no publishing, no client authentication, no
@@ -28,4 +55,4 @@ entries:
     urls:
     - https://github.com/hodfords-solutions/fastopm/releases/download/fastopm-chart-0.1.0/fastopm-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-14T07:18:36.475629781Z"
+generated: "2026-11-14T11:08:13.193358836Z"
