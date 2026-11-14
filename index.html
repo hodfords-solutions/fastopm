@@ -1,0 +1,89 @@
+<!doctype html>
+<!--
+  Landing page of the Helm chart repository served by GitHub Pages from the gh-pages branch.
+  Source: charts/site/index.html on main; copied to gh-pages by .github/workflows/helm.yml.
+  index.yaml next to it is maintained by chart-releaser; do not edit it by hand.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fastopm Helm charts</title>
+  <meta name="description" content="Helm chart repository for fastopm, a read-only npm proxy cache compatible with Verdaccio.">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #59636e;
+      --code-bg: #f6f8fa;
+      --border: #d1d9e0;
+      --link: #0969da;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --code-bg: #161b22;
+        --border: #3d444d;
+        --link: #4493f8;
+      }
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-size: 1.8em; margin: 0 0 4px; }
+    h2 { font-size: 1.25em; margin-top: 2em; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    p.lead { color: var(--muted); margin-top: 0; }
+    a { color: var(--link); }
+    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      overflow-x: auto;
+    }
+    code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 4px; }
+    pre code { background: none; padding: 0; }
+    .note { border-left: 4px solid var(--border); padding: 4px 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>fastopm Helm charts</h1>
+  <p class="lead">
+    Helm chart repository for <a href="https://github.com/hodfords-solutions/fastopm">fastopm</a>,
+    a read-only npm proxy cache written in Rust that reads Verdaccio's <code>config.yaml</code>
+    and storage layout.
+  </p>
+
+  <h2>Add the repository</h2>
+  <pre><code>helm repo add fastopm https://hodfords-solutions.github.io/fastopm
+helm repo update
+helm search repo fastopm</code></pre>
+
+  <h2>Install the chart</h2>
+  <pre><code>helm install npm fastopm/fastopm --namespace npm --create-namespace
+helm test npm --namespace npm</code></pre>
+  <p class="note">
+    No fastopm image is published on Docker Hub yet. Build it from the repository's
+    <code>Dockerfile</code>, push it to your registry and install with
+    <code>--set image.repository=&lt;registry&gt;/fastopm --set image.tag=&lt;tag&gt;</code>.
+  </p>
+
+  <h2>Documentation</h2>
+  <ul>
+    <li><a href="https://github.com/hodfords-solutions/fastopm/tree/main/charts/fastopm">Chart README</a>: values, ingress, persistence, multiple replicas, migrating from the Verdaccio chart</li>
+    <li><a href="https://github.com/hodfords-solutions/fastopm#readme">fastopm README</a>: what fastopm does and does not do, configuration</li>
+    <li><a href="https://github.com/hodfords-solutions/fastopm/releases">Releases</a>: chart packages are attached to the <code>fastopm-chart-*</code> releases</li>
+    <li><a href="index.yaml">index.yaml</a>: the Helm repository index</li>
+  </ul>
+</main>
+</body>
+</html>
