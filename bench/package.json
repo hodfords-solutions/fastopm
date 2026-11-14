@@ -1,0 +1,13 @@
+{
+  "name": "fastopm-bench",
+  "private": true,
+  "version": "0.0.0",
+  "description": "fastopm vs verdaccio@7.1.0 benchmark (see README.md)",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "bench": "node run.mjs",
+    "bench:quick": "node run.mjs --quick",
+    "report": "node lib/report.mjs results/latest.json"
+  }
+}

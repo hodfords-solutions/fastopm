@@ -1,0 +1,14 @@
+# Build context = Cargo workspace only. Everything else stays out so source edits elsewhere
+# do not bust the dependency (cargo-chef) layer and the context upload stays small.
+*
+!Cargo.toml
+!Cargo.lock
+!rust-toolchain.toml
+!rustfmt.toml
+!crates/
+!docker/
+
+# never ship build output or editor files
+**/target/
+**/*.rs.bk
+**/.DS_Store

@@ -1,0 +1,14 @@
+{
+  "name": "fastopm-compat",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Differential compatibility harness: Verdaccio (baseline) vs a candidate registry binary (fastopm)",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node run.mjs"
+  },
+  "devDependencies": {
+    "verdaccio": "7.1.0"
+  }
+}

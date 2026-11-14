@@ -1,0 +1,66 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+publish = false
+
+[workspace.dependencies]
+# internal crates
+fastopm-core = { path = "crates/fastopm-core" }
+fastopm-config = { path = "crates/fastopm-config" }
+fastopm-storage = { path = "crates/fastopm-storage" }
+fastopm-uplink = { path = "crates/fastopm-uplink" }
+fastopm-render = { path = "crates/fastopm-render" }
+fastopm-store = { path = "crates/fastopm-store" }
+fastopm-server = { path = "crates/fastopm-server" }
+
+# async runtime and HTTP
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "fs", "io-util", "net", "sync", "time", "signal"] }
+tokio-util = { version = "0.7.20", features = ["io"] }
+axum = { version = "0.8.9", default-features = false, features = ["tokio", "http1", "http2"] }
+tower = { version = "0.5.3", default-features = false }
+tower-http = { version = "0.7.1", default-features = false, features = ["compression-gzip"] }
+http = "1.5.0"
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "http2", "gzip", "stream"] }
+url = "2.5.8"
+percent-encoding = "2.3.2"
+
+# data
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154", features = ["preserve_order", "float_roundtrip"] }
+serde_yaml_ng = "0.10.0"
+indexmap = { version = "2.14.2", features = ["serde"] }
+bytes = "1.12.1"
+futures-core = "0.3.34"
+futures-util = "0.3.34"
+md-5 = "0.11.0"
+flate2 = "1.1.11"
+brotli = "9.1.1"
+hex = "0.4.3"
+getrandom = "0.4.3"
+nodejs-semver = "7.0.0"
+
+# CLI, errors, logging
+clap = { version = "4.6.7", features = ["derive"] }
+thiserror = "2.0.21"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "json"] }
+
+# tests
+tempfile = "3.27.0"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+
+[workspace.lints.cargo]
+# Some pinned versions are only used once the stub crates are implemented.
+unused_workspace_dependencies = "allow"

@@ -1,0 +1,117 @@
+{
+ "requests": [
+  {
+   "id": "no-host",
+   "host": null,
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "localhost",
+   "host": "localhost:4873",
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "proxied",
+   "host": "registry.example.com",
+   "proto": "https,http",
+   "scheme": "http",
+   "prefix": "npm"
+  }
+ ],
+ "cases": [
+  {
+   "request": "no-host",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\",\n      \"n\": [\n        0.12345678901234568,\n        3.141592653589793,\n        1.2345678901234569e+23,\n        2.225073858507201e-308,\n        5e-324,\n        0.30000000000000004,\n        18446744073709552000,\n        -18446744073709552000,\n        1\n      ]\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"d14e75fcfef2fd4915a7376d95ab1992\""
+  },
+  {
+   "request": "no-host",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\"\n    }\n  },\n  \"modified\": \"2023-03-03T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"856cc3fc896bf5225fdbf3184d40e6a3\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  },
+  {
+   "request": "localhost",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\",\n      \"n\": [\n        0.12345678901234568,\n        3.141592653589793,\n        1.2345678901234569e+23,\n        2.225073858507201e-308,\n        5e-324,\n        0.30000000000000004,\n        18446744073709552000,\n        -18446744073709552000,\n        1\n      ]\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"d14e75fcfef2fd4915a7376d95ab1992\""
+  },
+  {
+   "request": "localhost",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\"\n    }\n  },\n  \"modified\": \"2023-03-03T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"856cc3fc896bf5225fdbf3184d40e6a3\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  },
+  {
+   "request": "proxied",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\",\n      \"n\": [\n        0.12345678901234568,\n        3.141592653589793,\n        1.2345678901234569e+23,\n        2.225073858507201e-308,\n        5e-324,\n        0.30000000000000004,\n        18446744073709552000,\n        -18446744073709552000,\n        1\n      ]\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"d14e75fcfef2fd4915a7376d95ab1992\""
+  },
+  {
+   "request": "proxied",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"precision\",\n      \"version\": \"1.0.0\"\n    }\n  },\n  \"modified\": \"2023-03-03T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2023-03-03T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"856cc3fc896bf5225fdbf3184d40e6a3\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"precision\",\n  \"version\": \"1.0.0\",\n  \"n\": [\n    0.12345678901234568,\n    3.141592653589793,\n    1.2345678901234569e+23,\n    2.225073858507201e-308,\n    5e-324,\n    0.30000000000000004,\n    18446744073709552000,\n    -18446744073709552000,\n    1\n  ]\n}\n",
+   "etag": "\"7aa0960a726a66e864067d3ac4140728\""
+  }
+ ]
+}

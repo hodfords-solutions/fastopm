@@ -1,0 +1,441 @@
+{
+ "requests": [
+  {
+   "id": "no-host",
+   "host": null,
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "localhost",
+   "host": "localhost:4873",
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "proxied",
+   "host": "registry.example.com",
+   "proto": "https,http",
+   "scheme": "http",
+   "prefix": "npm"
+  }
+ ],
+ "cases": [
+  {
+   "request": "no-host",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"_id\": \"@scope/odd\",\n  \"_rev\": \"7-0123456789abcdef\",\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"numbers\": [\n        1,\n        2.5,\n        0,\n        0,\n        0.1,\n        1e+21,\n        1e-7,\n        0.000001,\n        1.23,\n        1.5e+300,\n        9007199254740992,\n        12345678901234567000,\n        -9007199254740992,\n        100,\n        0\n      ],\n      \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n      \"deprecated\": null,\n      \"funding\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true,\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"bundledDependencies\": [\n        \"ignored-in-abbreviated\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"directories\": {},\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"scripts\": {\n        \"install\": \"node x\"\n      }\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://other.example:8080/deep/path/odd-4.0.0.tgz\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ],\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      }\n    }\n  },\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  },\n  \"users\": {\n    \"2\": true,\n    \"10\": true,\n    \"4294967294\": true,\n    \"zed\": true,\n    \"01\": true,\n    \"4294967295\": true\n  },\n  \"maintainers\": [\n    {\n      \"name\": \"a\",\n      \"email\": \"a@example.com\"\n    }\n  ],\n  \"readme\": \"# odd\\n\\n\\\"quoted\\\"\\ttab\",\n  \"_attachments\": {}\n}\n",
+   "etag": "\"a6f9c1a429f531454a23a8c3b3eeafd4\""
+  },
+  {
+   "request": "no-host",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"deprecated\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"funding\": null,\n      \"directories\": {},\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://other.example:8080/deep/path/odd-4.0.0.tgz\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ]\n    }\n  },\n  \"modified\": \"2021-01-01T00:00:00.000Z\",\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"d4ba8dfdb4f5931c7bfe132c732d62af\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "=1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": " 1.0.0 ",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0.0+anything",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"48d81f95ca0ad25ade66225d7ffcdb7a\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "next",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "beta",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "2.0.0-rc.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0.1-beta.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "3.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"3.0.0\",\n  \"dist\": \"not an object\"\n}\n",
+   "etag": "\"e6f58e67dd4da9569311ff9605500806\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "4.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"4.0.0\",\n  \"dist\": {\n    \"tarball\": \"http://other.example:8080/deep/path/odd-4.0.0.tgz\"\n  },\n  \"cpu\": [\n    \"x64\"\n  ],\n  \"os\": [\n    \"linux\"\n  ],\n  \"optionalDependencies\": {\n    \"o\": \"1\"\n  },\n  \"devDependencies\": {\n    \"d\": \"1\"\n  },\n  \"peerDependencies\": {\n    \"p\": \"1\"\n  },\n  \"dependencies\": {\n    \"z\": \"1\",\n    \"a\": \"2\"\n  }\n}\n",
+   "etag": "\"28f263f8f5bedb4d454c4466b91834b2\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "9.9.9",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 9.9.9\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 1.0\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "constructor",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: constructor\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"_id\": \"@scope/odd\",\n  \"_rev\": \"7-0123456789abcdef\",\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"numbers\": [\n        1,\n        2.5,\n        0,\n        0,\n        0.1,\n        1e+21,\n        1e-7,\n        0.000001,\n        1.23,\n        1.5e+300,\n        9007199254740992,\n        12345678901234567000,\n        -9007199254740992,\n        100,\n        0\n      ],\n      \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n      \"deprecated\": null,\n      \"funding\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true,\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"bundledDependencies\": [\n        \"ignored-in-abbreviated\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"directories\": {},\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"scripts\": {\n        \"install\": \"node x\"\n      }\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-4.0.0.tgz\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ],\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      }\n    }\n  },\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  },\n  \"users\": {\n    \"2\": true,\n    \"10\": true,\n    \"4294967294\": true,\n    \"zed\": true,\n    \"01\": true,\n    \"4294967295\": true\n  },\n  \"maintainers\": [\n    {\n      \"name\": \"a\",\n      \"email\": \"a@example.com\"\n    }\n  ],\n  \"readme\": \"# odd\\n\\n\\\"quoted\\\"\\ttab\",\n  \"_attachments\": {}\n}\n",
+   "etag": "\"3a747adcc355631c10a40e7070571539\""
+  },
+  {
+   "request": "localhost",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"deprecated\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"funding\": null,\n      \"directories\": {},\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-4.0.0.tgz\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ]\n    }\n  },\n  \"modified\": \"2021-01-01T00:00:00.000Z\",\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"98cd83a5c53e6f3ee13dcf5e2dbe4032\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "=1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": " 1.0.0 ",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0.0+anything",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"de3aaa70ff852cb0e907019f74a38583\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "next",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "beta",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "2.0.0-rc.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0.1-beta.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "3.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"3.0.0\",\n  \"dist\": \"not an object\"\n}\n",
+   "etag": "\"e6f58e67dd4da9569311ff9605500806\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "4.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"4.0.0\",\n  \"dist\": {\n    \"tarball\": \"http://localhost:4873/@scope/odd/-/odd-4.0.0.tgz\"\n  },\n  \"cpu\": [\n    \"x64\"\n  ],\n  \"os\": [\n    \"linux\"\n  ],\n  \"optionalDependencies\": {\n    \"o\": \"1\"\n  },\n  \"devDependencies\": {\n    \"d\": \"1\"\n  },\n  \"peerDependencies\": {\n    \"p\": \"1\"\n  },\n  \"dependencies\": {\n    \"z\": \"1\",\n    \"a\": \"2\"\n  }\n}\n",
+   "etag": "\"162ff4d9af90682b46ae141b2396574f\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "9.9.9",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 9.9.9\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 1.0\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "constructor",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: constructor\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"_id\": \"@scope/odd\",\n  \"_rev\": \"7-0123456789abcdef\",\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"numbers\": [\n        1,\n        2.5,\n        0,\n        0,\n        0.1,\n        1e+21,\n        1e-7,\n        0.000001,\n        1.23,\n        1.5e+300,\n        9007199254740992,\n        12345678901234567000,\n        -9007199254740992,\n        100,\n        0\n      ],\n      \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n      \"deprecated\": null,\n      \"funding\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true,\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"bundledDependencies\": [\n        \"ignored-in-abbreviated\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"directories\": {},\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"scripts\": {\n        \"install\": \"node x\"\n      }\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-4.0.0.tgz\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ],\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      }\n    }\n  },\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  },\n  \"users\": {\n    \"2\": true,\n    \"10\": true,\n    \"4294967294\": true,\n    \"zed\": true,\n    \"01\": true,\n    \"4294967295\": true\n  },\n  \"maintainers\": [\n    {\n      \"name\": \"a\",\n      \"email\": \"a@example.com\"\n    }\n  ],\n  \"readme\": \"# odd\\n\\n\\\"quoted\\\"\\ttab\",\n  \"_attachments\": {}\n}\n",
+   "etag": "\"6ed8b21ec32cda549daf3c9cd718e1be\""
+  },
+  {
+   "request": "proxied",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"next\": \"2.0.0-rc.1\",\n    \"beta\": \"v1.0.1-beta.1\"\n  },\n  \"versions\": {\n    \"1.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.0\",\n      \"deprecated\": null,\n      \"bin\": {\n        \"odd\": \"bin/odd.js\"\n      },\n      \"dist\": {\n        \"integrity\": \"sha512-abc\",\n        \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n        \"shasum\": \"abc\",\n        \"signatures\": [\n          {\n            \"keyid\": \"k\",\n            \"sig\": \"s\"\n          }\n        ]\n      },\n      \"engines\": {\n        \"node\": \">=18\"\n      },\n      \"funding\": null,\n      \"directories\": {},\n      \"bundleDependencies\": [\n        \"a\"\n      ],\n      \"peerDependenciesMeta\": {\n        \"x\": {\n          \"optional\": true\n        }\n      },\n      \"acceptDependencies\": {},\n      \"_hasShrinkwrap\": false,\n      \"hasInstallScript\": true\n    },\n    \"1.0.1-beta.1\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"1.0.1-beta.1\",\n      \"dist\": {\n        \"shasum\": \"no tarball\"\n      }\n    },\n    \"2.0.0-rc.1+build.5\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"2.0.0-rc.1+build.5\",\n      \"dist\": {\n        \"tarball\": \"\",\n        \"shasum\": \"empty tarball\"\n      }\n    },\n    \"3.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"3.0.0\",\n      \"dist\": \"not an object\"\n    },\n    \"4.0.0\": {\n      \"name\": \"@scope/odd\",\n      \"version\": \"4.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-4.0.0.tgz\"\n      },\n      \"dependencies\": {\n        \"z\": \"1\",\n        \"a\": \"2\"\n      },\n      \"devDependencies\": {\n        \"d\": \"1\"\n      },\n      \"peerDependencies\": {\n        \"p\": \"1\"\n      },\n      \"optionalDependencies\": {\n        \"o\": \"1\"\n      },\n      \"cpu\": [\n        \"x64\"\n      ],\n      \"os\": [\n        \"linux\"\n      ]\n    }\n  },\n  \"modified\": \"2021-01-01T00:00:00.000Z\",\n  \"time\": {\n    \"created\": \"2020-01-01T00:00:00.000Z\",\n    \"1.0.0\": \"2020-01-01T00:00:00.000Z\",\n    \"modified\": \"2021-01-01T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"2e617324871c8bab13246aed379e0532\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "=1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": " 1.0.0 ",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0.0+anything",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.0\",\n  \"numbers\": [\n    1,\n    2.5,\n    0,\n    0,\n    0.1,\n    1e+21,\n    1e-7,\n    0.000001,\n    1.23,\n    1.5e+300,\n    9007199254740992,\n    12345678901234567000,\n    -9007199254740992,\n    100,\n    0\n  ],\n  \"escapes\": \"quote\\\" backslash\\\\ slash/ \\b\\f\\n\\r\\t \\u0000\\u0001\\u001f    é 😀 é\",\n  \"deprecated\": null,\n  \"funding\": null,\n  \"bin\": {\n    \"odd\": \"bin/odd.js\"\n  },\n  \"engines\": {\n    \"node\": \">=18\"\n  },\n  \"_hasShrinkwrap\": false,\n  \"hasInstallScript\": true,\n  \"bundleDependencies\": [\n    \"a\"\n  ],\n  \"bundledDependencies\": [\n    \"ignored-in-abbreviated\"\n  ],\n  \"peerDependenciesMeta\": {\n    \"x\": {\n      \"optional\": true\n    }\n  },\n  \"acceptDependencies\": {},\n  \"directories\": {},\n  \"dist\": {\n    \"integrity\": \"sha512-abc\",\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-1.0.0.tgz\",\n    \"shasum\": \"abc\",\n    \"signatures\": [\n      {\n        \"keyid\": \"k\",\n        \"sig\": \"s\"\n      }\n    ]\n  },\n  \"scripts\": {\n    \"install\": \"node x\"\n  }\n}\n",
+   "etag": "\"3d1e169f6399db07aef34a8c9a076646\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "next",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "beta",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "2.0.0-rc.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"2.0.0-rc.1+build.5\",\n  \"dist\": {\n    \"tarball\": \"\",\n    \"shasum\": \"empty tarball\"\n  }\n}\n",
+   "etag": "\"ee396ea15700acfdfc305f2583800cfb\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0.1-beta.1",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"1.0.1-beta.1\",\n  \"dist\": {\n    \"shasum\": \"no tarball\"\n  }\n}\n",
+   "etag": "\"eeabe54535e4f2680dfae2a53ef68c1d\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "3.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"3.0.0\",\n  \"dist\": \"not an object\"\n}\n",
+   "etag": "\"e6f58e67dd4da9569311ff9605500806\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "4.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"@scope/odd\",\n  \"version\": \"4.0.0\",\n  \"dist\": {\n    \"tarball\": \"https://registry.example.com/npm/@scope/odd/-/odd-4.0.0.tgz\"\n  },\n  \"cpu\": [\n    \"x64\"\n  ],\n  \"os\": [\n    \"linux\"\n  ],\n  \"optionalDependencies\": {\n    \"o\": \"1\"\n  },\n  \"devDependencies\": {\n    \"d\": \"1\"\n  },\n  \"peerDependencies\": {\n    \"p\": \"1\"\n  },\n  \"dependencies\": {\n    \"z\": \"1\",\n    \"a\": \"2\"\n  }\n}\n",
+   "etag": "\"3e3be665f8f45ca395dc1e62c37c3c5c\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "9.9.9",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 9.9.9\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: 1.0\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "constructor",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: constructor\"\n}\n"
+  }
+ ]
+}

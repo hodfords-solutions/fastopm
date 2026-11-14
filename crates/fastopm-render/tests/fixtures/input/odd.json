@@ -1,0 +1,71 @@
+{
+  "_id": "@scope/odd",
+  "_rev": "7-0123456789abcdef",
+  "name": "@scope/odd",
+  "description": "not whitelisted",
+  "dist-tags": { "latest": "1.0.0", "next": "2.0.0-rc.1", "beta": "v1.0.1-beta.1" },
+  "_attachments": { "odd-1.0.0.tgz": { "shasum": "x" } },
+  "versions": {
+    "1.0.0": {
+      "name": "@scope/odd",
+      "version": "1.0.0",
+      "numbers": [1.0, 2.50, -0, -0.0, 0.1, 1e21, 1E-7, 1e-6, 123e-2, 1.5e300, 9007199254740993, 12345678901234567890, -9007199254740993, 100, 0],
+      "escapes": "quote\" backslash\\ slash\/ \b\f\n\r\t \u0000\u0001\u001f\u007f    é 😀 é",
+      "deprecated": null,
+      "funding": null,
+      "bin": { "odd": "bin/odd.js" },
+      "engines": { "node": ">=18" },
+      "_hasShrinkwrap": false,
+      "hasInstallScript": true,
+      "bundleDependencies": ["a"],
+      "bundledDependencies": ["ignored-in-abbreviated"],
+      "peerDependenciesMeta": { "x": { "optional": true } },
+      "acceptDependencies": {},
+      "directories": {},
+      "dist": {
+        "integrity": "sha512-abc",
+        "tarball": "https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz?x=1#f",
+        "shasum": "abc",
+        "signatures": [{ "keyid": "k", "sig": "s" }]
+      },
+      "scripts": { "install": "node x" }
+    },
+    "1.0.1-beta.1": {
+      "name": "@scope/odd",
+      "version": "1.0.1-beta.1",
+      "dist": { "shasum": "no tarball" }
+    },
+    "2.0.0-rc.1+build.5": {
+      "name": "@scope/odd",
+      "version": "2.0.0-rc.1+build.5",
+      "dist": { "tarball": "", "shasum": "empty tarball" }
+    },
+    "3.0.0": {
+      "name": "@scope/odd",
+      "version": "3.0.0",
+      "dist": "not an object"
+    },
+    "4.0.0": {
+      "name": "@scope/odd",
+      "version": "4.0.0",
+      "dist": { "tarball": "http://other.example:8080/deep/path/odd-4.0.0.tgz" },
+      "cpu": ["x64"],
+      "os": ["linux"],
+      "optionalDependencies": { "o": "1" },
+      "devDependencies": { "d": "1" },
+      "peerDependencies": { "p": "1" },
+      "dependencies": { "z": "1", "a": "2" }
+    }
+  },
+  "time": {
+    "created": "2020-01-01T00:00:00.000Z",
+    "1.0.0": "2020-01-01T00:00:00.000Z",
+    "modified": "2021-01-01T00:00:00.000Z"
+  },
+  "users": { "zed": true, "10": true, "2": true, "01": true, "4294967295": true, "4294967294": true },
+  "maintainers": [{ "name": "a", "email": "a@example.com" }],
+  "readme": "# odd\n\n\"quoted\"\ttab",
+  "readmeFilename": "README.md",
+  "_uplinks": { "npmjs": { "etag": "\"abc\"", "fetched": 1700000000000 } },
+  "_distfiles": { "odd-1.0.0.tgz": { "url": "https://registry.npmjs.org/@scope/odd/-/odd-1.0.0.tgz", "sha": "abc", "registry": "npmjs" } }
+}

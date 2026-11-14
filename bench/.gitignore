@@ -1,0 +1,7 @@
+# build output of `CARGO_TARGET_DIR=bench/target cargo build --release -p fastopm`
+target/
+# oha installed by `cargo install oha --root bench/.tools`
+.tools/
+# per-run scratch (storage copies, configs); removed after a run unless --keep
+.work/
+node_modules/

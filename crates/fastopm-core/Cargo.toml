@@ -1,0 +1,21 @@
+[package]
+name = "fastopm-core"
+description = "Shared types for fastopm: registry errors, manifest, package names, intervals, constants"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+bytes.workspace = true
+futures-core.workspace = true
+url.workspace = true
+getrandom.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

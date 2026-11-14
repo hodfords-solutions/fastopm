@@ -1,0 +1,86 @@
+{
+ "normalizeDistTags": [
+  {
+   "latest": "2.0.0-rc.1"
+  },
+  {
+   "beta": "2.0.0",
+   "bad": [
+    "x"
+   ],
+   "num": 5
+  },
+  {
+   "latest": "3.0.0",
+   "next": "v2.0.0"
+  }
+ ],
+ "getLatestReadme": [
+  "top",
+  "from latest",
+  "beta readme",
+  ""
+ ],
+ "mergeVersions": {
+  "name": "a",
+  "versions": {
+   "1.0.0": {
+    "version": "1.0.0",
+    "deprecated": "dep"
+   },
+   "2.0.0": {
+    "version": "2.0.0"
+   }
+  },
+  "time": {
+   "2.0.0": "t2"
+  },
+  "dist-tags": {
+   "latest": "2.0.0",
+   "beta": "1.1.0-b",
+   "next": "3.0.0"
+  },
+  "readme": "new",
+  "_uplinks": {}
+ },
+ "mergeThrows": true,
+ "mergeKeepsHigherLocal": {
+  "versions": {},
+  "time": {},
+  "dist-tags": {
+   "latest": "3.0.0"
+  },
+  "readme": "keep"
+ },
+ "scope": [
+  "$uplink:npmjs:bob",
+  {
+   "email": "e",
+   "name": "$uplink:npmjs:alice"
+  },
+  {
+   "email": "x",
+   "name": "$uplink:npmjs:"
+  },
+  "$uplink:other:carol"
+ ],
+ "scopeEmpty": [
+  "$uplink:remote:bob"
+ ],
+ "lookup": [
+  {
+   "url": "https://r/@s/pkg/-/pkg-1.0.0.tgz",
+   "sha": "a",
+   "registry": "npmjs"
+  },
+  {
+   "url": "https://cdn/x/pkg-2.0.0.tgz?sig=1",
+   "sha": "b"
+  },
+  {
+   "url": "https://cdn/odd-name"
+  },
+  null,
+  null
+ ]
+}

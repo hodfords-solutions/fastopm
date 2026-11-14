@@ -1,0 +1,294 @@
+{
+ "requests": [
+  {
+   "id": "no-host",
+   "host": null,
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "localhost",
+   "host": "localhost:4873",
+   "proto": null,
+   "scheme": "http",
+   "prefix": null
+  },
+  {
+   "id": "proxied",
+   "host": "registry.example.com",
+   "proto": "https,http",
+   "scheme": "http",
+   "prefix": "npm"
+  }
+ ],
+ "cases": [
+  {
+   "request": "no-host",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.npmjs.org/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"8ddd3e80997c7a250b51e45fcf3a8991\""
+  },
+  {
+   "request": "no-host",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.npmjs.org/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"modified\": \"2022-02-02T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"9118c37bcd77c503b96cbb699aabbb19\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"https://registry.npmjs.org/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"3f76f6532b6b90129bead7eb91a00d2d\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "garbage",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"garbage\"\n}\n",
+   "etag": "\"6c6ab0e40333898b70b1a5adf2bdefdc\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "7",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"https://registry.npmjs.org/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"3f76f6532b6b90129bead7eb91a00d2d\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "num",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "nul",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nul\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "missing",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "2.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "no-host",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://localhost:4873/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"53570f6e1b1762a79e45d6e292f33062\""
+  },
+  {
+   "request": "localhost",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"http://localhost:4873/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"modified\": \"2022-02-02T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"1d8e574a0473b48c27a147d1924a168c\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"http://localhost:4873/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"f6955491c79835ba102016bfe599ca94\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "garbage",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"garbage\"\n}\n",
+   "etag": "\"6c6ab0e40333898b70b1a5adf2bdefdc\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "7",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"http://localhost:4873/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"f6955491c79835ba102016bfe599ca94\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "num",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "nul",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nul\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "missing",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "2.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "localhost",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "full",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.example.com/npm/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  },\n  \"_attachments\": {}\n}\n",
+   "etag": "\"9270863218cfdd654c13606e1dd01aa0\""
+  },
+  {
+   "request": "proxied",
+   "kind": "abbreviated",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"dist-tags\": {\n    \"latest\": \"1.0.0\",\n    \"num\": 7,\n    \"nul\": null,\n    \"missing\": \"9.9.9\"\n  },\n  \"versions\": {\n    \"7\": {\n      \"name\": \"weird\",\n      \"version\": \"7\"\n    },\n    \"1.0.0\": {\n      \"name\": \"weird\",\n      \"version\": \"1.0.0\",\n      \"dist\": {\n        \"tarball\": \"https://registry.example.com/npm/weird/-/weird-1.0.0.tgz\"\n      }\n    },\n    \"garbage\": {\n      \"name\": \"weird\",\n      \"version\": \"garbage\"\n    }\n  },\n  \"modified\": \"2022-02-02T00:00:00.000Z\",\n  \"time\": {\n    \"modified\": \"2022-02-02T00:00:00.000Z\"\n  }\n}\n",
+   "etag": "\"3fc66490b4bd79bf702f057774f112b8\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "1.0.0",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"https://registry.example.com/npm/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"509b0027c50f16e446b133f849e4aa9a\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "v1.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "garbage",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"garbage\"\n}\n",
+   "etag": "\"6c6ab0e40333898b70b1a5adf2bdefdc\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "7",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "latest",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"1.0.0\",\n  \"dist\": {\n    \"tarball\": \"https://registry.example.com/npm/weird/-/weird-1.0.0.tgz\"\n  }\n}\n",
+   "etag": "\"509b0027c50f16e446b133f849e4aa9a\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "num",
+   "status": 200,
+   "body": "{\n  \"name\": \"weird\",\n  \"version\": \"7\"\n}\n",
+   "etag": "\"3123dc08c8dbca3e394531e77f0248a0\""
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "nul",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nul\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "missing",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "2.0.0",
+   "status": 500,
+   "body": "{\n  \"error\": \"internal server error\"\n}\n"
+  },
+  {
+   "request": "proxied",
+   "kind": "version",
+   "query": "nope",
+   "status": 404,
+   "body": "{\n  \"error\": \"this version doesn't exist: nope\"\n}\n"
+  }
+ ]
+}

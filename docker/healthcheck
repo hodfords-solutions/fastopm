@@ -1,0 +1,20 @@
+#!/bin/bash
+# Docker HEALTHCHECK: `GET /-/ping` must answer 200. Uses bash's /dev/tcp so the image needs
+# no curl/wget. Equivalent manual check from the host:
+#   curl -fsS http://localhost:4873/-/ping    # -> {}
+set -eu
+
+port="${VERDACCIO_PORT:-4873}"
+host="${VERDACCIO_ADDRESS:-[::]}"
+case "$host" in
+  '' | '[::]' | '::' | '0.0.0.0' | '*') host=127.0.0.1 ;;
+  \[*\]) host="${host#[}"; host="${host%]}" ;;
+esac
+
+exec 3<> "/dev/tcp/${host}/${port}"
+printf 'GET /-/ping HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3
+IFS= read -r -t 5 status <&3
+case "$status" in
+  'HTTP/1.'?' 200 '*) exit 0 ;;
+  *) echo "unhealthy: ${status:-no response}" >&2; exit 1 ;;
+esac

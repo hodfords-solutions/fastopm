@@ -1,0 +1,30 @@
+[package]
+name = "fastopm"
+description = "npm proxy cache compatible with Verdaccio's config and storage"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "fastopm"
+path = "src/main.rs"
+
+[dependencies]
+clap.workspace = true
+fastopm-config.workspace = true
+fastopm-storage.workspace = true
+fastopm-uplink.workspace = true
+fastopm-store.workspace = true
+fastopm-server.workspace = true
+axum.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,22 @@
+{
+  "name": "fastopm-e2e-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Medium dependency tree for the fastopm end-to-end test: a few hundred packages, scoped packages, packages with binaries",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "7.26.0",
+    "@types/node": "22.10.2",
+    "axios": "1.7.9",
+    "chalk": "5.4.1",
+    "commander": "12.1.0",
+    "eslint": "8.57.1",
+    "express": "4.21.2",
+    "lodash": "4.17.21",
+    "prettier": "3.4.2",
+    "rimraf": "5.0.10",
+    "semver": "7.6.3",
+    "typescript": "5.7.2",
+    "webpack": "5.97.1"
+  }
+}

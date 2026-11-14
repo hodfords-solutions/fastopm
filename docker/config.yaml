@@ -1,0 +1,59 @@
+#
+# Default configuration of the fastopm Docker image.
+#
+# Derived from Verdaccio's `packages/config/src/conf/docker.yaml`, keeping only the keys fastopm
+# reads (PLAN.md section 2). fastopm is a read-only proxy cache: no publish, no login, no web UI.
+# Any other Verdaccio key (auth, web, publish/access rules, middlewares, ...) is ignored with a
+# warning at startup, so a Verdaccio config.yaml can be mounted here unchanged.
+#
+# The listen address comes from the image CMD:
+#   --listen $VERDACCIO_PROTOCOL://$VERDACCIO_ADDRESS:$VERDACCIO_PORT   (default http://[::]:4873)
+
+# Path to a directory with all packages (same layout as Verdaccio, can be shared with it)
+storage: /verdaccio/storage/data
+
+# A list of other known repositories we can talk to
+# https://verdaccio.org/docs/configuration#uplinks
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+    # maxage: 2m
+    # timeout: 30s
+    # max_fails: 2
+    # fail_timeout: 5m
+    # cache: true
+    # headers:
+    #   X-Custom: value
+    # auth:
+    #   type: bearer
+    #   token_env: NPM_TOKEN
+
+# https://verdaccio.org/docs/configuration#packages
+# Only `proxy` and `storage` are used; `access` / `publish` / `unpublish` are ignored.
+packages:
+  '@*/*':
+    # scoped packages
+    proxy: npmjs
+
+  '**':
+    # if package is not available locally, proxy requests to 'npmjs' registry
+    proxy: npmjs
+
+# Define public URL of registry in combination with VERDACCIO_PUBLIC_URL environment variable
+# https://verdaccio.org/docs/configuration#url-prefix
+# url_prefix: /verdaccio/
+
+# https://verdaccio.org/docs/configuration#proxy
+# http_proxy: http://something.local/
+# https_proxy: https://something.local/
+# no_proxy: localhost,127.0.0.1,server.local
+
+# user_agent: fastopm
+# server_id: fastopm
+
+# Log settings
+# https://verdaccio.org/docs/logger
+log:
+  type: stdout
+  format: pretty
+  level: http

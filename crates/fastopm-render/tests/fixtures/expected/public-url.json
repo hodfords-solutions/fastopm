@@ -1,0 +1,4802 @@
+[
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": null
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://localhost:4873/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://localhost:4873/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://localhost:4873/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://localhost:4873/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://localhost:4873/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://localhost:4873/a/b/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://localhost:4873/http://x/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://localhost:4873/up/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://localhost:4873/sp%20ace/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://localhost/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://localhost/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://localhost/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://localhost/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://localhost/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://localhost/a/b/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://localhost/http://x/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://localhost/up/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://localhost/sp%20ace/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "https://r.example/a/b/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "https://r.example/http://x/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "https://r.example/up/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "https://r.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "https://r.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "https://r.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "https://r.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "https://r.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://r.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://r.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://r.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://r.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "https://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "https://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "https://r.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "https://r.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "https://r.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "https://r.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://r.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://r.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://r.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://r.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://r.example/sp%20ace/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://[::1]:4873/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/a/b/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/http://x/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/up/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://[::1]:4873/sp%20ace/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/a/b/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/http://x/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/up/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://user:pw@r.example/sp%20ace/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://r.example/sub"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://r.example/sub"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://r.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://r.example/a/b/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://r.example/http://x/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://r.example/up/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://r.example/sp%20ace/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "ERROR"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/a/b/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": null,
+  "result": "http://evil/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/http://x/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/up/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": null,
+  "result": "http://xn--bcher-kva.example/sp%20ace/"
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": null
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/",
+  "result": "https://evil/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": null
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/base"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/a/b/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://evil/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/http://x/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/up/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "https://public.example/base",
+  "result": "https://public.example/sp%20ace/"
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": null,
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": null
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "localhost:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "LocalHost:80",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example:443",
+  "proto": "https",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "https,http",
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": ",https",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example",
+  "proto": "ftp",
+  "scheme": "https",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "[::1]:4873",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "user:pw@r.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "r.example/sub",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "example.com:abc",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "bad_host",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": null,
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/?q=1"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/npm",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "npm/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/npm/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "/a/b/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/a/b/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "//evil/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://evil/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "http://x/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/http://x/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "../up/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/up/"
+ },
+ {
+  "host": "bücher.example",
+  "proto": null,
+  "scheme": "http",
+  "prefix": "sp ace/",
+  "publicUrl": "http://p.example:8080/a/b/?q=1#frag",
+  "result": "http://p.example:8080/sp%20ace/"
+ }
+]
