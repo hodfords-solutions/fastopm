@@ -1,0 +1,123 @@
+name: Docker
+
+# Pull request: build both architectures + smoke test, push nothing.
+# Push to main: push hodfords/fastopm:edge and :sha-<short>.
+# Tag vX.Y.Z:   push :X.Y.Z, :X.Y, :X and :latest (pre-releases such as v1.2.0-rc.1 only get
+#               :1.2.0-rc.1).
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # never cancel a release build
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  IMAGE: hodfords/fastopm
+  PLATFORMS: linux/amd64,linux/arm64
+  # push only from this repository, never from pull requests
+  PUSH: ${{ github.event_name != 'pull_request' && github.repository == 'hodfords-solutions/fastopm' }}
+
+jobs:
+  image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+        with:
+          images: ${{ env.IMAGE }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=raw,value=edge,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=pr
+          labels: |
+            org.opencontainers.image.title=fastopm
+            org.opencontainers.image.description=npm proxy cache in Rust, drop-in replacement for Verdaccio as a read-only cache
+            org.opencontainers.image.vendor=Hodfords
+            org.opencontainers.image.licenses=MIT
+          annotations: |
+            org.opencontainers.image.title=fastopm
+            org.opencontainers.image.description=npm proxy cache in Rust, drop-in replacement for Verdaccio as a read-only cache
+
+      # 1) Single-arch image loaded into the local daemon, tested before anything is pushed.
+      - name: Build test image (linux/amd64)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          push: false
+          tags: fastopm:smoke
+          build-args: |
+            VERSION=${{ steps.meta.outputs.version }}
+            REVISION=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: |
+          set -euo pipefail
+          img=fastopm:smoke
+          test "$(docker run --rm "$img" id -u)" = 10001
+          test "$(docker run --rm "$img" id -g)" = 0
+          docker run --rm "$img" test -r /verdaccio/conf/config.yaml
+          docker run --rm "$img" test -w /verdaccio/storage
+          docker run --rm --user 12345:0 "$img" whoami
+          docker run --rm "$img" fastopm --version
+
+          docker run -d --name fastopm-smoke -p 4873:4873 "$img"
+          for _ in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4873/-/ping; then echo; ok=1; break; fi
+            sleep 1
+          done
+          docker logs fastopm-smoke
+          test "${ok:-0}" = 1
+          docker rm -f fastopm-smoke
+
+      - name: Log in to Docker Hub
+        if: env.PUSH == 'true'
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 2) Multi-arch build (Rust is cross-compiled on the amd64 runner, no QEMU), pushed
+      #    outside pull requests. amd64 layers come from the build above.
+      - name: Build${{ env.PUSH == 'true' && ' and push' || '' }} (${{ env.PLATFORMS }})
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: ${{ env.PLATFORMS }}
+          push: ${{ env.PUSH == 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          build-args: |
+            VERSION=${{ steps.meta.outputs.version }}
+            REVISION=${{ github.sha }}
+          provenance: ${{ env.PUSH == 'true' && 'mode=max' || 'false' }}
+          sbom: ${{ env.PUSH == 'true' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
