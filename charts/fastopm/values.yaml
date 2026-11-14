@@ -1,0 +1,315 @@
+# Default values for the fastopm chart.
+#
+# Key names follow the Verdaccio chart (https://github.com/verdaccio/charts) wherever the meaning
+# is the same, so values written for that chart can mostly be reused. Keys for features fastopm
+# does not have (htpasswd users, web UI, caching nginx sidecar, ...) are not part of this chart.
+
+image:
+  # No image has been published to Docker Hub yet: until then, build it from the repository's
+  # Dockerfile and point `repository` / `tag` at your own registry (see README.md).
+  repository: hodfords/fastopm
+  # Defaults to the chart's appVersion.
+  tag: ""
+  # Digest takes precedence over tag for the image; tag still sets the version label.
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+  # - dockerhub-secret
+
+# `deployment` (default) or `statefulset`. With `statefulset` and persistence enabled (and no
+# existingClaim), every replica gets its own PersistentVolumeClaim, so its own cache.
+type: deployment
+
+nameOverride: ""
+fullnameOverride: ""
+
+## Number of pods.
+## fastopm keeps its cache on disk under /verdaccio/storage. Keep 1 replica unless one of these
+## holds (see README.md, "Running more than one replica"):
+##   - type: statefulset: each replica has its own volume and its own independent cache;
+##   - persistence.enabled: false: each replica has its own throw-away emptyDir cache;
+##   - a ReadWriteMany volume shared by all replicas. Several fastopm processes writing to one
+##     storage folder at the same time have NOT been tested; do this at your own risk.
+replicaCount: 1
+
+revisionHistoryLimit: 10
+
+## Deployment strategy. Empty: `Recreate` when persistence is enabled (a ReadWriteOnce volume
+## cannot be mounted by the old and the new pod on different nodes), `RollingUpdate` otherwise.
+## Not used with type: statefulset.
+strategy: {}
+
+service:
+  annotations: {}
+  clusterIP: ""
+  ## List of IP addresses at which the service is available
+  ## Ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips
+  externalIPs: []
+  loadBalancerIP: ""
+  loadBalancerSourceRanges: []
+  port: 4873
+  # Empty uses the container port named `http`.
+  targetPort: ""
+  type: ClusterIP
+  # nodePort: 31873
+  # Name of the service port (default `http`).
+  name: ""
+
+ingress:
+  enabled: false
+  className: ""
+  # Paths routed to fastopm on every host. fastopm serves its routes at the root: to publish it
+  # under a sub-path (for example /npm), strip the prefix in the ingress controller and set
+  # `url_prefix` in configMap (see README.md, "Running behind an ingress").
+  paths:
+    - /
+  # Default path type for paths and extraPaths: Prefix, Exact or ImplementationSpecific.
+  pathType: Prefix
+  # Extra path entries placed before `paths`, for example an action-based redirect:
+  #   - path: /*
+  #     pathType: ImplementationSpecific
+  #     service: ssl-redirect
+  #     port: use-annotation
+  # Entries without pathType inherit ingress.pathType.
+  extraPaths: []
+  labels: {}
+  annotations: {}
+  # kubernetes.io/tls-acme: "true"
+  hosts: []
+  # - npm.example.com
+  tls: []
+  # - secretName: npm-example-com-tls
+  #   hosts:
+  #     - npm.example.com
+
+## Gateway API HTTPRoute, an alternative to Ingress.
+## Ref: https://gateway-api.sigs.k8s.io/
+gatewayApi:
+  enabled: false
+  ## References to existing Gateways
+  parentRefs: []
+  # - name: my-gateway
+  #   namespace: default
+  #   sectionName: https
+  hostnames: []
+  # - npm.example.com
+  annotations: {}
+  labels: {}
+  ## Custom routing rules. Empty: one rule sending PathPrefix "/" to the service.
+  rules: []
+
+## Public base URL of the registry, as clients see it, for example https://npm.example.com/.
+## Sets VERDACCIO_PUBLIC_URL, which fastopm uses to build the `dist.tarball` URLs in package
+## metadata. Leave empty when the ingress forwards the original Host header and
+## X-Forwarded-Proto (most controllers do): fastopm then builds the URLs from those headers.
+publicUrl: ""
+
+## fastopm configuration (config.yaml), rendered through `tpl`. Same format as Verdaccio's
+## config.yaml; only the keys listed in the fastopm README are used, the others are ignored with a
+## warning at startup. Changing it restarts the pods (checksum annotation).
+## `storage` must stay under /verdaccio/storage (the volume); `listen` is ignored (the image
+## always listens on port 4873).
+configMap: |
+  # Path to a directory with all packages (same layout as Verdaccio)
+  storage: /verdaccio/storage/data
+
+  # A list of other known repositories we can talk to
+  # https://verdaccio.org/docs/configuration#uplinks
+  uplinks:
+    npmjs:
+      url: https://registry.npmjs.org/
+      # maxage: 2m
+      # timeout: 30s
+      # max_fails: 2
+      # fail_timeout: 5m
+      # cache: true
+      # headers:
+      #   X-Custom: value
+      # auth:
+      #   type: bearer
+      #   token_env: NPM_TOKEN
+
+  # Only `proxy` and `storage` are used; `access` / `publish` / `unpublish` are ignored.
+  packages:
+    '@*/*':
+      # scoped packages
+      proxy: npmjs
+
+    '**':
+      # if package is not available locally, proxy requests to 'npmjs' registry
+      proxy: npmjs
+
+  # Path prefix of the public URL, when fastopm is published under a sub-path.
+  # url_prefix: /npm/
+
+  # https://verdaccio.org/docs/configuration#proxy
+  # http_proxy: http://something.local/
+  # https_proxy: https://something.local/
+  # no_proxy: localhost,127.0.0.1,server.local
+
+  # user_agent: fastopm
+  # server_id: fastopm
+
+  log:
+    type: stdout
+    format: pretty
+    level: http
+
+## Name of an existing ConfigMap with a `config.yaml` key, used instead of configMap.
+## Pods are not restarted automatically when it changes.
+existingConfigMap: ""
+
+persistence:
+  enabled: true
+  ## Existing PersistentVolumeClaim mounted at /verdaccio/storage (for example the claim of a
+  ## Verdaccio release: fastopm uses the same storage layout). Must be created beforehand.
+  existingClaim: ""
+  ## Storage class of the claim created by the chart.
+  ## "-": storageClassName: "" (disables dynamic provisioning); empty: the cluster default.
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 8Gi
+  annotations: {}
+  ## "keep": the claim is not deleted by `helm uninstall`.
+  resourcePolicy: ""
+  ## Match an existing PersistentVolume
+  selector: {}
+  #   matchLabels:
+  #     app: my-app
+  ## Extra pod volumes and container mounts
+  volumes: []
+  # - name: nothing
+  #   emptyDir: {}
+  mounts: []
+  # - mountPath: /var/nothing
+  #   name: nothing
+  #   readOnly: true
+
+## Extra environment variables of the fastopm container
+extraEnvVars: []
+# - name: NPM_TOKEN
+#   valueFrom:
+#     secretKeyRef:
+#       name: npm-token
+#       key: token
+# - name: RUST_LOG
+#   value: info
+
+## Environment variables stored in a Secret created by the chart (for example uplink tokens
+## referenced with `token_env` in configMap). Changing them restarts the pods.
+secretEnvVars: {}
+# NPM_TOKEN: secretValue
+
+## Existing Secret whose keys are all passed to the container as environment variables
+existingSecret: ""
+
+## Kubernetes service links inject <SERVICE>_PORT style variables into the pod. A service named
+## `verdaccio` would override VERDACCIO_PORT, so they are off by default.
+enableServiceLinks: false
+
+## Probes call GET /-/ping, which does not contact the uplinks.
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe:
+  enabled: false
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 30
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 6
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 2
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+resources: {}
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+# limits:
+#   memory: 512Mi
+
+## The image runs as UID 10001, group 0. fsGroup makes the volume writable by that user.
+## A claim previously used by the Verdaccio chart (fsGroup 101) is re-owned on first mount;
+## set fsGroup: 101 to keep its ownership instead.
+podSecurityContext:
+  fsGroup: 10001
+  fsGroupChangePolicy: OnRootMismatch
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  runAsUser: 10001
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  # fastopm does not call the Kubernetes API
+  automountServiceAccountToken: false
+
+## Annotations of the Deployment / StatefulSet (and PodDisruptionBudget)
+annotations: {}
+
+## Additional pod labels and annotations (values are rendered through `tpl`)
+podLabels: {}
+podAnnotations: {}
+
+## Node labels for pod assignment
+nodeSelector: {}
+
+## Tolerations for nodes
+tolerations: []
+
+## Affinity for pod assignment
+affinity: {}
+
+## Pod Topology Spread Constraints
+topologySpreadConstraints: []
+
+priorityClass:
+  enabled: false
+  name: ""
+
+## Extra DNS entries, for example for an internal uplink
+hostAliases: []
+# - ip: "10.0.0.10"
+#   hostnames:
+#     - "registry.internal"
+
+## Extra init containers (rendered through `tpl`)
+extraInitContainers: []
+
+## Pod Disruption Budget. Only meaningful with more than one replica.
+## Set `minAvailable` or `maxUnavailable`; `minAvailable` wins when both are set.
+podDisruptionBudget:
+  enabled: false
+  # minAvailable: 1
+  maxUnavailable: 1
+
+## Pod run by `helm test`: GET /-/ping through the service, with the fastopm image itself
+## (it has bash), so no other image is pulled.
+test:
+  enabled: true
+
+## Additional manifests deployed with the chart (rendered through `tpl`)
+extraManifests: []

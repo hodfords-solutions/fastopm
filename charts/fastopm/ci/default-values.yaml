@@ -1,0 +1,4 @@
+# chart-testing: chart defaults (Deployment, one replica, PersistentVolumeClaim).
+# CI adds --set image.repository/tag/pullPolicy for the image built from the Dockerfile.
+persistence:
+  size: 1Gi

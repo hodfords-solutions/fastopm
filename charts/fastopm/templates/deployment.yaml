@@ -1,0 +1,30 @@
+{{- include "fastopm.validate" . }}
+{{- if eq .Values.type "deployment" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fastopm.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fastopm.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "fastopm.selectorLabels" . | nindent 6 }}
+  strategy:
+    {{- if .Values.strategy }}
+    {{- toYaml .Values.strategy | nindent 4 }}
+    {{- else if .Values.persistence.enabled }}
+    type: Recreate
+    {{- else }}
+    type: RollingUpdate
+    {{- end }}
+  template:
+    {{- include "fastopm.podTemplate" . | nindent 4 }}
+{{- end }}

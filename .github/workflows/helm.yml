@@ -1,0 +1,227 @@
+name: Helm chart
+
+# Pull request: helm lint (Helm 3 and 4), ct lint (version bump check), and ct install on a kind
+#               cluster with an image built from the Dockerfile (install + helm test for every
+#               charts/fastopm/ci/*-values.yaml).
+# Push to main: the same checks, then release: package the chart, create the GitHub release
+#               fastopm-chart-<version> (never a v* tag, so docker.yml is not triggered) and
+#               update index.yaml and the landing page on the gh-pages branch (GitHub Pages).
+on:
+  pull_request:
+    paths:
+      - "charts/**"
+      - "ct.yaml"
+      - "cr.yaml"
+      - ".github/workflows/helm.yml"
+  push:
+    branches: [main]
+    paths:
+      - "charts/**"
+      - "ct.yaml"
+      - "cr.yaml"
+      - ".github/workflows/helm.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # never cancel a run that may publish a release
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CHART: charts/fastopm
+  # Helm used by chart-testing (built against the Helm 3 libraries).
+  HELM_VERSION: v3.22.1
+
+jobs:
+  lint:
+    name: lint (helm ${{ matrix.helm }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        helm: [v3.22.1, v4.3.2]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: ${{ matrix.helm }}
+
+      - name: helm lint and template
+        run: |
+          set -euo pipefail
+          helm lint --strict "$CHART"
+          for values in "$CHART"/ci/*-values.yaml; do
+            echo "::group::$values"
+            helm lint --strict "$CHART" -f "$values"
+            helm template ci "$CHART" -f "$values" > /dev/null
+            echo "::endgroup::"
+          done
+          # Combinations not installed by ct install
+          helm template ci "$CHART" --set ingress.enabled=true \
+            --set 'ingress.hosts={npm.example.com}' --set ingress.className=nginx > /dev/null
+          helm template ci "$CHART" --set persistence.existingClaim=verdaccio-storage > /dev/null
+          helm template ci "$CHART" --set gatewayApi.enabled=true \
+            --set 'gatewayApi.parentRefs[0].name=gw' > /dev/null
+
+      - uses: helm/chart-testing-action@720270857a28afd41e2426521a7801db09e9b510 # v2.9.0
+        if: startsWith(matrix.helm, 'v3.')
+
+      - name: ct lint
+        if: startsWith(matrix.helm, 'v3.')
+        env:
+          # On pull requests compare with the base branch and require a chart version bump;
+          # on main there is nothing to compare with.
+          TARGET_BRANCH: ${{ github.event.pull_request.base.ref || 'main' }}
+          VERSION_CHECK: ${{ github.event_name == 'pull_request' }}
+        run: |
+          ct lint --config ct.yaml --target-branch "$TARGET_BRANCH" \
+            --charts "$CHART" --check-version-increment="$VERSION_CHECK"
+
+  install:
+    name: install on kind
+    needs: lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      # Image built from the Dockerfile and loaded into kind; no image is pulled from a registry.
+      TEST_IMAGE_REPOSITORY: fastopm-ci
+      TEST_IMAGE_TAG: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      # Reads the layer cache written by docker.yml (default scope) and keeps its own scope.
+      - name: Build image (linux/amd64)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          push: false
+          tags: ${{ env.TEST_IMAGE_REPOSITORY }}:${{ env.TEST_IMAGE_TAG }}
+          build-args: |
+            VERSION=chart-ci
+            REVISION=${{ github.sha }}
+          cache-from: |
+            type=gha
+            type=gha,scope=helm-chart
+          cache-to: type=gha,mode=max,scope=helm-chart
+
+      - uses: azure/setup-helm@2f5e7bc67f1f9972ab16657bb795f36d8f04de0e # v5.1.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - uses: helm/chart-testing-action@720270857a28afd41e2426521a7801db09e9b510 # v2.9.0
+
+      - uses: helm/kind-action@ea822c7bf1874f08e5a491df991c228edffc3376 # v1.15.2
+        with:
+          cluster_name: chart-testing
+
+      - name: Load image into kind
+        run: kind load docker-image "$TEST_IMAGE_REPOSITORY:$TEST_IMAGE_TAG" --name chart-testing
+
+      # Installs the chart once per charts/fastopm/ci/*-values.yaml in a fresh namespace, waits
+      # for the pods to be ready, runs `helm test` (GET /-/ping through the service) and uninstalls.
+      - name: ct install
+        run: |
+          set_args="--set=image.repository=$TEST_IMAGE_REPOSITORY"
+          set_args+=" --set=image.tag=$TEST_IMAGE_TAG --set=image.pullPolicy=Never"
+          ct install --config ct.yaml --charts "$CHART" --helm-extra-set-args "$set_args"
+
+      - name: Cluster state on failure
+        if: failure()
+        run: |
+          kubectl get all,pvc,events --all-namespaces || true
+          kubectl describe pods --all-namespaces -l app.kubernetes.io/name=fastopm || true
+
+  release:
+    name: release
+    needs: [lint, install]
+    if: >-
+      github.event_name != 'pull_request' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'hodfords-solutions/fastopm'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      # create the GitHub release and push to gh-pages
+      contents: write
+    concurrency:
+      # one release at a time, so gh-pages pushes never race
+      group: helm-chart-release
+      cancel-in-progress: false
+    steps:
+      # chart-releaser pushes index.yaml with the credentials stored by checkout.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # chart-releaser needs the gh-pages branch to exist. The first release creates it with the
+      # landing page only; chart-releaser then adds index.yaml.
+      - name: Create gh-pages branch if missing
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --heads origin gh-pages > /dev/null; then
+            echo "gh-pages exists"
+            exit 0
+          fi
+          site=$(mktemp -d "$RUNNER_TEMP/gh-pages.XXXXXX")
+          git worktree add --detach "$site"
+          cd "$site"
+          git checkout --orphan gh-pages
+          git rm -r -f --quiet .
+          cp "$GITHUB_WORKSPACE/charts/site/index.html" index.html
+          touch .nojekyll
+          git add index.html .nojekyll
+          git commit --quiet -m "Initialize Helm chart repository"
+          git push origin gh-pages
+          cd "$GITHUB_WORKSPACE"
+          git worktree remove --force "$site"
+
+      # Packages charts/fastopm, creates the release fastopm-chart-<version> with the .tgz (skipped
+      # when that version was already released) and merges it into index.yaml on gh-pages.
+      - uses: helm/chart-releaser-action@92c6b97fa9f664492a2592e0d1d80bc6bf378957 # v1.9.0
+        with:
+          charts: charts/fastopm
+          config: cr.yaml
+          skip_existing: true
+          # keep the application release (v*) as the repository's latest release
+          mark_as_latest: false
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update landing page on gh-pages
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin gh-pages
+          site=$(mktemp -d "$RUNNER_TEMP/gh-pages.XXXXXX")
+          git worktree add --detach "$site" origin/gh-pages
+          cp charts/site/index.html "$site/index.html"
+          touch "$site/.nojekyll"
+          cd "$site"
+          git add index.html .nojekyll
+          if git diff --cached --quiet; then
+            echo "Landing page is up to date"
+          else
+            git commit --quiet -m "Update landing page"
+            git push origin HEAD:gh-pages
+          fi
+          cd "$GITHUB_WORKSPACE"
+          git worktree remove --force "$site"

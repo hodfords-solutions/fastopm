@@ -1,0 +1,25 @@
+{{- if .Values.podDisruptionBudget.enabled }}
+{{- $pdb := .Values.podDisruptionBudget }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "fastopm.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fastopm.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if not (kindIs "invalid" $pdb.minAvailable) }}
+  minAvailable: {{ $pdb.minAvailable }}
+  {{- else if not (kindIs "invalid" $pdb.maxUnavailable) }}
+  maxUnavailable: {{ $pdb.maxUnavailable }}
+  {{- else }}
+  {{- fail "podDisruptionBudget: set minAvailable or maxUnavailable" }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fastopm.selectorLabels" . | nindent 6 }}
+{{- end }}

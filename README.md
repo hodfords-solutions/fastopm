@@ -27,6 +27,7 @@ any of those, keep using Verdaccio.
 - [Why fastopm](#why-fastopm)
 - [What it does and does not do](#what-it-does-and-does-not-do)
 - [Quick start](#quick-start)
+- [Helm](#helm)
 - [Pointing package managers at fastopm](#pointing-package-managers-at-fastopm)
 - [Configuration](#configuration)
 - [Migrating from Verdaccio and rolling back](#migrating-from-verdaccio-and-rolling-back)
@@ -167,6 +168,26 @@ Without `--config`, fastopm looks for the config file the way Verdaccio does, an
 4. `./config.yaml`
 
 Without a `listen` key or `--listen`, the server listens on `http://localhost:4873`.
+
+## Helm
+
+A Helm chart is in [`charts/fastopm`](charts/fastopm). Its values follow the
+[Verdaccio chart](https://github.com/verdaccio/charts) where the meaning is the same (`configMap`,
+`persistence.existingClaim`, `ingress.*`, `extraEnvVars`, ...), and it runs the image with the same
+port, paths and UID. Merges to `main` that change the chart publish it to a Helm repository on
+GitHub Pages:
+
+```bash
+helm repo add fastopm https://hodfords-solutions.github.io/fastopm
+helm install npm fastopm/fastopm --namespace npm --create-namespace \
+  --set image.repository=registry.example.com/fastopm --set image.tag=0.1.0
+helm test npm --namespace npm
+```
+
+Until an image is published on Docker Hub, build it as shown in [Docker](#docker) and push it to a
+registry your cluster can pull from. The chart defaults to one replica; read
+[its README](charts/fastopm/README.md) before running more, and for ingress, persistence and the
+differences from the Verdaccio chart.
 
 ## Pointing package managers at fastopm
 

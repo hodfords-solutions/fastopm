@@ -1,0 +1,58 @@
+{{- if .Values.ingress.enabled }}
+{{- $fullName := include "fastopm.fullname" . }}
+{{- $svcPort := .Values.service.port }}
+{{- $pathType := .Values.ingress.pathType | default "Prefix" }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fastopm.labels" . | nindent 4 }}
+    {{- with .Values.ingress.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- include "fastopm.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- include "fastopm.tplvalues.render" (dict "value" . "context" $) | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- range (.Values.ingress.hosts | default (list "")) }}
+    - http:
+        paths:
+          {{- range $.Values.ingress.extraPaths }}
+          - path: {{ .path | default "/" | quote }}
+            pathType: {{ .pathType | default $pathType }}
+            backend:
+              service:
+                name: {{ .service | default $fullName }}
+                port:
+                  {{- $port := .port | default $svcPort }}
+                  {{- if kindIs "string" $port }}
+                  name: {{ $port }}
+                  {{- else }}
+                  number: {{ $port }}
+                  {{- end }}
+          {{- end }}
+          {{- range $.Values.ingress.paths }}
+          - path: {{ . | quote }}
+            pathType: {{ $pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+          {{- end }}
+      {{- with . }}
+      host: {{ tpl . $ | quote }}
+      {{- end }}
+    {{- end }}
+{{- end }}

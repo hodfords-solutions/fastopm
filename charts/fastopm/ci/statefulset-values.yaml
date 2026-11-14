@@ -1,0 +1,8 @@
+# chart-testing: StatefulSet with two replicas, one PersistentVolumeClaim each.
+type: statefulset
+replicaCount: 2
+persistence:
+  size: 1Gi
+podDisruptionBudget:
+  enabled: true
+publicUrl: https://npm.example.com/

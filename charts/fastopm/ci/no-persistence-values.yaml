@@ -1,0 +1,13 @@
+# chart-testing: emptyDir storage, two replicas, chart-managed Secret and ServiceAccount.
+replicaCount: 2
+persistence:
+  enabled: false
+secretEnvVars:
+  NPM_TOKEN: not-a-real-token
+serviceAccount:
+  create: true
+startupProbe:
+  enabled: true
+extraEnvVars:
+  - name: RUST_LOG
+    value: info

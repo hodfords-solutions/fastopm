@@ -1,0 +1,69 @@
+{{- if .Values.test.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "fastopm.fullname" . }}-test-ping
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fastopm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: test
+  annotations:
+    helm.sh/hook: test
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  restartPolicy: Never
+  activeDeadlineSeconds: 120
+  automountServiceAccountToken: false
+  enableServiceLinks: false
+  {{- with (include "fastopm.imagePullSecrets" . | trim) }}
+  {{- . | nindent 2 }}
+  {{- end }}
+  {{- with .Values.podSecurityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  containers:
+    - name: ping
+      # The fastopm image has bash; its /dev/tcp is enough for one HTTP request.
+      image: {{ include "fastopm.image" . | quote }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      command:
+        - bash
+        - -c
+        - |
+          set -u
+          host={{ include "fastopm.fullname" . }}
+          port={{ .Values.service.port }}
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            status=
+            if exec 3<>"/dev/tcp/$host/$port"; then
+              printf 'GET /-/ping HTTP/1.1\r\nHost: %s:%s\r\nConnection: close\r\n\r\n' "$host" "$port" >&3
+              IFS= read -r -t 10 status <&3 || true
+              exec 3<&- 3>&-
+            fi
+            echo "attempt $attempt: GET http://$host:$port/-/ping -> ${status:-no response}"
+            case "$status" in
+              'HTTP/1.'?' 200 '*) exit 0 ;;
+            esac
+            sleep 3
+          done
+          exit 1
+      {{- with .Values.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          memory: 64Mi
+{{- end }}

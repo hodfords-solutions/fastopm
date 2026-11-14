@@ -1,0 +1,6 @@
+# chart-releaser configuration (https://github.com/helm/chart-releaser), used by the release job
+# of .github/workflows/helm.yml.
+#
+# Chart releases are tagged `fastopm-chart-<chart version>`, so they never match the `v*` tags
+# that publish the Docker image (.github/workflows/docker.yml).
+release-name-template: "fastopm-chart-{{ .Version }}"

@@ -1,0 +1,45 @@
+fastopm {{ .Values.image.tag | default .Chart.AppVersion }} (read-only npm proxy cache) is deployed as {{ include "fastopm.fullname" . }} in namespace {{ .Release.Namespace }}.
+
+1. Registry URL:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.hosts }}
+  {{ if $.Values.ingress.tls }}https{{ else }}http{{ end }}://{{ tpl $host $ }}{{ index $.Values.ingress.paths 0 | default "/" }}
+{{- end }}
+{{- if not .Values.ingress.hosts }}
+  The ingress has no host: use the address of your ingress controller.
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "fastopm.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  It may take a few minutes for the LoadBalancer IP to be available
+  (kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "fastopm.fullname" . }}).
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "fastopm.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.service.port }}/
+{{- else }}
+  Inside the cluster: http://{{ include "fastopm.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}/
+  From your machine:
+    kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "fastopm.fullname" . }} 4873:{{ .Values.service.port }}
+    curl http://127.0.0.1:4873/-/ping
+{{- end }}
+
+2. Point a package manager at it:
+  npm config set registry <registry URL>
+
+fastopm only serves reads: publishing, `npm login` and the web UI are not available.
+{{- if and (gt (int .Values.replicaCount) 1) (eq .Values.type "deployment") .Values.persistence.enabled }}
+
+WARNING: {{ .Values.replicaCount }} replicas share one volume ({{ .Values.persistence.existingClaim | default (include "fastopm.fullname" .) }}, {{ .Values.persistence.accessMode }}).
+{{- if ne .Values.persistence.accessMode "ReadWriteMany" }}
+  Pods on different nodes cannot mount a {{ .Values.persistence.accessMode }} volume together.
+{{- end }}
+  Several fastopm processes writing to one storage folder have not been tested. Prefer
+  type=statefulset (one volume per replica) or a single replica.
+{{- end }}
+{{- if eq (.Values.image.repository | toString) "hodfords/fastopm" }}
+
+NOTE: no fastopm image is published on Docker Hub yet. If the pods stay in ImagePullBackOff,
+build the image from the repository's Dockerfile, push it to your registry and set
+image.repository / image.tag (see the chart README).
+{{- end }}

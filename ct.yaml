@@ -1,0 +1,11 @@
+# chart-testing configuration (https://github.com/helm/chart-testing), used by
+# .github/workflows/helm.yml for `ct lint` and `ct install`.
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+# Bump `version` in Chart.yaml whenever a chart changes (checked on pull requests).
+check-version-increment: true
+# The maintainer is a GitHub organization, not a user account.
+validate-maintainers: false
+helm-extra-args: --timeout 300s
