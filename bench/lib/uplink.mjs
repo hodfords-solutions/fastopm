@@ -8,9 +8,14 @@
 //   bench-tarball               synthetic: 1.0.0 -> 1 MiB tarball, 2.0.0 -> 50 MiB tarball
 //   bench-cold-<anything>       clone of the express packument under that name (cold-cache runs)
 //   bench-tgz-<anything>        one version 1.0.0 whose tarball is the 1 MiB blob (cold tarballs)
+//   memtest-<tag>--<stem>       clone of fixture <stem> (`ms`, `express`, `typescript`, or any
+//                               `fixtures/<stem>.json.br`, e.g. `vite`, `firebase__firestore`)
+//                               under that name (memory test, memtest.mjs)
 //
 // Every packument has ETag = "md5(body)"; a matching If-None-Match gets 304. Tarballs are random
 // (incompressible) bytes generated at start-up.
+//
+// Usage: `node lib/uplink.mjs [port] [host]` (default: random port on 127.0.0.1).
 //
 // Admin (never delayed):
 //   GET  /__stats             {total, byPath: {path: count}, notModified}
@@ -18,11 +23,11 @@
 //   POST /__config?delay=N    delay every registry answer by N ms (default 0)
 
 import { createHash, randomBytes } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import http from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { gunzipSync } from 'node:zlib';
+import { brotliDecompressSync, gunzipSync } from 'node:zlib';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const FIXTURES = join(here, '..', 'fixtures');
@@ -41,7 +46,27 @@ let delay = 0;
 let counters = { total: 0, byPath: {}, notModified: 0 };
 
 function loadFixture(name) {
-  return JSON.parse(gunzipSync(readFileSync(join(FIXTURES, `${name}.json.gz`))).toString('utf8'));
+  const gz = join(FIXTURES, `${name}.json.gz`);
+  const raw = existsSync(gz)
+    ? gunzipSync(readFileSync(gz))
+    : brotliDecompressSync(readFileSync(join(FIXTURES, `${name}.json.br`)));
+  return JSON.parse(raw.toString('utf8'));
+}
+
+const MEMTEST = /^memtest-.+--([a-z0-9_.-]+)$/;
+// memtest clone templates by fixture stem, origin already substituted (built on first use)
+const cloneTemplates = new Map();
+function cloneTemplate(stem) {
+  let t = cloneTemplates.get(stem);
+  if (t === undefined) {
+    const known =
+      existsSync(join(FIXTURES, `${stem}.json.gz`)) || existsSync(join(FIXTURES, `${stem}.json.br`));
+    t = known
+      ? JSON.stringify(retarget(loadFixture(stem), PLACEHOLDER)).replaceAll(ORIGIN_PLACEHOLDER, origin)
+      : null;
+    cloneTemplates.set(stem, t);
+  }
+  return t;
 }
 
 /** Rewrite every dist.tarball to `<ORIGIN>/<name>/-/<file>`; name may be the placeholder. */
@@ -106,6 +131,13 @@ function packument(name) {
   let entry = bodyCache.get(name);
   if (entry) return entry;
   let text;
+  const memtest = MEMTEST.exec(name);
+  if (memtest) {
+    const t = cloneTemplate(memtest[1]);
+    if (t === null) return null;
+    const body = Buffer.from(t.replaceAll(PLACEHOLDER, name));
+    return { body, etag: `"${md5(body)}"` };
+  }
   if (Object.hasOwn(templates, name) && name !== 'cold' && name !== 'tgz') text = templates[name];
   else if (name.startsWith('bench-cold-')) text = templates.cold.replaceAll(PLACEHOLDER, name);
   else if (name.startsWith('bench-tgz-')) text = templates.tgz.replaceAll(PLACEHOLDER, name);
@@ -122,7 +154,11 @@ function tarball(name, file) {
   if (name === 'bench-tarball' && file === 'bench-tarball-1.0.0.tgz') return blobs.small;
   if (name.startsWith('bench-tgz-') && file === `${name}-1.0.0.tgz`) return blobs.small;
   // real fixtures: tiny stand-in (never measured)
-  if (['ms', 'express', 'typescript'].includes(name) || name.startsWith('bench-cold-'))
+  if (
+    ['ms', 'express', 'typescript'].includes(name) ||
+    name.startsWith('bench-cold-') ||
+    MEMTEST.test(name)
+  )
     return Buffer.from(`stand-in tarball for ${name}/${file}\n`);
   return null;
 }
@@ -197,9 +233,9 @@ const server = http.createServer((req, res) => {
   });
 });
 server.keepAliveTimeout = 60_000;
-server.listen(Number(process.argv[2] ?? 0), '127.0.0.1', () => {
+server.listen(Number(process.argv[2] ?? 0), process.argv[3] ?? '127.0.0.1', () => {
   const { port } = server.address();
-  origin = `http://127.0.0.1:${port}`;
+  origin = process.env.UPLINK_ORIGIN ?? `http://127.0.0.1:${port}`;
   process.stdout.write(`${JSON.stringify({ port })}\n`);
 });
 process.on('SIGTERM', () => server.close(() => process.exit(0)));

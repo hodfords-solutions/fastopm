@@ -25,7 +25,9 @@ use fastopm_core::{Manifest, RegistryError, extract_tarball_from_url, messages};
 use md5::{Digest, Md5};
 use serde_json::{Map, Value};
 
-use crate::json::{ObjectWriter, js_entries, write_object, write_string, write_value};
+use crate::json::{
+    ObjectWriter, js_entries, pretty_len_estimate, write_object, write_string, write_value,
+};
 use crate::semver::SemVer;
 
 /// Top-level keys kept in a full manifest response (`WHITELIST`), in their original order.
@@ -176,7 +178,21 @@ fn content_type(variant: Variant) -> &'static str {
 pub fn render_manifest(manifest: &Manifest, variant: Variant, base: Option<&str>) -> Rendered {
     let map = manifest.as_map();
     let rewrite = base.map(|base| Rewrite { base, name: js_to_string(map.get("name")) });
-    let mut out = Vec::with_capacity(4096);
+    // A full body is about the whole document pretty-printed: size the buffer once (growing a
+    // multi-megabyte buffer by doubling briefly needs 3× its size).
+    let capacity = match variant {
+        Variant::Full => {
+            let n = pretty_len_estimate(&Value::Object(Map::new()), 0)
+                + map
+                    .iter()
+                    .filter(|(k, _)| MANIFEST_WHITELIST.contains(&k.as_str()))
+                    .map(|(k, v)| 7 + k.len() + pretty_len_estimate(v, 1))
+                    .sum::<usize>();
+            n + n / 16 + 64
+        }
+        Variant::Abbreviated => 4096,
+    };
+    let mut out = Vec::with_capacity(capacity);
     let mut obj = ObjectWriter::new(&mut out, 0);
     match variant {
         Variant::Full => {
@@ -410,6 +426,13 @@ pub fn render_version(
 /// would throw (see [`render_version`]).
 pub fn find_version<'a>(manifest: &'a Manifest, query: &str) -> Option<&'a Map<String, Value>> {
     lookup_version(manifest, query).ok().flatten().and_then(Value::as_object)
+}
+
+/// Whether [`render_version`] would find something for `query` (anything but
+/// `404 this version doesn't exist`). Used by `fastopm.refresh_on_miss` to decide whether the
+/// cached manifest misses the requested version or dist-tag.
+pub fn has_version(manifest: &Manifest, query: &str) -> bool {
+    !matches!(lookup_version(manifest, query), Ok(None))
 }
 
 /// `GET /-/ping` body: `{}` + `\n`, with its ETag, `Content-Type: application/json; charset=utf-8`.

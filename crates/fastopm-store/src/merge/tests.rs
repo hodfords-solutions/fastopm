@@ -153,7 +153,7 @@ fn run_sync(disk: Option<Manifest>, etag: Option<&str>) -> (Manifest, bool) {
     let base = disk.clone().map(normalized).unwrap_or_else(|| Manifest::template("foo"));
     let merged = merge_cache_remote(
         base,
-        &sync_remote(),
+        sync_remote(),
         "foo",
         "npmjs",
         etag.map(str::to_owned),
@@ -168,7 +168,19 @@ fn run_sync(disk: Option<Manifest>, etag: Option<&str>) -> (Manifest, bool) {
         uplink_name: "npmjs",
         uplink_url: Some("https://registry.example.com/"),
     };
-    update_versions_next(cache, &src).unwrap()
+    // the borrowed form gives the same result
+    let borrowed = update_versions_next(cache.clone(), &src).unwrap();
+    let owned = update_versions_next_owned(
+        cache,
+        merged.clone(),
+        &uplinks,
+        "npmjs",
+        Some("https://registry.example.com/"),
+    )
+    .unwrap();
+    assert_eq!(owned.1, borrowed.1);
+    assert_eq!(owned.0.to_compact_vec(), borrowed.0.to_compact_vec());
+    owned
 }
 
 #[test]
@@ -234,7 +246,7 @@ fn would_change_self_detects_untrimmed_readme_and_odd_values() {
 #[test]
 fn merge_rejects_local_copy_of_another_package() {
     let local = Manifest::template("other");
-    let err = merge_cache_remote(local, &sync_remote(), "foo", "npmjs", None, 1);
+    let err = merge_cache_remote(local, sync_remote(), "foo", "npmjs", None, 1);
     assert_eq!(err.err(), Some(Malformed));
 }
 

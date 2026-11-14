@@ -45,6 +45,10 @@ hex = "0.4.3"
 getrandom = "0.4.3"
 nodejs-semver = "7.0.0"
 
+# global allocator of the binary: with the threads that build large JSON trees kept few
+# (`fastopm_core::heavy`), RSS follows the live heap; see README "Memory"
+mimalloc = { version = "0.1.52", default-features = false }
+
 # CLI, errors, logging
 clap = { version = "4.6.7", features = ["derive"] }
 thiserror = "2.0.21"

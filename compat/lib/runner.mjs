@@ -95,6 +95,30 @@ function preview(res) {
   return oneLine.length > 160 ? `${oneLine.slice(0, 160)}…` : oneLine;
 }
 
+/**
+ * `step.candidateExpect` ({ status?, uplinkRequests? }): what the candidate itself must answer,
+ * for fastopm-only behaviour (`fastopm:` config section) where Verdaccio is no reference.
+ * Checked only with --candidate-bin (Verdaccio as candidate does not have these features).
+ * A failed expectation is a diff that ALLOWED_DIFFS never excuses.
+ */
+function checkExpectation(expect, res, uplinkReqs) {
+  if (!expect) return [];
+  const out = [];
+  if (expect.status !== undefined && res.status !== expect.status) {
+    out.push({ aspect: 'candidate expectation', message: `status ${res.status}, expected ${expect.status}` });
+  }
+  if (expect.uplinkRequests !== undefined) {
+    const n = Object.values(uplinkReqs).reduce((sum, list) => sum + list.length, 0);
+    if (n !== expect.uplinkRequests) {
+      out.push({
+        aspect: 'candidate expectation',
+        message: `${n} uplink request(s), expected ${expect.uplinkRequests}`,
+      });
+    }
+  }
+  return out;
+}
+
 function summariseUplinks(reqs) {
   const parts = [];
   for (const [name, list] of Object.entries(reqs)) {
@@ -161,9 +185,14 @@ export async function runScenario(scenario, opts) {
         ...compareResponses(responses[0], responses[1], B, C),
         ...compareUplinkRequests(uplinkReqs[0], uplinkReqs[1], B.norm, C.norm),
       ];
+      const failedExpectations = opts.candidateIsBin
+        ? checkExpectation(step.candidateExpect, responses[1], uplinkReqs[1])
+        : [];
       sides.forEach((s, i) => recordEtag(responses[i], s));
       const stepName = step.name ?? describeRequest(step.request);
-      const stepAllowed = allowed && (!allowed.steps || allowed.steps.includes(stepName));
+      const stepAllowed =
+        allowed && !failedExpectations.length && (!allowed.steps || allowed.steps.includes(stepName));
+      diffs.push(...failedExpectations);
       result.steps.push({
         index: n,
         name: stepName,
@@ -200,7 +229,7 @@ export async function runScenario(scenario, opts) {
   if (result.status !== 'error') {
     const unexpected =
       result.steps.some((s) => s.diffs.length && !s.allowed) ||
-      (result.storage.length > 0 && !(allowed && !allowed.steps));
+      (result.storage.length > 0 && !(allowed && (!allowed.steps || allowed.storage)));
     const anyDiff = result.steps.some((s) => s.diffs.length) || result.storage.length > 0;
     result.status = unexpected ? 'diff' : anyDiff ? 'allowed' : 'match';
     if (allowed) result.allowedReason = allowed.reason;

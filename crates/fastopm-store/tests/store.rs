@@ -346,7 +346,7 @@ async fn disabled_cache_reads_every_time() {
     let s = store_with(
         vec![up],
         vec![rule("**", &["npmjs"])],
-        StoreOptions { manifest_cache_bytes: 0 },
+        StoreOptions { manifest_cache_bytes: 0, ..StoreOptions::default() },
     );
     s.storage().put("foo", &cached_foo(now_ms()));
     s.get_manifest("foo", None).await.unwrap();
@@ -706,4 +706,292 @@ async fn uplink_choice_prefers_recorded_registry_then_last_serving_proxy() {
         b"cdn"
     );
     assert_eq!((ha.tarball_calls(), hb.tarball_calls()), (1, 1));
+}
+
+// ------------------------------------------------------------------ fastopm.refresh_on_miss
+
+const TGZ_110: &str = "https://registry.example.com/foo/-/foo-1.1.0.tgz";
+const LONG: Duration = Duration::from_secs(3600);
+
+fn has(v: &'static str) -> impl Fn(&Manifest) -> bool {
+    move |m| m.version(v).is_some()
+}
+
+/// `foo@1.0.0` cached within `maxage`; the uplink has published `1.1.0` since.
+fn new_version_upstream() -> (FakeUplink, Arc<UplinkState>) {
+    let (up, h) = npmjs();
+    h.answer("foo", ManifestAnswer::Ok(remote_foo(&["1.0.0", "1.1.0"]), Some("\"e2\"".into())));
+    h.tarball(TGZ_110, TarballAnswer::ok(vec![b"new"]));
+    (up, h)
+}
+
+#[tokio::test]
+async fn refresh_on_miss_off_keeps_verdaccio_behavior() {
+    let (up, h) = new_version_upstream();
+    let s = store(vec![up], &["npmjs"]);
+    s.storage().put("foo", &cached_foo(now_ms()));
+
+    let snap = s.get_manifest_for("foo", None, has("1.1.0")).await.unwrap();
+    assert!(snap.manifest.version("1.1.0").is_none());
+    let err = s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap_err();
+    assert_eq!((err.status(), err.message()), (404, messages::NO_SUCH_FILE));
+    assert_eq!((h.manifest_calls(), h.tarball_calls(), s.storage().writes()), (0, 0, 0));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_finds_a_new_version_within_maxage() {
+    let (up, h) = new_version_upstream();
+    let s = store_refresh_on_miss(vec![up], &["npmjs"], LONG);
+    s.storage().put("foo", &cached_foo(now_ms()));
+
+    // an existing version does not sync
+    let snap = s.get_manifest_for("foo", None, has("1.0.0")).await.unwrap();
+    assert!(snap.manifest.version("1.1.0").is_none());
+    assert_eq!(h.manifest_calls(), 0);
+
+    let snap = s.get_manifest_for("foo", Some("10.0.0.1"), has("1.1.0")).await.unwrap();
+    assert!(snap.manifest.version("1.1.0").is_some());
+    assert_eq!(h.etags(), vec![Some("\"e1\"".to_owned())], "one sync, with If-None-Match");
+    assert_eq!(s.storage().writes(), 1);
+    let disk = s.storage().get("foo").unwrap();
+    assert_eq!(disk.uplink_meta("npmjs").unwrap().etag.as_deref(), Some("\"e2\""));
+    assert_eq!(disk.distfile("foo-1.1.0.tgz").unwrap().registry.as_deref(), Some("npmjs"));
+
+    // the merged copy is the cache now: plain reads and the tarball need no further sync
+    let plain = s.get_manifest("foo", None).await.unwrap();
+    assert_eq!(plain.generation, snap.generation);
+    let body = s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap();
+    assert_eq!(collect(body).await.unwrap(), b"new");
+    assert_eq!((h.manifest_calls(), h.tarball_calls()), (1, 1));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_tarball_of_a_new_version() {
+    let (up, h) = new_version_upstream();
+    let s = store_refresh_on_miss(vec![up], &["npmjs"], LONG);
+    s.storage().put("foo", &cached_foo(now_ms()));
+
+    let body = s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap();
+    assert_eq!(collect(body).await.unwrap(), b"new");
+    assert_eq!((h.manifest_calls(), h.tarball_calls(), s.storage().writes()), (1, 1, 1));
+    assert!(s.storage().get("foo").unwrap().version("1.1.0").is_some());
+}
+
+#[tokio::test]
+async fn refresh_on_miss_leaves_get_manifest_alone() {
+    let (up, h) = new_version_upstream();
+    let s = store_refresh_on_miss(vec![up], &["npmjs"], LONG);
+    s.storage().put("foo", &cached_foo(now_ms()));
+
+    for _ in 0..3 {
+        let snap = s.get_manifest("foo", None).await.unwrap();
+        assert!(snap.manifest.version("1.1.0").is_none());
+    }
+    assert_eq!((h.manifest_calls(), s.storage().writes()), (0, 0));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_does_not_double_a_sync_that_asked_the_uplink() {
+    // maxage expired: the normal sync asks the uplink; a version it lacks is not forced again
+    let (up, h) = npmjs();
+    h.answer("foo", ManifestAnswer::NotModified);
+    let s = store_refresh_on_miss(vec![up], &["npmjs"], Duration::ZERO);
+    s.storage().put("foo", &cached_foo(stale()));
+
+    let snap = s.get_manifest_for("foo", None, has("9.9.9")).await.unwrap();
+    assert!(snap.manifest.version("9.9.9").is_none());
+    let err = s.get_tarball("foo", "foo-9.9.9.tgz").await.unwrap_err();
+    assert_eq!(err.status(), 404);
+    // second call: the 304 refreshed `fetched`, so the tarball miss forced one sync
+    assert_eq!(h.manifest_calls(), 2);
+}
+
+#[tokio::test]
+async fn refresh_on_miss_is_rate_limited_per_package() {
+    let (up, h) = npmjs();
+    h.answer("foo", ManifestAnswer::NotModified);
+    h.answer("bar", ManifestAnswer::NotModified);
+    let interval = Duration::from_millis(400);
+    let s = store_refresh_on_miss(vec![up], &["npmjs"], interval);
+    // fetched a second ago (within maxage), so the 304 below changes `fetched`
+    let recent = now_ms() - 1000;
+    s.storage().put("foo", &cached_foo(recent));
+    let bar = String::from_utf8(cached_foo(recent).to_compact_vec()).unwrap().replace("foo", "bar");
+    s.storage().put_raw("bar", bar.into_bytes());
+
+    for _ in 0..5 {
+        let snap = s.get_manifest_for("foo", None, has("9.9.9")).await.unwrap();
+        assert!(snap.manifest.version("9.9.9").is_none());
+        let err = s.get_tarball("foo", "foo-9.9.9.tgz").await.unwrap_err();
+        assert_eq!((err.status(), err.message()), (404, messages::NO_SUCH_FILE));
+    }
+    assert_eq!(h.manifest_calls(), 1, "one forced sync per interval");
+    assert_eq!(s.storage().writes(), 1, "the 304 refreshed `fetched`, like a normal sync");
+
+    // another package has its own budget
+    s.get_manifest_for("bar", None, has("9.9.9")).await.unwrap();
+    assert_eq!(h.manifest_calls(), 2);
+
+    tokio::time::sleep(interval + Duration::from_millis(50)).await;
+    s.get_manifest_for("foo", None, has("9.9.9")).await.unwrap();
+    s.get_tarball("foo", "foo-9.9.9.tgz").await.unwrap_err();
+    assert_eq!(h.manifest_calls(), 3);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn refresh_on_miss_concurrent_misses_share_one_sync() {
+    let (up, h) = new_version_upstream();
+    h.delay(Duration::from_millis(150));
+    // keep the download in flight while every waiter of the sync joins it
+    let mut slow = TarballAnswer::ok(vec![b"n", b"e", b"w"]);
+    slow.chunk_delay = Duration::from_millis(30);
+    h.tarball(TGZ_110, slow);
+    let s = Arc::new(store_refresh_on_miss(vec![up], &["npmjs"], LONG));
+    s.storage().put("foo", &cached_foo(now_ms()));
+
+    let versions = (0..8).map(|_| {
+        let s = Arc::clone(&s);
+        tokio::spawn(async move {
+            let snap = s.get_manifest_for("foo", None, has("1.1.0")).await.unwrap();
+            snap.manifest.version("1.1.0").is_some()
+        })
+    });
+    let tarballs = (0..4).map(|_| {
+        let s = Arc::clone(&s);
+        tokio::spawn(async move {
+            let body = s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap();
+            collect(body).await.unwrap() == b"new"
+        })
+    });
+    let (v, t) = futures_util::join!(join_all(versions), join_all(tarballs));
+    assert!(v.into_iter().chain(t).all(|r| r.unwrap()));
+    assert_eq!((h.manifest_calls(), h.tarball_calls(), s.storage().writes()), (1, 1, 1));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_failure_answers_like_the_option_off() {
+    for error in [
+        UplinkError::Transport("connection refused".into()),
+        UplinkError::Timeout,
+        UplinkError::Offline,
+        UplinkError::NotFound,
+    ] {
+        let (up, h) = npmjs();
+        h.answer("foo", ManifestAnswer::Err(error.clone()));
+        let s = store_refresh_on_miss(vec![up], &["npmjs"], Duration::ZERO);
+        s.storage().put("foo", &cached_foo(now_ms()));
+
+        let snap = s.get_manifest_for("foo", None, has("1.1.0")).await.unwrap();
+        assert!(snap.manifest.version("1.1.0").is_none(), "{error:?}");
+        assert!(snap.manifest.version("1.0.0").is_some());
+        let err = s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap_err();
+        assert_eq!((err.status(), err.message()), (404, messages::NO_SUCH_FILE), "{error:?}");
+        assert_eq!(h.manifest_calls(), 2, "{error:?}");
+        assert_eq!(s.storage().writes(), 0, "{error:?}");
+    }
+}
+
+#[tokio::test]
+async fn refresh_on_miss_ignores_local_only_packages() {
+    let (up, h) = new_version_upstream();
+    let s = store_with_refresh(vec![up]);
+    s.storage().put("foo", &cached_foo(now_ms()));
+    let snap = s.get_manifest_for("foo", None, has("1.1.0")).await.unwrap();
+    assert!(snap.manifest.version("1.1.0").is_none());
+    assert_eq!(s.get_tarball("foo", "foo-1.1.0.tgz").await.unwrap_err().status(), 404);
+    assert_eq!(h.manifest_calls(), 0);
+}
+
+fn store_with_refresh(uplinks: Vec<FakeUplink>) -> TestStore {
+    // `foo` matches a rule without proxy: served from storage only
+    let s = store_refresh_on_miss(uplinks, &[], LONG);
+    assert!(s.config().fastopm.refresh_on_miss);
+    s
+}
+
+// ---------------------------------------------------------------- memory and concurrency
+
+/// A remote manifest for `name` with `n` versions.
+fn remote_named(name: &str, n: usize) -> Manifest {
+    let mut versions = serde_json::Map::new();
+    let mut time = serde_json::Map::new();
+    for i in 0..n {
+        let v = format!("1.0.{i}");
+        let tarball = format!("https://registry.npmjs.org/{name}/-/{name}-{v}.tgz");
+        versions.insert(
+            v.clone(),
+            json!({"name": name, "version": v, "dist": {"shasum": "abc", "tarball": tarball}}),
+        );
+        time.insert(v, json!("2024-01-01T00:00:00.000Z"));
+    }
+    let latest = format!("1.0.{}", n - 1);
+    manifest(json!({
+        "name": name, "versions": versions, "time": time, "dist-tags": {"latest": latest}
+    }))
+}
+
+#[tokio::test]
+async fn a_tiny_work_budget_delays_but_serves_everything() {
+    let (up, h) = npmjs();
+    h.delay(Duration::from_millis(2));
+    let names: Vec<String> = (0..24).map(|i| format!("pkg-{i}")).collect();
+    for name in &names {
+        h.answer(name, ManifestAnswer::Ok(remote_named(name, 20), None));
+    }
+    // 1 byte: every sync, read and write is larger than the budget, so they run one at a time
+    let budget = fastopm_store::MemoryBudget::new(1);
+    let options = StoreOptions { memory: Arc::clone(&budget), ..StoreOptions::default() };
+    let s = store_with(vec![up], vec![rule("**", &["npmjs"])], options);
+    let results = join_all(names.iter().map(|n| s.get_manifest(n, None))).await;
+    for (name, r) in names.iter().zip(results) {
+        let snap = r.unwrap_or_else(|e| panic!("{name}: {e:?}"));
+        assert_eq!(snap.manifest.versions().unwrap().len(), 20);
+    }
+    assert_eq!(h.manifest_calls(), names.len());
+    assert_eq!(budget.used(), 0, "everything given back");
+    assert!(budget.peak() > 1, "work was counted");
+}
+
+#[tokio::test]
+async fn uplink_requests_respect_agent_max_sockets() {
+    let (up, h) = npmjs();
+    h.delay(Duration::from_millis(10));
+    let names: Vec<String> = (0..12).map(|i| format!("pkg-{i}")).collect();
+    for name in &names {
+        h.answer(name, ManifestAnswer::Ok(remote_named(name, 2), None));
+    }
+    let s =
+        store_with_config(vec![up], vec![rule("**", &["npmjs"])], StoreOptions::default(), |cfg| {
+            cfg.uplinks.get_mut("npmjs").unwrap().max_sockets = Some(3)
+        });
+    let results = join_all(names.iter().map(|n| s.get_manifest(n, None))).await;
+    assert!(results.iter().all(Result::is_ok));
+    let max = h.max_in_flight.load(Ordering::SeqCst);
+    assert!(max <= 3, "{max} requests at once with maxSockets 3");
+    assert!(max >= 2, "requests still run in parallel ({max})");
+}
+
+#[tokio::test]
+async fn small_manifest_cache_keeps_metas_and_counts_trees() {
+    let (up, h) = npmjs();
+    for i in 0..6 {
+        let name = format!("pkg-{i}");
+        h.answer(&name, ManifestAnswer::Ok(remote_named(&name, 50), None));
+    }
+    // too small for any tree: only metas are kept, trees are read again when needed
+    let options = StoreOptions { manifest_cache_bytes: 64 * 1024, ..StoreOptions::default() };
+    let s = store_with(vec![up], vec![rule("**", &["npmjs"])], options);
+    for i in 0..6 {
+        s.get_manifest(&format!("pkg-{i}"), None).await.unwrap();
+    }
+    assert!(s.manifest_cache_used() <= 64 * 1024);
+    let reads = s.storage().state.manifest_reads.load(Ordering::SeqCst);
+    // the meta answers the freshness check; the tree is read for the snapshot
+    let handle = s.open_manifest("pkg-0", None).await.unwrap();
+    assert!(handle.snapshot().is_none(), "tree not kept");
+    assert!(handle.load_bytes() > 0);
+    assert_eq!(s.storage().state.manifest_reads.load(Ordering::SeqCst), reads, "no read yet");
+    let snap = s.get_manifest("pkg-0", None).await.unwrap();
+    assert_eq!(snap.generation, handle.generation(), "same file, same generation");
+    assert_eq!(h.manifest_calls(), 6, "maxage: served from storage");
 }

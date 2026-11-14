@@ -5,7 +5,7 @@ description: >-
   (no publishing, no client authentication, no web UI).
 type: application
 # Chart version: bump on every change under charts/fastopm (checked by `ct lint` on pull requests).
-version: 0.1.0
+version: 0.1.1
 # fastopm version deployed by default (image tag when image.tag is empty).
 appVersion: "0.1.0"
 kubeVersion: ">=1.23.0-0"

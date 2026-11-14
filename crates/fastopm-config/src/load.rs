@@ -10,12 +10,12 @@ use indexmap::IndexMap;
 
 use crate::js::{self, Js, Obj, is_js_space};
 use crate::{
-    Config, ConfigError, EnvLookup, LogConfig, LogFormat, LogLevel, LogTarget, PackageRule,
-    TokenSource, UplinkAuth, UplinkConfig, parse_address,
+    Config, ConfigError, EnvLookup, FastopmConfig, LogConfig, LogFormat, LogLevel, LogTarget,
+    PackageRule, TokenSource, UplinkAuth, UplinkConfig, parse_address,
 };
 
 /// Top-level keys fastopm reads; any other key produces a warning.
-const KNOWN_KEYS: [&str; 11] = [
+const KNOWN_KEYS: [&str; 12] = [
     "storage",
     "listen",
     "uplinks",
@@ -27,6 +27,17 @@ const KNOWN_KEYS: [&str; 11] = [
     "no_proxy",
     "user_agent",
     "server_id",
+    "fastopm",
+];
+
+/// Keys of the `fastopm:` section.
+const FASTOPM_KEYS: [&str; 6] = [
+    "refresh_on_miss",
+    "refresh_on_miss_min_interval",
+    "memory_limit",
+    "manifest_cache",
+    "render_cache",
+    "work_memory",
 ];
 
 /// Uplink keys fastopm reads.
@@ -288,6 +299,7 @@ pub(crate) fn from_yaml_str(
     };
 
     let log = log_config(root.get("log"), &base_dir, &mut warnings);
+    let fastopm = fastopm_config(root.get("fastopm"), &mut warnings)?;
 
     let global_proxy = |key: &str| match root.get(key) {
         Some(v) => proxy_value(v).filter(|p| !p.is_empty()),
@@ -332,8 +344,73 @@ pub(crate) fn from_yaml_str(
         server_id,
         public_url,
         forwarded_proto_header,
+        fastopm,
         warnings,
     })
+}
+
+/// The `fastopm:` section. Its own options, so values of the wrong type fail the load instead
+/// of being guessed at (Verdaccio never reads this section).
+fn fastopm_config(
+    value: Option<&Js>,
+    warnings: &mut Vec<String>,
+) -> Result<FastopmConfig, ConfigError> {
+    let mut out = FastopmConfig::default();
+    let o = match value {
+        None | Some(Js::Null) => return Ok(out),
+        Some(Js::Obj(o)) => o,
+        Some(other) => {
+            return Err(invalid(format!(
+                "CONFIG: bad \"fastopm\" value (object expected): {}",
+                other.to_json()
+            )));
+        }
+    };
+    for (key, _) in o.iter() {
+        if !FASTOPM_KEYS.contains(&key) {
+            warnings.push(format!("fastopm: unknown option `{key}` is ignored"));
+        }
+    }
+    match o.get("refresh_on_miss") {
+        None | Some(Js::Null) => {}
+        Some(Js::Bool(b)) => out.refresh_on_miss = *b,
+        Some(other) => {
+            return Err(invalid(format!(
+                "CONFIG: fastopm.refresh_on_miss must be true or false, got {}",
+                other.to_json()
+            )));
+        }
+    }
+    let min_interval = o.get("refresh_on_miss_min_interval").filter(|v| !matches!(v, Js::Null));
+    if min_interval.is_some() {
+        out.refresh_on_miss_min_interval = interval(min_interval, "30s")
+            .map_err(|e| invalid(format!("CONFIG: fastopm.refresh_on_miss_min_interval: {e}")))?;
+    }
+    out.memory.memory_limit = size_option(o.get("memory_limit"), "memory_limit", true)?;
+    out.memory.manifest_cache = size_option(o.get("manifest_cache"), "manifest_cache", false)?;
+    out.memory.render_cache = size_option(o.get("render_cache"), "render_cache", false)?;
+    out.memory.work_memory = size_option(o.get("work_memory"), "work_memory", false)?;
+    Ok(out)
+}
+
+/// A size option of the `fastopm:` section ([`crate::memory::parse_size`]); `null`, absent
+/// (and `auto` when `auto` is allowed) → `None`.
+fn size_option(value: Option<&Js>, key: &str, auto: bool) -> Result<Option<u64>, ConfigError> {
+    let bad = |v: &Js| {
+        invalid(format!(
+            "CONFIG: fastopm.{key}: invalid size {} (expected bytes or a number with a unit: kb, mb, gb{})",
+            v.to_json(),
+            if auto { ", or auto" } else { "" }
+        ))
+    };
+    match value {
+        None | Some(Js::Null) => Ok(None),
+        Some(Js::Str(s)) if auto && s.trim().eq_ignore_ascii_case("auto") => Ok(None),
+        Some(v @ Js::Str(s)) => crate::memory::parse_size(s).map(Some).ok_or_else(|| bad(v)),
+        // `as` saturates at u64::MAX
+        Some(Js::Num(n)) if n.is_finite() && *n >= 0.0 => Ok(Some(n.floor() as u64)),
+        Some(v) => Err(bad(v)),
+    }
 }
 
 /// `normalizeUserList`: `null`/empty → `[]`, a string is split on white space, a list is kept
@@ -501,6 +578,11 @@ fn log_config(value: Option<&Js>, base_dir: &Path, warnings: &mut Vec<String>) -
         }
         _ => {}
     }
+    match o.get("colors") {
+        None | Some(Js::Null) => {}
+        // `hasColors`: a truthy value asks for colors when supported, a falsy one disables them
+        Some(v) => log.colors = Some(v.truthy()),
+    }
     log
 }
 
@@ -594,6 +676,22 @@ fn uplink_config(
         None => true,
         Some(v) => *v == Js::Bool(true),
     };
+    // `setConfig(config, 'agent_options', {keepAlive: true, maxSockets: 40, maxFreeSockets: 10})`
+    // then `new http.Agent(agent_options)`
+    let (max_sockets, max_free_sockets) = match set("agent_options") {
+        None => (Some(40), 10),
+        Some(Js::Obj(a)) => {
+            let positive = |key: &str| {
+                a.get(key)
+                    .map(Js::to_number)
+                    .filter(|n| n.is_finite() && *n >= 1.0)
+                    .map(|n| n.min(f64::from(u32::MAX)).floor() as u32)
+            };
+            let free = positive("maxFreeSockets").map_or(256, |n| n as usize);
+            (positive("maxSockets"), free)
+        }
+        Some(_) => (None, 256),
+    };
 
     let mut headers = IndexMap::new();
     match o.get("headers") {
@@ -640,6 +738,8 @@ fn uplink_config(
         http_proxy: proxy_key("http_proxy"),
         https_proxy: proxy_key("https_proxy"),
         no_proxy: o.get("no_proxy").map(no_proxy_list),
+        max_sockets,
+        max_free_sockets,
     })
 }
 

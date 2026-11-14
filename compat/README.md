@@ -85,6 +85,9 @@ export default [
 ];
 ```
 
+Bước nào cũng nhận thêm `name` (tên bước, dùng trong `ALLOWED_DIFFS`), `timeout` (ms) và
+`candidateExpect: { status?, uplinkRequests? }` (xem mục dưới).
+
 Rồi thêm file vào `scenarios/index.mjs`. Điều khiển mock: `setMode('down' | 'up' | {type:'status',status} |
 {type:'delay',ms} | {type:'reset'})`, `override(path, behaviour)`, `clearOverrides()`,
 `setPackage(name, def => newDef)` (vd. `withNewVersion` trong `fixtures/packages.mjs`).
@@ -113,6 +116,31 @@ Chi tiết và lý do nằm trong `lib/rules.mjs`; tóm tắt:
     đường dẫn có đoạn bắt đầu bằng `.` (bug); fastopm trả 404 là được.
   - `misc/client-authorization-ignored`: fastopm không xác thực client và bỏ qua `Authorization`
     (PLAN §1); Verdaccio trả 401 `bad username/password, access denied` khi token không hợp lệ.
+  - `fastopm/refresh-on-miss-new-version`, `fastopm/refresh-on-miss-tarball-first`,
+    `fastopm/refresh-on-miss-rate-limit` (chỉ các bước liệt kê, cộng storage): tính năng
+    `fastopm.refresh_on_miss` đồng bộ metadata khi version/tarball không có trong cache còn hạn
+    `maxage`, nên fastopm gửi thêm request lên uplink, trả 200 thay vì 404 và ghi `package.json` mới.
+
+## Tính năng riêng của fastopm (mục `fastopm:` trong config)
+
+Tính năng bật bằng mục `fastopm:` (mặc định tắt) cố ý khác Verdaccio, nên Verdaccio không còn là
+chuẩn so sánh ở những bước tính năng tác động. Cách làm (ít xâm lấn nhất, không có loại kịch bản
+riêng):
+
+- Mục `fastopm:` đặt trong `config` của kịch bản, **cho cả hai bên**. Verdaccio bỏ qua key top-level
+  lạ, nên kịch bản đồng thời kiểm tra Verdaccio 7.1.0 vẫn khởi động với file config đó.
+- Bước bị tính năng tác động được liệt kê trong `ALLOWED_DIFFS` (theo `steps`, kèm lý do); thêm
+  `storage: true` khi cây storage cuối kịch bản cũng được phép khác. Các bước còn lại vẫn phải khớp
+  Verdaccio (ví dụ `GET /:package` không bị tính năng ảnh hưởng).
+- `candidateExpect` trên bước khẳng định điều chính fastopm phải trả (status, tổng số request lên các
+  mock uplink trong bước). Chỉ kiểm khi có `--candidate-bin` (Verdaccio làm candidate thì không có
+  tính năng này); không đạt là lệch, `ALLOWED_DIFFS` không bao giờ bỏ qua.
+
+Kịch bản hiện có (`scenarios/refresh-on-miss.mjs`, `fastopm.refresh_on_miss`, `maxage: 1h`):
+`fastopm/refresh-on-miss-new-version`, `-tarball-first`, `-rate-limit` (lệch cho phép, có lý do
+trong `lib/rules.mjs`) và `-uplink-down` (phải khớp Verdaccio: uplink sập → 404 như khi tắt, ngắt
+mạch đang mở thì không gửi gì lên uplink). Kiểm tra harness bắt được lỗi: chạy với
+`--candidate-config '{"fastopm":{"refresh_on_miss":false}}'` thì 3 kịch bản đầu phải báo `DIFF`.
 
 ## Kiểm thử với client thật
 

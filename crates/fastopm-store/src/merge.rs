@@ -11,6 +11,7 @@ use fastopm_core::constants::{DIST_TAGS, LATEST};
 use fastopm_core::manifest::{TIME_KEY, UPLINKS_KEY, VERSIONS_KEY};
 use fastopm_core::{Manifest, UplinkMeta, extract_tarball_from_url};
 use serde_json::{Map, Value};
+use std::borrow::Cow;
 
 use crate::js::{is_nil, js_trim, lodash_to_string, or, property_key, strict_eq, truthy};
 use crate::semver;
@@ -170,9 +171,12 @@ fn remote_maintainers(m: &Manifest) -> Option<&Vec<Value>> {
 /// manifest (or a template): `normalizeMetadata` (whose name assertion fails when the local
 /// file is for another name), `updateUpLinkMetadata`, `mergeUplinkTimeIntoLocalNext`,
 /// `mergeVersions` and the maintainers scoping.
+///
+/// `remote` is consumed: its versions, `time` entries and readme move into the result instead of
+/// being copied (a large packument would otherwise exist twice).
 pub(crate) fn merge_cache_remote(
     mut cache: Manifest,
-    remote: &Manifest,
+    mut remote: Manifest,
     name: &str,
     uplink: &str,
     etag: Option<String>,
@@ -199,18 +203,19 @@ pub(crate) fn merge_cache_remote(
     // updateUpLinkMetadata
     cache.set_uplink_meta(uplink, &UplinkMeta { etag, fetched: Some(now_ms) });
 
-    // mergeUplinkTimeIntoLocalNext: remote wins on conflicts
-    if let Some(Value::Object(remote_time)) = remote.get(TIME_KEY) {
+    // mergeUplinkTimeIntoLocalNext: remote wins on conflicts. Every remote key is then present,
+    // so the "add missing time keys" step of mergeVersions has nothing left to do.
+    if let Some(Value::Object(remote_time)) = take_key(&mut remote, TIME_KEY) {
         let time = cache.time_mut();
         for (k, v) in remote_time {
-            time.insert(k.clone(), v.clone());
+            time.insert(k, v);
         }
     }
 
-    merge_versions(&mut cache, remote)?;
+    merge_versions_from(&mut cache, &mut remote)?;
 
     if maintainers_empty(cache.get(MAINTAINERS)) {
-        if let Some(list) = remote_maintainers(remote) {
+        if let Some(list) = remote_maintainers(&remote) {
             let scoped = scope_upstream_maintainers(list, uplink);
             cache.insert(MAINTAINERS, Value::Array(scoped));
         }
@@ -218,16 +223,27 @@ pub(crate) fn merge_cache_remote(
     Ok(cache)
 }
 
+/// The value of `key`, replaced by `null` in place (key order unchanged).
+fn take_key(m: &mut Manifest, key: &str) -> Option<Value> {
+    m.as_map_mut().get_mut(key).map(std::mem::take)
+}
+
 /// `mergeVersions`: add versions missing locally (refreshing `deprecated` on known ones), add
 /// missing `time` keys, move dist-tags forward (`semver.lte`) and take the remote readme when
 /// `latest` moves.
+#[cfg(test)]
 pub(crate) fn merge_versions(cache: &mut Manifest, remote: &Manifest) -> Result<(), Malformed> {
-    if let Some(Value::Object(remote_versions)) = remote.get(VERSIONS_KEY) {
+    merge_versions_from(cache, &mut remote.clone())
+}
+
+/// [`merge_versions`] moving `versions`, `time` and `readme` out of `remote` (left `null`).
+fn merge_versions_from(cache: &mut Manifest, remote: &mut Manifest) -> Result<(), Malformed> {
+    if let Some(Value::Object(remote_versions)) = take_key(remote, VERSIONS_KEY) {
         let versions = cache.versions_mut();
         for (id, remote_version) in remote_versions {
-            match versions.get_mut(id) {
+            match versions.get_mut(&id) {
                 None => {
-                    versions.insert(id.clone(), remote_version.clone());
+                    versions.insert(id, remote_version);
                 }
                 Some(local_version) => {
                     // `versions[i].deprecated` throws on null
@@ -254,15 +270,17 @@ pub(crate) fn merge_versions(cache: &mut Manifest, remote: &Manifest) -> Result<
         }
     }
 
-    if let Some(Value::Object(remote_time)) = remote.get(TIME_KEY) {
+    if let Some(Value::Object(remote_time)) = take_key(remote, TIME_KEY) {
         let time = cache.time_mut();
         for (k, v) in remote_time {
-            if !time.contains_key(k) {
-                time.insert(k.clone(), v.clone());
+            if !time.contains_key(&k) {
+                time.insert(k, v);
             }
         }
     }
 
+    // `undefined` when absent: assigning it drops the key
+    let mut remote_readme = remote.as_map_mut().get_mut(README).map(std::mem::take);
     if let Some(Value::Object(remote_tags)) = remote.get(DIST_TAGS) {
         for (tag, remote_value) in remote_tags {
             let local_value = cache.dist_tags().and_then(|t| t.get(tag));
@@ -282,9 +300,9 @@ pub(crate) fn merge_versions(cache: &mut Manifest, remote: &Manifest) -> Result<
                 cache.dist_tags_mut().insert(tag.clone(), remote_value.clone());
                 if tag == LATEST {
                     // `{ ..._cacheManifest, readme: remoteManifest.readme }`
-                    match remote.get(README) {
+                    match remote_readme.take() {
                         Some(r) => {
-                            cache.insert(README, r.clone());
+                            cache.insert(README, r);
                         }
                         None => {
                             cache.as_map_mut().shift_remove(README);
@@ -331,55 +349,68 @@ pub(crate) struct SyncSource<'a> {
 /// `updateVersionsNext` on the normalized disk copy (`readCreatePackage`). Returns the updated
 /// manifest and whether it changed (then the caller bumps `_rev` and writes it).
 pub(crate) fn update_versions_next(
+    cache: Manifest,
+    remote: &SyncSource<'_>,
+) -> Result<(Manifest, bool), Malformed> {
+    let readme = get_latest_readme(remote.manifest);
+    let versions = match remote.manifest.get(VERSIONS_KEY) {
+        Some(Value::Object(v)) => Versions::Borrowed(v),
+        _ => Versions::None,
+    };
+    update_versions_core(cache, remote, readme, versions)
+}
+
+/// [`update_versions_next`] with an owned source (the merged manifest): new versions move into
+/// the result instead of being copied.
+pub(crate) fn update_versions_next_owned(
+    cache: Manifest,
+    mut manifest: Manifest,
+    uplinks: &Map<String, Value>,
+    uplink_name: &str,
+    uplink_url: Option<&str>,
+) -> Result<(Manifest, bool), Malformed> {
+    let readme = get_latest_readme(&manifest);
+    let versions = match take_key(&mut manifest, VERSIONS_KEY) {
+        Some(Value::Object(v)) => Versions::Owned(v),
+        _ => Versions::None,
+    };
+    let src = SyncSource { manifest: &manifest, uplinks, uplink_name, uplink_url };
+    update_versions_core(cache, &src, readme, versions)
+}
+
+/// The `versions` of an update source.
+enum Versions<'a> {
+    None,
+    Borrowed(&'a Map<String, Value>),
+    Owned(Map<String, Value>),
+}
+
+fn update_versions_core(
     mut cache: Manifest,
     remote: &SyncSource<'_>,
+    readme: String,
+    versions: Versions<'_>,
 ) -> Result<(Manifest, bool), Malformed> {
     let src = remote.manifest;
     let mut change = false;
 
-    let readme = Value::String(get_latest_readme(src));
+    let readme = Value::String(readme);
     if !strict_eq(src.get(README), Some(&readme)) {
         change = true;
     }
     cache.insert(README, readme);
 
-    if let Some(Value::Object(remote_versions)) = src.get(VERSIONS_KEY) {
-        for (id, remote_version) in remote_versions {
-            if !is_nil(cache.versions().and_then(|v| v.get(id))) {
-                continue;
+    match versions {
+        Versions::None => {}
+        Versions::Borrowed(versions) => {
+            for (id, remote_version) in versions {
+                change |= add_version(&mut cache, id, Cow::Borrowed(remote_version), remote)?;
             }
-            let mut version = remote_version.clone();
-            match &mut version {
-                Value::Object(o) => {
-                    // cleanUpReadme (no `publish.keep_readmes` in fastopm)
-                    o.insert(README.into(), Value::String(String::new()));
-                    let contributors = normalize_contributors(o.get("contributors"));
-                    o.insert("contributors".into(), contributors);
-                }
-                Value::Array(_) => {}
-                // `version.contributors` on null, or a property write on a primitive
-                _ => return Err(Malformed),
+        }
+        Versions::Owned(versions) => {
+            for (id, remote_version) in versions {
+                change |= add_version(&mut cache, &id, Cow::Owned(remote_version), remote)?;
             }
-            change = true;
-
-            let dist = version.as_object().and_then(|o| o.get("dist")).and_then(Value::as_object);
-            let tarball = dist.and_then(|d| d.get("tarball"));
-            if truthy(tarball) {
-                let url = tarball.and_then(Value::as_str).ok_or(Malformed)?;
-                let filename = extract_tarball_from_url(url).ok_or(Malformed)?;
-                if is_nil(cache.distfiles().and_then(|d| d.get(&filename))) {
-                    let mut hash = Map::new();
-                    hash.insert("url".into(), Value::String(url.to_owned()));
-                    if let Some(sha) = dist.and_then(|d| d.get("shasum")) {
-                        hash.insert("sha".into(), sha.clone());
-                    }
-                    if let Some(uplink_url) = remote.uplink_url {
-                        update_uplink_to_remote_protocol(&mut hash, remote.uplink_name, uplink_url);
-                    }
-                    cache.distfiles_mut().insert(filename, Value::Object(hash));
-                }
-            }
-            cache.versions_mut().insert(id.clone(), version);
         }
     }
 
@@ -427,6 +458,51 @@ pub(crate) fn update_versions_next(
     }
 
     Ok((cache, change))
+}
+
+/// One version of `updateVersionsNext`: added (readme cleared, contributors normalized,
+/// `_distfiles` entry recorded) when missing locally. Returns whether it was added.
+fn add_version(
+    cache: &mut Manifest,
+    id: &str,
+    remote_version: Cow<'_, Value>,
+    remote: &SyncSource<'_>,
+) -> Result<bool, Malformed> {
+    if !is_nil(cache.versions().and_then(|v| v.get(id))) {
+        return Ok(false);
+    }
+    let mut version = remote_version.into_owned();
+    match &mut version {
+        Value::Object(o) => {
+            // cleanUpReadme (no `publish.keep_readmes` in fastopm)
+            o.insert(README.into(), Value::String(String::new()));
+            let contributors = normalize_contributors(o.get("contributors"));
+            o.insert("contributors".into(), contributors);
+        }
+        Value::Array(_) => {}
+        // `version.contributors` on null, or a property write on a primitive
+        _ => return Err(Malformed),
+    }
+
+    let dist = version.as_object().and_then(|o| o.get("dist")).and_then(Value::as_object);
+    let tarball = dist.and_then(|d| d.get("tarball"));
+    if truthy(tarball) {
+        let url = tarball.and_then(Value::as_str).ok_or(Malformed)?;
+        let filename = extract_tarball_from_url(url).ok_or(Malformed)?;
+        if is_nil(cache.distfiles().and_then(|d| d.get(&filename))) {
+            let mut hash = Map::new();
+            hash.insert("url".into(), Value::String(url.to_owned()));
+            if let Some(sha) = dist.and_then(|d| d.get("shasum")) {
+                hash.insert("sha".into(), sha.clone());
+            }
+            if let Some(uplink_url) = remote.uplink_url {
+                update_uplink_to_remote_protocol(&mut hash, remote.uplink_name, uplink_url);
+            }
+            cache.distfiles_mut().insert(filename, Value::Object(hash));
+        }
+    }
+    cache.versions_mut().insert(id.to_owned(), version);
+    Ok(true)
 }
 
 /// Whether [`update_versions_next`] would report a change (or fail) when the uplink side is the

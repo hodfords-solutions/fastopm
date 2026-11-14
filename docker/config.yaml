@@ -51,6 +51,20 @@ packages:
 # user_agent: fastopm
 # server_id: fastopm
 
+# fastopm-only options (Verdaccio ignores this section). Behavior options are off by default;
+# see the README, "fastopm-only options". With refresh_on_miss, a long uplink maxage (e.g. 24h)
+# still picks up a newly published version as soon as a client asks for that exact version or its
+# tarball.
+# fastopm:
+#   refresh_on_miss: true
+#   refresh_on_miss_min_interval: 30s
+#   # Memory budgets (README "Memory"). By default derived from the container memory limit:
+#   # manifest cache 6%, render cache 10%, work in progress 12% of it. Sizes: 512mb, 1gb, 2Gi...
+#   memory_limit: auto
+#   manifest_cache: 64mb
+#   render_cache: 128mb
+#   work_memory: 128mb
+
 # Log settings
 # https://verdaccio.org/docs/logger
 log:

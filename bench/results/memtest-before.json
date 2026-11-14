@@ -1,0 +1,221 @@
+{
+ "label": "before",
+ "image": "fastopm:memtest-before",
+ "date": "2026-11-14T08:17:45.969Z",
+ "options": {
+  "cpus": "6",
+  "roundsCold": 3,
+  "clones": 3,
+  "medium": 60,
+  "small": 200,
+  "concurrency": 256,
+  "fastopm": ""
+ },
+ "results": [
+  {
+   "limit": "512m",
+   "image": "fastopm:memtest-before",
+   "oomKilled": true,
+   "running": false,
+   "exitCode": 137,
+   "oomKillEvents": 1,
+   "peakRssMiB": 502,
+   "peakCgroupMiB": 512,
+   "rssAfterLoadMiB": null,
+   "settleSeconds": 15,
+   "loadSeconds": 85,
+   "rounds": [
+    {
+     "round": "cold-1",
+     "requests": 568,
+     "status": {
+      "200": 38
+     },
+     "errors": {
+      "ECONNRESET": 256,
+      "ECONNREFUSED": 150,
+      "ENOTFOUND": 93,
+      "EHOSTUNREACH": 31
+     },
+     "bytes": 1142257,
+     "ms": 73094,
+     "p50": 1063,
+     "p99": 71119,
+     "max": 71119,
+     "peakRssMiB": 502,
+     "atMs": 73475
+    },
+    {
+     "round": "cold-2",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1119,
+     "p50": 451,
+     "p99": 541,
+     "max": 542,
+     "peakRssMiB": 502,
+     "atMs": 76598
+    },
+    {
+     "round": "cold-3",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1015,
+     "p50": 446,
+     "p99": 479,
+     "max": 484,
+     "peakRssMiB": 502,
+     "atMs": 79616
+    },
+    {
+     "round": "warm",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1023,
+     "p50": 428,
+     "p99": 473,
+     "max": 479,
+     "peakRssMiB": 502,
+     "atMs": 82645
+    }
+   ],
+   "timeline": [
+    [
+     0.1,
+     6
+    ],
+    [
+     1.1,
+     87
+    ],
+    [
+     2.3,
+     503
+    ]
+   ],
+   "logTail": [
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-10--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-10--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m816.504417",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-49--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-49--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m808.651084",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-10--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-10--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m826.9115",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-49--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-49--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m825.781"
+   ]
+  },
+  {
+   "limit": "2g",
+   "image": "fastopm:memtest-before",
+   "oomKilled": true,
+   "running": false,
+   "exitCode": 137,
+   "oomKillEvents": 0,
+   "peakRssMiB": 1951,
+   "peakCgroupMiB": 2048,
+   "rssAfterLoadMiB": null,
+   "settleSeconds": 15,
+   "loadSeconds": 17,
+   "rounds": [
+    {
+     "round": "cold-1",
+     "requests": 568,
+     "status": {
+      "200": 384
+     },
+     "errors": {
+      "ECONNRESET": 184
+     },
+     "bytes": 32698545,
+     "ms": 4606,
+     "p50": 1274,
+     "p99": 4593,
+     "max": 4599,
+     "peakRssMiB": 1951,
+     "atMs": 5056
+    },
+    {
+     "round": "cold-2",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1260,
+     "p50": 497,
+     "p99": 643,
+     "max": 658,
+     "peakRssMiB": 1951,
+     "atMs": 8322
+    },
+    {
+     "round": "cold-3",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1134,
+     "p50": 494,
+     "p99": 566,
+     "max": 570,
+     "peakRssMiB": 1951,
+     "atMs": 11458
+    },
+    {
+     "round": "warm",
+     "requests": 568,
+     "status": {},
+     "errors": {
+      "ENOTFOUND": 568
+     },
+     "bytes": 0,
+     "ms": 1353,
+     "p50": 493,
+     "p99": 647,
+     "max": 655,
+     "peakRssMiB": 1951,
+     "atMs": 14819
+    }
+   ],
+   "timeline": [
+    [
+     0.1,
+     7
+    ],
+    [
+     1.1,
+     169
+    ],
+    [
+     2.2,
+     481
+    ],
+    [
+     3.2,
+     1370
+    ],
+    [
+     4.3,
+     1817
+    ]
+   ],
+   "logTail": [
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-193--ms \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-193--ms \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m4252.287377",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-13--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-13--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m1142.576875",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-13--express \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-13--express \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m1150.715084",
+    "\u001b[32m INFO\u001b[0m 200 GET /memtest-r1-138--ms \u001b[3mstatus\u001b[0m\u001b[2m=\u001b[0m200 \u001b[3mremote\u001b[0m\u001b[2m=\u001b[0m::ffff:172.24.0.4 \u001b[3mmethod\u001b[0m\u001b[2m=\u001b[0mGET \u001b[3murl\u001b[0m\u001b[2m=\u001b[0m/memtest-r1-138--ms \u001b[3melapsed_ms\u001b[0m\u001b[2m=\u001b[0m4269.723294"
+   ]
+  }
+ ]
+}

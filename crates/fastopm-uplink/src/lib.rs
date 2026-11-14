@@ -49,6 +49,7 @@ use std::time::{Duration, Instant, SystemTime};
 
 use bytes::Bytes;
 use fastopm_config::{Config, TokenSource, UplinkConfig};
+use fastopm_core::memory::{Reservation, predict_heap_bytes};
 use fastopm_core::{Manifest, RegistryError, TarballBody, headers as hdr, messages, status};
 use indexmap::IndexMap;
 use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
@@ -207,6 +208,21 @@ pub trait Uplink: Send + Sync + 'static {
         remote_address: Option<&str>,
     ) -> impl Future<Output = Result<ManifestFetch, UplinkError>> + Send;
 
+    /// [`Uplink::fetch_manifest`], counting the memory it takes in `work`: the body as it
+    /// streams in (waiting in [`Reservation::grow_to`] when the budget is spent, which pauses
+    /// the download), then the parsed tree. On success `work` holds at least the tree's
+    /// [`Manifest::heap_bytes`]. The default ignores `work`.
+    fn fetch_manifest_within(
+        &self,
+        name: &str,
+        etag: Option<&str>,
+        remote_address: Option<&str>,
+        work: &mut Reservation,
+    ) -> impl Future<Output = Result<ManifestFetch, UplinkError>> + Send {
+        let _ = work;
+        self.fetch_manifest(name, etag, remote_address)
+    }
+
     /// `GET <tarball_url>` with this uplink's headers and credentials. The caller has checked
     /// [`Uplink::serves_url`].
     ///
@@ -266,6 +282,8 @@ type EnvFn = Arc<dyn Fn(&str) -> Option<String> + Send + Sync>;
 
 /// Bodies larger than this are parsed on the blocking pool.
 const BLOCKING_PARSE_THRESHOLD: usize = 256 * 1024;
+/// Largest `Content-Length` a manifest body buffer is allocated for up front.
+const MAX_PRESIZED_BODY: usize = 512 * 1024 * 1024;
 
 /// At most this much of a 403 body is read to find its message.
 const FORBIDDEN_BODY_LIMIT: usize = 1024 * 1024;
@@ -333,8 +351,9 @@ impl HttpUplink {
         let mut builder = reqwest::Client::builder()
             .gzip(true)
             .timeout(uplink.timeout)
-            // Node.js agent defaults Verdaccio uses: keepAlive, maxFreeSockets 10.
-            .pool_max_idle_per_host(10)
+            // Node.js agent Verdaccio uses: keepAlive, `agent_options.maxFreeSockets` (10).
+            // `maxSockets` is enforced by the store (`fastopm-store`), before it takes memory.
+            .pool_max_idle_per_host(uplink.max_free_sockets)
             .tcp_nodelay(true);
         builder = match proxy {
             // hpagent: the agent matching the uplink protocol goes through the proxy.
@@ -488,11 +507,49 @@ impl HttpUplink {
         )
     }
 
-    /// One attempt of a manifest request.
+    /// [`Uplink::fetch_manifest`] with retries; `work` as in [`Uplink::fetch_manifest_within`].
+    async fn fetch_manifest_counted(
+        &self,
+        name: &str,
+        etag: Option<&str>,
+        remote_address: Option<&str>,
+        mut work: Option<&mut Reservation>,
+    ) -> Result<ManifestFetch, UplinkError> {
+        if !self.is_available() {
+            return Err(UplinkError::Offline);
+        }
+        let headers = self.manifest_headers(etag, remote_address)?;
+        let uri = format!("{}/{}", self.config.url, encode_package_name(name));
+        let base = work.as_ref().map(|w| w.held());
+        let mut attempt = 1;
+        loop {
+            match self.manifest_attempt(&uri, &headers, work.as_deref_mut()).await {
+                Ok(outcome) => return outcome,
+                Err((failure, detail)) => {
+                    // a partial body is gone
+                    if let (Some(w), Some(base)) = (work.as_deref_mut(), base) {
+                        w.shrink_to(base);
+                    }
+                    match self.retry_delay(attempt, failure) {
+                        Some(delay) => {
+                            tokio::time::sleep(delay).await;
+                            self.record_retry(attempt, &uri);
+                            attempt += 1;
+                        }
+                        None => return Err(final_manifest_error(failure, detail)),
+                    }
+                }
+            }
+        }
+    }
+
+    /// One attempt of a manifest request. With `work`, the body is read chunk by chunk and its
+    /// buffer, then the tree, are counted in it (see [`Uplink::fetch_manifest_within`]).
     async fn manifest_attempt(
         &self,
         uri: &str,
         headers: &HeaderMap,
+        work: Option<&mut Reservation>,
     ) -> Result<Result<ManifestFetch, UplinkError>, (Failure, String)> {
         self.mark_request_start();
         let response = self
@@ -518,8 +575,41 @@ impl HttpUplink {
         }
         self.record_success();
         let etag = response.headers().get(ETAG).and_then(|v| v.to_str().ok()).map(str::to_owned);
-        let body = response.bytes().await.map_err(|e| net_failure(&e, uri))?;
-        Ok(parse_manifest(body).await.map(|manifest| ManifestFetch::Fetched { manifest, etag }))
+        let Some(work) = work else {
+            let body = response.bytes().await.map_err(|e| net_failure(&e, uri))?;
+            return Ok(parse_manifest(body)
+                .await
+                .map(|manifest| ManifestFetch::Fetched { manifest, etag }));
+        };
+        let base = work.held();
+        let mut response = response;
+        // sized up front when the length is known (a buffer grown by doubling briefly needs 3×)
+        let announced = response.content_length().and_then(|n| usize::try_from(n).ok());
+        let mut buf = match announced.filter(|n| *n <= MAX_PRESIZED_BODY) {
+            Some(len) => {
+                work.grow_to(base + len).await;
+                bytes::BytesMut::with_capacity(len)
+            }
+            None => bytes::BytesMut::new(),
+        };
+        while let Some(chunk) = response.chunk().await.map_err(|e| net_failure(&e, uri))? {
+            if buf.len() + chunk.len() > buf.capacity() {
+                // the buffer at least doubles; while it moves, old and new copies coexist
+                let next = (buf.capacity() * 2).max(buf.len() + chunk.len()).max(64 * 1024);
+                work.grow_to(base + next + buf.capacity()).await;
+                buf.reserve(next - buf.len());
+            }
+            buf.extend_from_slice(&chunk);
+        }
+        let body = buf.freeze();
+        // the body and its tree coexist while parsing
+        work.grow_to(base + body.len() + predict_heap_bytes(&body)).await;
+        let parsed = parse_manifest(body).await;
+        match &parsed {
+            Ok(manifest) => work.shrink_to(base + manifest.heap_bytes()),
+            Err(_) => work.shrink_to(base),
+        }
+        Ok(parsed.map(|manifest| ManifestFetch::Fetched { manifest, etag }))
     }
 }
 
@@ -550,18 +640,12 @@ fn error_chain(err: &(dyn std::error::Error + 'static)) -> String {
     text
 }
 
-/// `JSON.parse` of a 2xx body, off the async runtime when large.
+/// `JSON.parse` of a 2xx body, on the [`fastopm_core::heavy`] pool when large.
 async fn parse_manifest(body: Bytes) -> Result<Manifest, UplinkError> {
     let large = body.len() > BLOCKING_PARSE_THRESHOLD;
     let parse =
         move || Manifest::from_slice(&body).map_err(|e| UplinkError::InvalidBody(e.to_string()));
-    if large {
-        tokio::task::spawn_blocking(parse)
-            .await
-            .unwrap_or_else(|e| Err(UplinkError::InvalidBody(e.to_string())))
-    } else {
-        parse()
-    }
+    if large { fastopm_core::heavy::run(parse).await } else { parse() }
 }
 
 /// Final error of a manifest request once retries are exhausted (`getRemoteMetadata`'s catch).
@@ -604,25 +688,17 @@ impl Uplink for HttpUplink {
         etag: Option<&str>,
         remote_address: Option<&str>,
     ) -> Result<ManifestFetch, UplinkError> {
-        if !self.is_available() {
-            return Err(UplinkError::Offline);
-        }
-        let headers = self.manifest_headers(etag, remote_address)?;
-        let uri = format!("{}/{}", self.config.url, encode_package_name(name));
-        let mut attempt = 1;
-        loop {
-            match self.manifest_attempt(&uri, &headers).await {
-                Ok(outcome) => return outcome,
-                Err((failure, detail)) => match self.retry_delay(attempt, failure) {
-                    Some(delay) => {
-                        tokio::time::sleep(delay).await;
-                        self.record_retry(attempt, &uri);
-                        attempt += 1;
-                    }
-                    None => return Err(final_manifest_error(failure, detail)),
-                },
-            }
-        }
+        self.fetch_manifest_counted(name, etag, remote_address, None).await
+    }
+
+    async fn fetch_manifest_within(
+        &self,
+        name: &str,
+        etag: Option<&str>,
+        remote_address: Option<&str>,
+        work: &mut Reservation,
+    ) -> Result<ManifestFetch, UplinkError> {
+        self.fetch_manifest_counted(name, etag, remote_address, Some(work)).await
     }
 
     async fn fetch_tarball(&self, tarball_url: &str) -> Result<TarballBody, UplinkError> {
@@ -684,6 +760,8 @@ fn default_uplink_config(name: String, url: String) -> UplinkConfig {
         http_proxy: None,
         https_proxy: None,
         no_proxy: None,
+        max_sockets: Some(40),
+        max_free_sockets: 10,
     }
 }
 

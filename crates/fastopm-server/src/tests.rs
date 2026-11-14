@@ -68,13 +68,31 @@ struct Mock {
     base: String,
     hits: Arc<AtomicUsize>,
     tarball_hits: Arc<AtomicUsize>,
+    /// Versions published after the start (besides 1.0.0 and 1.1.0).
+    published: Arc<std::sync::Mutex<Vec<String>>>,
+    /// Answer 500 to manifest requests.
+    failing: Arc<std::sync::atomic::AtomicBool>,
+}
+
+impl Mock {
+    fn publish(&self, version: &str) {
+        self.published.lock().unwrap().push(version.to_owned());
+    }
+
+    fn fail(&self, on: bool) {
+        self.failing.store(on, Ordering::SeqCst);
+    }
+
+    fn hits(&self) -> usize {
+        self.hits.load(Ordering::SeqCst)
+    }
 }
 
 fn tarball_bytes() -> Vec<u8> {
     (0..5000u32).map(|i| (i % 251) as u8).collect()
 }
 
-fn packument(base: &str, name: &str) -> Value {
+fn packument(base: &str, name: &str, published: &[String]) -> Value {
     let file = name.rsplit('/').next().unwrap_or(name);
     let version = |v: &str| {
         json!({
@@ -88,7 +106,7 @@ fn packument(base: &str, name: &str) -> Value {
             },
         })
     };
-    json!({
+    let mut doc = json!({
         "_id": name,
         "name": name,
         "dist-tags": {"latest": "1.1.0"},
@@ -96,7 +114,12 @@ fn packument(base: &str, name: &str) -> Value {
         "time": {"modified": "2024-01-02T00:00:00.000Z", "created": "2024-01-01T00:00:00.000Z",
                  "1.0.0": "2024-01-01T00:00:00.000Z", "1.1.0": "2024-01-02T00:00:00.000Z"},
         "readme": "x".repeat(3000),
-    })
+    });
+    for v in published {
+        doc["versions"][v] = version(v);
+        doc["time"][v] = json!("2024-02-01T00:00:00.000Z");
+    }
+    doc
 }
 
 #[derive(Clone)]
@@ -104,6 +127,8 @@ struct MockState {
     base: Arc<std::sync::OnceLock<String>>,
     hits: Arc<AtomicUsize>,
     tarball_hits: Arc<AtomicUsize>,
+    published: Arc<std::sync::Mutex<Vec<String>>>,
+    failing: Arc<std::sync::atomic::AtomicBool>,
 }
 
 async fn mock_manifest(State(s): State<MockState>, AxPath(name): AxPath<String>) -> Response {
@@ -113,7 +138,11 @@ async fn mock_manifest(State(s): State<MockState>, AxPath(name): AxPath<String>)
     if name.contains("missing") {
         return (StatusCode::NOT_FOUND, "{}").into_response();
     }
-    let body = serde_json::to_vec(&packument(&base, &name)).unwrap();
+    if s.failing.load(Ordering::SeqCst) {
+        return (StatusCode::INTERNAL_SERVER_ERROR, "{}").into_response();
+    }
+    let published = s.published.lock().unwrap().clone();
+    let body = serde_json::to_vec(&packument(&base, &name, &published)).unwrap();
     ([("content-type", "application/json")], body).into_response()
 }
 
@@ -135,8 +164,13 @@ async fn mock_tarball(s: MockState, file: String) -> Response {
 }
 
 async fn start_mock() -> Mock {
-    let state =
-        MockState { base: Arc::default(), hits: Arc::default(), tarball_hits: Arc::default() };
+    let state = MockState {
+        base: Arc::default(),
+        hits: Arc::default(),
+        tarball_hits: Arc::default(),
+        published: Arc::default(),
+        failing: Arc::default(),
+    };
     let app = axum::Router::new()
         .route("/{name}", axum::routing::get(mock_manifest))
         .route(
@@ -161,7 +195,13 @@ async fn start_mock() -> Mock {
     let base = format!("http://{}", listener.local_addr().unwrap());
     state.base.set(base.clone()).unwrap();
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-    Mock { base, hits: state.hits, tarball_hits: state.tarball_hits }
+    Mock {
+        base,
+        hits: state.hits,
+        tarball_hits: state.tarball_hits,
+        published: state.published,
+        failing: state.failing,
+    }
 }
 
 // ---------------------------------------------------------------- harness
@@ -172,19 +212,24 @@ struct Env {
     dir: tempfile::TempDir,
 }
 
-fn config(dir: &Path, uplink: &str, extra: &str) -> Config {
+/// `uplink_opts`: extra `uplinks.upstream` lines (indented 4 spaces); `extra`: top-level YAML.
+fn config(dir: &Path, uplink: &str, uplink_opts: &str, extra: &str) -> Config {
     let yaml = format!(
         "storage: ./storage\nserver_id: test-srv\nuplinks:\n  upstream:\n    url: {uplink}/\n    \
-         maxage: 10m\npackages:\n  'local-*':\n    access: $all\n  '**':\n    access: $all\n    \
-         proxy: upstream\n{extra}"
+         maxage: 10m\n{uplink_opts}packages:\n  'local-*':\n    access: $all\n  '**':\n    \
+         access: $all\n    proxy: upstream\n{extra}"
     );
     Config::from_yaml_str(&yaml, &dir.join("config.yaml"), &|_| None).unwrap()
 }
 
 async fn env_with(extra: &str) -> Env {
+    env_custom("", extra).await
+}
+
+async fn env_custom(uplink_opts: &str, extra: &str) -> Env {
     let mock = start_mock().await;
     let dir = tempfile::tempdir().unwrap();
-    let config = Arc::new(config(dir.path(), &mock.base, extra));
+    let config = Arc::new(config(dir.path(), &mock.base, uplink_opts, extra));
     let storage = FsStorage::new(Arc::clone(&config));
     let uplinks = build_uplinks(&config).unwrap();
     let store =
@@ -661,4 +706,115 @@ async fn preflight_sends_content_length_zero_on_the_wire() {
     assert!(text.contains("content-length: 0\r\n"), "{text}");
     assert!(!text.contains("transfer-encoding"), "{text}");
     assert!(text.ends_with("\r\n\r\n"), "no body after a 204: {text}");
+}
+
+// ---------------------------------------------------------------- fastopm.refresh_on_miss
+
+const REFRESH_ON_MISS: &str = "fastopm:\n  refresh_on_miss: true\n";
+
+#[tokio::test]
+async fn refresh_on_miss_serves_a_version_published_within_maxage() {
+    let e = env_with(REFRESH_ON_MISS).await;
+    assert_eq!(get(&e.app, "/pkg").await.status, 200);
+    assert_eq!(e.mock.hits(), 1);
+    e.mock.publish("1.2.0");
+
+    // GET /:package keeps following maxage
+    let got = get(&e.app, "/pkg").await;
+    assert!(got.json()["versions"].get("1.2.0").is_none());
+    assert_eq!(e.mock.hits(), 1);
+
+    let got = get(&e.app, "/pkg/1.2.0").await;
+    assert_eq!(got.status, 200);
+    assert_eq!(got.json()["version"], "1.2.0");
+    assert_eq!(got.json()["dist"]["tarball"], "http://localhost:4873/pkg/-/pkg-1.2.0.tgz");
+    assert_eq!(e.mock.hits(), 2);
+
+    let got = get(&e.app, "/pkg/-/pkg-1.2.0.tgz").await;
+    assert_eq!(got.status, 200);
+    assert_eq!(&got.body[..], &tarball_bytes()[..]);
+    assert_eq!(e.mock.tarball_hits.load(Ordering::SeqCst), 1);
+    assert_eq!(e.mock.hits(), 2, "the version request already synced the manifest");
+
+    // the synced manifest is what GET /:package serves now (from cache)
+    assert!(get(&e.app, "/pkg").await.json()["versions"].get("1.2.0").is_some());
+    assert_eq!(e.mock.hits(), 2);
+}
+
+#[tokio::test]
+async fn refresh_on_miss_tarball_first() {
+    let e = env_with(REFRESH_ON_MISS).await;
+    get(&e.app, "/@scope/pkg").await;
+    e.mock.publish("1.2.0");
+    let got = get(&e.app, "/@scope/pkg/-/pkg-1.2.0.tgz").await;
+    assert_eq!(got.status, 200);
+    assert_eq!(&got.body[..], &tarball_bytes()[..]);
+    assert_eq!((e.mock.hits(), e.mock.tarball_hits.load(Ordering::SeqCst)), (2, 1));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_off_answers_404_within_maxage() {
+    let e = env().await;
+    get(&e.app, "/pkg").await;
+    e.mock.publish("1.2.0");
+    let got = get(&e.app, "/pkg/1.2.0").await;
+    assert_eq!(
+        (got.status.as_u16(), error_of(&got)),
+        (404, "this version doesn't exist: 1.2.0".into())
+    );
+    let got = get(&e.app, "/pkg/-/pkg-1.2.0.tgz").await;
+    assert_eq!((got.status.as_u16(), error_of(&got)), (404, "no such file available".into()));
+    assert_eq!((e.mock.hits(), e.mock.tarball_hits.load(Ordering::SeqCst)), (1, 0));
+}
+
+#[tokio::test]
+async fn refresh_on_miss_missing_version_is_rate_limited() {
+    let e = env_with("fastopm:\n  refresh_on_miss: true\n  refresh_on_miss_min_interval: 300ms\n")
+        .await;
+    get(&e.app, "/pkg").await;
+    for _ in 0..4 {
+        let got = get(&e.app, "/pkg/9.9.9").await;
+        assert_eq!(got.status, 404);
+        assert_eq!(get(&e.app, "/pkg/no-such-tag").await.status, 404);
+        assert_eq!(get(&e.app, "/pkg/-/pkg-9.9.9.tgz").await.status, 404);
+    }
+    assert_eq!(e.mock.hits(), 2, "one forced sync in the interval");
+    // existing versions and tags never sync
+    assert_eq!(get(&e.app, "/pkg/latest").await.status, 200);
+    tokio::time::sleep(std::time::Duration::from_millis(350)).await;
+    assert_eq!(get(&e.app, "/pkg/1.0.0").await.status, 200);
+    assert_eq!(e.mock.hits(), 2);
+    assert_eq!(get(&e.app, "/pkg/9.9.9").await.status, 404);
+    assert_eq!(e.mock.hits(), 3);
+}
+
+#[tokio::test]
+async fn refresh_on_miss_failing_uplink_answers_like_the_option_off() {
+    // one failed request (2 attempts) opens the breaker for 5 minutes
+    let e = env_custom(
+        "    retry: 1\n    max_fails: 1\n",
+        "fastopm:\n  refresh_on_miss: true\n  refresh_on_miss_min_interval: 100ms\n",
+    )
+    .await;
+    get(&e.app, "/pkg").await;
+    e.mock.fail(true);
+    let got = get(&e.app, "/pkg/1.2.0").await;
+    assert_eq!(
+        (got.status.as_u16(), error_of(&got)),
+        (404, "this version doesn't exist: 1.2.0".into())
+    );
+    assert_eq!(e.mock.hits(), 3, "first request + 1 retry, both 500");
+
+    // breaker open: later forced syncs do not reach the uplink, even once it is back
+    e.mock.fail(false);
+    e.mock.publish("1.2.0");
+    tokio::time::sleep(std::time::Duration::from_millis(150)).await;
+    let got = get(&e.app, "/pkg/1.2.0").await;
+    assert_eq!(got.status, 404);
+    tokio::time::sleep(std::time::Duration::from_millis(150)).await;
+    let got = get(&e.app, "/pkg/-/pkg-1.2.0.tgz").await;
+    assert_eq!((got.status.as_u16(), error_of(&got)), (404, "no such file available".into()));
+    assert_eq!(get(&e.app, "/pkg/1.0.0").await.status, 200);
+    assert_eq!(get(&e.app, "/pkg").await.status, 200);
+    assert_eq!(e.mock.hits(), 3);
 }

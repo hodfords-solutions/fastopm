@@ -231,12 +231,18 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 3
 
+## Set a memory limit: fastopm sizes its caches and its work memory from the container's cgroup
+## limit (fastopm.memory_limit: auto), so the limit both bounds and tunes it. Measured with a
+## cold-cache install of a large project (24 big packuments such as typescript, vite,
+## @firebase/firestore; 568 parallel requests): peak RSS ~430 MiB with a 512Mi limit, ~670 MiB
+## with 2Gi. 512Mi works; 1Gi leaves room for bigger caches and page cache; use 2Gi or more for
+## many concurrent CI installs. See "Memory" in the fastopm README.
 resources: {}
 # requests:
-#   cpu: 100m
-#   memory: 128Mi
-# limits:
+#   cpu: 250m
 #   memory: 512Mi
+# limits:
+#   memory: 1Gi
 
 ## The image runs as UID 10001, group 0. fsGroup makes the volume writable by that user.
 ## A claim previously used by the Verdaccio chart (fsGroup 101) is re-owned on first mount;

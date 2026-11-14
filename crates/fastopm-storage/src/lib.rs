@@ -314,12 +314,20 @@ async fn blocking<T: Send + 'static>(
     }
 }
 
+/// Run manifest work (read + parse, update + write) on the [`fastopm_core::heavy`] pool, where
+/// large trees are built and freed by the same few threads.
+async fn heavy<T: Send + 'static>(
+    work: impl FnOnce() -> Result<T, StorageError> + Send + 'static,
+) -> Result<T, StorageError> {
+    fastopm_core::heavy::run(work).await
+}
+
 async fn read_manifest_in(
     dir: PathBuf,
     name: &str,
 ) -> Result<Option<StoredManifest>, StorageError> {
     let name = name.to_owned();
-    blocking(move || read_manifest_sync(&dir, &name)).await
+    heavy(move || read_manifest_sync(&dir, &name)).await
 }
 
 async fn manifest_identity_in(dir: &Path) -> Result<Option<FileIdentity>, StorageError> {
@@ -341,17 +349,21 @@ where
 {
     let lock = locks.lock(dir.clone()).await;
     let name = name.to_owned();
-    // The lock moves into the blocking task: if the caller stops waiting, it is still held
-    // until the write is finished.
-    blocking(move || {
+    // The lock moves into the job: if the caller stops waiting, it is still held until the
+    // write is finished.
+    heavy(move || {
         let _lock = lock;
+        // The current copy moves into `update` (no second copy of a large manifest); in the rare
+        // case nothing is written, the file (unchanged: we hold the lock) is read again.
         let current = read_manifest_sync(&dir, &name)?;
-        match update(current.as_ref().map(|stored| stored.manifest.clone())) {
+        let existed = current.is_some();
+        match update(current.map(|stored| stored.manifest)) {
             Ok(Some(manifest)) => {
                 let identity = write_manifest_sync(&dir, &manifest)?;
                 Ok(Some(StoredManifest { manifest, identity }))
             }
-            Ok(None) => Ok(current),
+            Ok(None) if existed => read_manifest_sync(&dir, &name),
+            Ok(None) => Ok(None),
             Err(err) => Err(StorageError::Aborted(err)),
         }
     })

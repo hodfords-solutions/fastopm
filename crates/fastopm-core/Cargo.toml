@@ -16,6 +16,7 @@ url.workspace = true
 getrandom.workspace = true
 hex.workspace = true
 thiserror.workspace = true
+tokio.workspace = true
 
 [lints]
 workspace = true

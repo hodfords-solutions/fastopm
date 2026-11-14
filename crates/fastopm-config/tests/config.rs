@@ -53,6 +53,7 @@ fn default_config_loads_with_verdaccio_defaults() {
     assert_eq!(npmjs.fail_timeout, Duration::from_secs(300));
     assert_eq!(npmjs.retry, 2);
     assert!(npmjs.cache);
+    assert_eq!((npmjs.max_sockets, npmjs.max_free_sockets), (Some(40), 10));
     assert!(npmjs.headers.is_empty());
     assert_eq!(npmjs.auth, None);
     assert_eq!(
@@ -524,4 +525,111 @@ fn find_config_file_skips_storage_rewrite_without_data_dir() {
     let path = find_config_file(None, &env).unwrap();
     assert_eq!(path, home.path().join(".config/verdaccio/config.yaml"));
     assert_eq!(std::fs::read_to_string(&path).unwrap(), default_config_yaml());
+}
+
+/// Storage plus a `**` rule (no load warning), then `rest`.
+fn with_rule(rest: &str) -> String {
+    with_storage(&format!("packages:\n  '**':\n    access: $all\n{rest}"))
+}
+
+#[test]
+fn fastopm_section_defaults_off() {
+    let c = load(&with_rule(""));
+    assert!(!c.fastopm.refresh_on_miss);
+    assert_eq!(c.fastopm.refresh_on_miss_min_interval, Duration::from_secs(30));
+    assert_eq!(c.fastopm, fastopm_config::FastopmConfig::default());
+    let c = load(&with_rule("fastopm:\n"));
+    assert_eq!(c.fastopm, fastopm_config::FastopmConfig::default());
+    assert!(c.warnings.is_empty(), "{:?}", c.warnings);
+}
+
+#[test]
+fn fastopm_section_is_read_without_warning() {
+    let c = load(&with_rule(
+        "fastopm:\n  refresh_on_miss: true\n  refresh_on_miss_min_interval: 1m 30s\n",
+    ));
+    assert!(c.fastopm.refresh_on_miss);
+    assert_eq!(c.fastopm.refresh_on_miss_min_interval, Duration::from_secs(90));
+    assert!(c.warnings.is_empty(), "{:?}", c.warnings);
+
+    let c =
+        load(&with_rule("fastopm:\n  refresh_on_miss: false\n  refresh_on_miss_min_interval: 5\n"));
+    assert!(!c.fastopm.refresh_on_miss);
+    assert_eq!(c.fastopm.refresh_on_miss_min_interval, Duration::from_secs(5));
+    let c = load(&with_rule("fastopm:\n  refresh_on_miss_min_interval: 0\n"));
+    assert_eq!(c.fastopm.refresh_on_miss_min_interval, Duration::ZERO);
+    let c = load(&with_rule("fastopm:\n  refresh_on_miss: ~\n  refresh_on_miss_min_interval: ~\n"));
+    assert_eq!(c.fastopm, fastopm_config::FastopmConfig::default());
+}
+
+#[test]
+fn agent_options_follow_node_agent_defaults() {
+    let up = |opts: &str| {
+        let c = load(&with_rule(&format!("uplinks:\n  a:\n    url: https://r.example/\n{opts}")));
+        let a = &c.uplinks["a"];
+        (a.max_sockets, a.max_free_sockets)
+    };
+    assert_eq!(up(""), (Some(40), 10));
+    assert_eq!(up("    agent_options: ~\n"), (Some(40), 10));
+    assert_eq!(
+        up("    agent_options:\n      maxSockets: 8\n      maxFreeSockets: 2\n"),
+        (Some(8), 2)
+    );
+    // agent_options replaces Verdaccio's default object: Node.js defaults for the rest
+    assert_eq!(up("    agent_options:\n      keepAlive: true\n"), (None, 256));
+    assert_eq!(up("    agent_options:\n      maxSockets: 0\n"), (None, 256));
+}
+
+#[test]
+fn fastopm_memory_options() {
+    use fastopm_config::MemoryOptions;
+    const MIB: u64 = 1024 * 1024;
+    let c = load(&with_rule(
+        "fastopm:\n  memory_limit: 2Gi\n  manifest_cache: 128mb\n  render_cache: 0\n  work_memory: 1048576\n",
+    ));
+    assert_eq!(
+        c.fastopm.memory,
+        MemoryOptions {
+            memory_limit: Some(2048 * MIB),
+            manifest_cache: Some(128 * MIB),
+            render_cache: Some(0),
+            work_memory: Some(MIB),
+        }
+    );
+    assert!(c.warnings.is_empty(), "{:?}", c.warnings);
+    let c = load(&with_rule("fastopm:\n  memory_limit: auto\n  manifest_cache: ~\n"));
+    assert_eq!(c.fastopm.memory, MemoryOptions::default());
+
+    let e = error(&with_rule("fastopm:\n  manifest_cache: lots\n"));
+    assert!(e.contains("fastopm.manifest_cache") && e.contains("lots"), "{e}");
+    assert!(error(&with_rule("fastopm:\n  manifest_cache: auto\n")).contains("manifest_cache"));
+    assert!(error(&with_rule("fastopm:\n  work_memory: -1\n")).contains("work_memory"));
+    assert!(error(&with_rule("fastopm:\n  memory_limit: [1]\n")).contains("memory_limit"));
+}
+
+#[test]
+fn fastopm_section_unknown_keys_warn() {
+    let c = load(&with_rule("fastopm:\n  refresh_on_miss: true\n  turbo: 1\n"));
+    assert!(c.fastopm.refresh_on_miss);
+    assert_eq!(c.warnings, ["fastopm: unknown option `turbo` is ignored"]);
+}
+
+#[test]
+fn fastopm_section_bad_values_are_rejected() {
+    assert!(error(&with_rule("fastopm: true\n")).contains("bad \"fastopm\" value"));
+    assert!(error(&with_rule("fastopm: [1]\n")).contains("bad \"fastopm\" value"));
+    assert!(
+        error(&with_rule("fastopm:\n  refresh_on_miss: \"yes\"\n"))
+            .contains("fastopm.refresh_on_miss must be true or false")
+    );
+    assert!(
+        error(&with_rule("fastopm:\n  refresh_on_miss: 1\n"))
+            .contains("fastopm.refresh_on_miss must be true or false")
+    );
+    let e = error(&with_rule("fastopm:\n  refresh_on_miss_min_interval: 5x\n"));
+    assert!(e.contains("fastopm.refresh_on_miss_min_interval") && e.contains("5x"), "{e}");
+    assert!(
+        error(&with_rule("fastopm:\n  refresh_on_miss_min_interval: [1]\n"))
+            .contains("fastopm.refresh_on_miss_min_interval")
+    );
 }

@@ -278,10 +278,73 @@ pub fn write_compact_object(out: &mut Vec<u8>, map: &Map<String, Value>) {
     out.push(b'}');
 }
 
+/// Rough number of bytes a number takes when written (to size buffers, not to write).
+const NUMBER_LEN_ESTIMATE: usize = 13;
+
+/// Estimated length of [`write_compact`]'s output: exact except that string escapes are not
+/// counted and numbers count [`NUMBER_LEN_ESTIMATE`] bytes. For sizing buffers.
+pub fn compact_len_estimate(value: &Value) -> usize {
+    match value {
+        Value::Null | Value::Bool(true) => 4,
+        Value::Bool(false) => 5,
+        Value::Number(_) => NUMBER_LEN_ESTIMATE,
+        Value::String(s) => s.len() + 2,
+        Value::Array(items) => {
+            2 + items.len().saturating_sub(1)
+                + items.iter().map(compact_len_estimate).sum::<usize>()
+        }
+        Value::Object(map) => compact_object_len_estimate(map),
+    }
+}
+
+/// [`compact_len_estimate`] of an object.
+pub fn compact_object_len_estimate(map: &Map<String, Value>) -> usize {
+    2 + map.len().saturating_sub(1)
+        + map.iter().map(|(k, v)| k.len() + 3 + compact_len_estimate(v)).sum::<usize>()
+}
+
+/// Estimated length of [`write_value`]'s output at `indent` (same approximations as
+/// [`compact_len_estimate`]).
+pub fn pretty_len_estimate(value: &Value, indent: usize) -> usize {
+    let inner = 2 * (indent + 1);
+    match value {
+        Value::Array(items) if !items.is_empty() => {
+            // "[" + per item "\n" + spaces + value + "," + "\n" + spaces + "]"
+            2 + 2 * indent
+                + items.len()
+                + items
+                    .iter()
+                    .map(|v| 1 + inner + pretty_len_estimate(v, indent + 1))
+                    .sum::<usize>()
+        }
+        Value::Object(map) if !map.is_empty() => {
+            // per entry: "\n" + spaces + "\"key\": " + value + ","
+            2 + 2 * indent
+                + map.len()
+                + map
+                    .iter()
+                    .map(|(k, v)| 1 + inner + k.len() + 4 + pretty_len_estimate(v, indent + 1))
+                    .sum::<usize>()
+        }
+        other => compact_len_estimate(other),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn length_estimates_are_exact_without_escapes_or_numbers() {
+        let v = json!({"a": [true, null, "xy", [], {}], "b": {"c": "d", "e": false}, "": ""});
+        let mut compact = Vec::new();
+        write_compact(&mut compact, &v);
+        assert_eq!(compact_len_estimate(&v), compact.len());
+        let mut pretty = Vec::new();
+        write_value(&mut pretty, &v, 0);
+        assert_eq!(pretty_len_estimate(&v, 0), pretty.len());
+    }
 
     fn compact(v: &Value) -> String {
         let mut out = Vec::new();

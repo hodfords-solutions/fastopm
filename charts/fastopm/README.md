@@ -163,6 +163,33 @@ one of these setups:
 With independent caches, each replica fetches a package from the uplink the first time it is asked
 for it. `podDisruptionBudget.enabled=true` keeps replicas available during node drains.
 
+## Memory
+
+fastopm reads the container's memory limit and derives its budgets from it: 6% for parsed
+manifests, 10% for rendered responses, 12% for work in progress (uplink responses, merges,
+renders), each capped; requests wait instead of failing when the work budget is spent. Override
+them in the `fastopm:` section of `configMap` (`memory_limit`, `manifest_cache`, `render_cache`,
+`work_memory`). The image sets `MIMALLOC_PURGE_DELAY=10` so freed memory goes back to the OS
+quickly.
+
+Without a memory limit the budgets are derived from the node's RAM, and nothing stops the pod
+from growing until the node is short of memory, so set one:
+
+```yaml
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    memory: 1Gi
+```
+
+Measured peak RSS for a cold-cache install of a large project (568 parallel requests, packuments
+of up to 37 MB): ~430 MiB with a 512Mi limit, ~670 MiB with 2Gi. Peak RSS is roughly
+`1.2 × (manifest + render + work budgets + work of the largest packument) + 40 MiB`; the README of
+fastopm explains the terms. `RUST_LOG=warn,fastopm::memory=debug` (in `extraEnvVars`) logs the
+budgets in use every second.
+
 ## Coming from the Verdaccio chart
 
 Same keys, same meaning: `image.*`, `type`, `nameOverride`, `fullnameOverride`, `replicaCount`,
@@ -253,7 +280,7 @@ The `configMap` of the Verdaccio chart loads as it is, but `auth`, `web`, `middl
 | `startupProbe.*` | disabled, 10 s period, 30 failures | Startup probe on `GET /-/ping` |
 | `livenessProbe.*` | enabled, 5 s delay, 10 s period, 6 failures | Liveness probe on `GET /-/ping` |
 | `readinessProbe.*` | enabled, 2 s delay, 10 s period, 3 failures | Readiness probe on `GET /-/ping` |
-| `resources` | `{}` | Container resources |
+| `resources` | `{}` | Container resources. Set `limits.memory` (fastopm sizes its memory budgets from it): 1Gi is a comfortable default, 512Mi the tested minimum for large cold-cache installs, see [Memory](#memory) |
 | `podSecurityContext` | `fsGroup: 10001`, `fsGroupChangePolicy: OnRootMismatch`, `runAsNonRoot`, `RuntimeDefault` seccomp | Pod security context |
 | `securityContext` | `runAsUser: 10001`, `runAsNonRoot`, no privilege escalation, `drop: [ALL]`, `readOnlyRootFilesystem` | Container security context |
 | `serviceAccount.create` | `false` | Create a ServiceAccount |

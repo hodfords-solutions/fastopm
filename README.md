@@ -78,6 +78,7 @@ upstream request, and the server uses all CPU cores.
 | Packages previously published to a Verdaccio storage (served read-only) | Cloud storage backends: only the local filesystem layout |
 | Private upstream registries (`auth`, `headers` per uplink), HTTP(S) proxies | |
 | Loop detection with the `Via` header (`508` when a request comes back to the same `server_id`) | |
+| Opt-in, off by default: fetch fresh metadata when a requested version or tarball is missing from the cache ([`fastopm.refresh_on_miss`](#fastopm-only-options-fastopm)) | |
 
 ## Quick start
 
@@ -245,7 +246,9 @@ registry = "http://localhost:4873/"
 
 fastopm reads Verdaccio's `config.yaml`. Only the keys below are used. Relative paths are resolved
 against the directory of the config file. Durations use Verdaccio's format (`30s`, `2m`, `1h`, or a
-number of seconds).
+number of seconds). By default every client-visible behavior matches Verdaccio 7.1.0; options that
+change it live in the [`fastopm:` section](#fastopm-only-options-fastopm) and are all off by
+default.
 
 ### Top-level keys
 
@@ -259,10 +262,12 @@ number of seconds).
 | `log.type` | `stdout` | `stdout`, or `file` together with `log.path` |
 | `log.format` | `pretty` | `pretty`, `pretty-timestamped` or `json` |
 | `log.level` | `http` | `fatal`, `error`, `warn`, `http` (adds the access log), `info`, `debug`, `trace`. `RUST_LOG`, when set, replaces this mapping |
+| `log.colors` | colors on a terminal | As in Verdaccio: `pretty` output to stdout is colored only when stdout is a terminal (`NO_COLOR` disables, `FORCE_COLOR` forces); `false` never colors. Container logs therefore have no ANSI escape codes |
 | `http_proxy`, `https_proxy` | env `http_proxy`/`HTTP_PROXY`, `https_proxy`/`HTTPS_PROXY` | Outgoing proxy for uplink requests |
 | `no_proxy` | env `no_proxy`/`NO_PROXY` | Comma-separated string or list of hosts that bypass the proxy |
 | `user_agent` | `hidden` | Sent upstream as `User-Agent: npm (<user_agent>)`, and to clients as `X-Powered-By` |
 | `server_id` | 12 random hex characters | Identifier used in the `Via` header for loop detection. Set it when several instances share an upstream chain |
+| `fastopm` | none | fastopm-only options, see [below](#fastopm-only-options-fastopm). Verdaccio ignores this key |
 
 ### `uplinks.<name>`
 
@@ -280,8 +285,11 @@ Same options and defaults as Verdaccio:
 | `auth` | none | `type` (`basic` or `bearer`, default basic), and `token` (inline) or `token_env` (variable name, or `true` for `NPM_TOKEN`). Without either, `NPM_TOKEN` is read |
 | `http_proxy`, `https_proxy`, `no_proxy` | global values | Per-uplink proxy settings |
 
-`agent_options` is accepted and ignored silently. Any other uplink option (for example `strict_ssl`
-or `ca`) is ignored with a warning.
+`agent_options` works like Verdaccio's default HTTP agent: `maxSockets` (default `40`) limits the
+requests in flight to that uplink at once (more wait for a free slot), `maxFreeSockets` (default
+`10`) the idle connections kept. As in Node.js, an `agent_options` object without `maxSockets`
+means no limit. Other agent options are ignored silently. Any other uplink option (for example
+`strict_ssl` or `ca`) is ignored with a warning.
 
 ### `packages.<pattern>`
 
@@ -293,6 +301,77 @@ or `ca`) is ignored with a warning.
 `access`, `publish` and `unpublish` are accepted but not enforced: every client that can reach
 fastopm can read every package. When there is no `**` rule, fastopm adds one without `proxy` (serve
 from storage only) and logs a warning; Verdaccio would refuse those packages instead.
+
+### fastopm-only options (`fastopm:`)
+
+Options that make fastopm behave differently from Verdaccio, and memory settings Verdaccio does not
+have. They sit under a top-level `fastopm:` key, which Verdaccio ignores, so the same
+`config.yaml` still works for both. Behavior options are off by default. An unknown key inside
+`fastopm:` is ignored with a warning; a value of the wrong type stops startup with an error.
+
+| Option | Default | Meaning |
+|---|---|---|
+| `refresh_on_miss` | `false` | Fetch fresh metadata when a requested version or tarball is missing from the cache (below) |
+| `refresh_on_miss_min_interval` | `30s` | Minimum time between two such fetches for the same package. `0` removes the limit |
+| `memory_limit` | `auto` | Memory available to fastopm, the base of the three defaults below. `auto`: the container's cgroup memory limit, else the machine's RAM (`MemTotal`), else 2 GiB |
+| `manifest_cache` | 6% of `memory_limit`, at most 256 MiB | Parsed manifests kept in RAM, counted at their real size. `0` disables the cache |
+| `render_cache` | 10% of `memory_limit`, at most 512 MiB | Rendered response bodies (and their compressed copies) kept in RAM. `0` disables it |
+| `work_memory` | 12% of `memory_limit`, at most 1 GiB | Transient memory of work in progress (uplink responses, merges, renders, tarball downloads). Work that does not fit waits; `0` removes the limit |
+
+Sizes are a number of bytes or a number with a unit: `kb`, `mb`, `gb` (powers of 1024, as
+Verdaccio's `max_body_size`), or Kubernetes-style `Ki`, `Mi`, `Gi`. The resolved values are logged
+at startup (`memory budgets ...`). See [Memory](#memory) for how they add up and how to choose a
+container limit.
+
+**`refresh_on_miss`.** Verdaccio, and fastopm by default, uses cached metadata without asking the
+uplink until the uplink's `maxage` expires. A version published upstream in the meantime is
+invisible: `GET /pkg/1.2.3` answers `404 this version doesn't exist` and its tarball
+`404 no such file available` until then. A short `maxage` fixes that by asking the uplink much more
+often for every package. With `refresh_on_miss: true` you can keep a long `maxage` (fewer upstream
+requests, faster installs) and still get new versions as soon as a client asks for them:
+
+- `GET /:package/:version` (version or dist-tag) and `GET /:package/-/:filename`: when the version,
+  tag or file is not in the cached metadata **and** that metadata is being served from cache
+  because the first uplink of the package is within `maxage`, fastopm syncs the package with its
+  uplinks right away, ignoring `maxage`. It is a normal sync: `If-None-Match` with the stored ETag,
+  merge, write to storage. Then it looks again; found → served as usual (the tarball is downloaded
+  and cached), still missing → the same 404 as before. When `maxage` has already expired, the
+  normal sync asks the uplink anyway and nothing extra happens.
+- `GET /:package` (full or abbreviated metadata) is **not** affected: it still follows `maxage`.
+  So an install that resolves a semver range without a lockfile (`npm install pkg@^1`) still sees a
+  new version only after `maxage`, or after some client has requested that exact version or
+  tarball. The option helps clients that ask for an exact version: lockfile installs, `npm view`,
+  `npm install pkg@1.2.3`.
+- Abuse: fastopm does not authenticate clients, so a client could ask for versions that do not
+  exist to make fastopm call the uplink. A package is synced this way at most once per
+  `refresh_on_miss_min_interval`; requests in between get the cached answer (404). Concurrent
+  requests for the same package share one sync.
+- Failures: if the uplink is down, times out or its circuit breaker is open (the usual `retry`,
+  `max_fails` and `fail_timeout` rules apply), the client gets exactly what it would get with the
+  option off, typically the 404; never a 5xx caused by this option.
+- Packages whose `packages` rule has no `proxy` are never synced.
+
+Example: keep metadata for a day, but pick up new versions on demand.
+
+```yaml
+storage: ./storage
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+    maxage: 24h
+packages:
+  '@*/*':
+    access: $all
+    proxy: npmjs
+  '**':
+    access: $all
+    proxy: npmjs
+fastopm:
+  refresh_on_miss: true
+  refresh_on_miss_min_interval: 30s
+```
+
+Verdaccio sharing the same storage keeps working; it simply does not have this behavior.
 
 ### Ignored keys
 
@@ -318,7 +397,60 @@ config key `auth` is not supported by fastopm and is ignored
 The Docker image also reads `VERDACCIO_PORT` (default `4873`), `VERDACCIO_PROTOCOL` (default `http`)
 and `VERDACCIO_ADDRESS` (default `[::]`) to build the `--listen` argument.
 
-The in-memory manifest cache is limited to 256 MiB. It is not configurable yet.
+The Docker image also sets `MIMALLOC_PURGE_DELAY=10` (see [Memory](#memory)).
+
+### Memory
+
+fastopm parses each packument into a JSON tree, which takes 1.7× (packuments with long readmes) to
+9× (many small fields) the size of the JSON: `typescript` (15 MB of JSON) is ~120 MiB in RAM,
+`@firebase/firestore` (27 MB) ~135 MiB, `vite` (37 MB) ~65 MiB. Everything that holds such data is
+bounded:
+
+- **Manifest cache** (`manifest_cache`): trees counted at their real size. A tree larger than half
+  the cache is not kept; its small metadata entry is, so requests for it are still answered from
+  the render cache, and the tree is read again from disk only when a body must be rendered or the
+  package synced.
+- **Render cache** (`render_cache`): rendered bodies plus room for their compressed copy.
+- **Work** (`work_memory`): uplink bodies as they stream in and their trees, merges, disk writes,
+  renders and compression of bodies outside the render cache, tarballs being downloaded. Work takes
+  its memory before allocating it; when the budget is spent, new work waits (requests get slower,
+  not errors). To guarantee progress, the oldest work item may go past the budget, and an item
+  larger than the whole budget runs alone: so one very large packument (above) is always served.
+- **Uplink connections**: at most `agent_options.maxSockets` (40) requests per uplink at once.
+- **Threads**: large documents are parsed, written, rendered and compressed on a pool of as many
+  threads as CPUs; Tokio's blocking pool is capped at 32 threads.
+
+The binary uses mimalloc. `MIMALLOC_PURGE_DELAY=10` (set in the Docker image; set it yourself when
+running the binary another way) returns freed memory to the OS after 10 ms instead of 1 s, which
+lowers peak RSS under a burst by ~30%.
+
+**Estimating peak memory.** Roughly
+
+```text
+peak RSS ≈ 1.2 × (manifest_cache + render_cache + work_memory + largest packument work) + 40 MiB
+```
+
+where "largest packument work" is the memory one sync or render of the largest packument you use
+needs: its tree plus about twice its JSON size (~175 MiB for `@firebase/firestore`, ~150 MiB for
+`typescript`), and 40 MiB covers the process, threads and connection buffers. Leave another ~10%
+of the container limit for the page cache of files being written. With the defaults this gives
+~420 MiB for a 512 MiB limit and ~940 MiB at most for 2 GiB (the budgets are rarely all full at
+once: 666 MiB measured).
+
+Measured with [`bench/memtest.mjs`](bench/memtest.mjs) (cold cache, 284 packages including 24
+large packuments such as `typescript`, `vite`, `@firebase/firestore`, `@types/node`, 568 parallel
+`GET /:package` per round, 3 cold rounds and a warm one, 6 CPUs):
+
+| Container limit | Before (0.1.0) | After, default settings |
+|---|---|---|
+| 512 MiB | OOM-killed in the first round | not killed, peak RSS 413–444 MiB, 160 MiB after the load |
+| 2 GiB | OOM-killed in the first round (peak RSS 1.95 GiB) | not killed, peak RSS 666 MiB, 390 MiB after the load |
+
+**Choosing `resources`.** 512 MiB is enough for a cold-cache install of a large project, with
+smaller caches (more renders from disk under load). 1 GiB is a comfortable default; use 2 GiB or
+more for many concurrent CI installs. Set the limit, not only the request: the budgets follow the
+cgroup limit. To watch the budgets live, run with `RUST_LOG=warn,fastopm::memory=debug` (one line
+per second: RSS, threads, work memory used and peak, cache sizes).
 
 ## Migrating from Verdaccio and rolling back
 
@@ -358,7 +490,7 @@ The reference is `verdaccio@7.1.0`, run unmodified.
 are sent to Verdaccio and to fastopm, each with its own mock upstream registry and an empty or
 pre-seeded storage. For every step it compares status, headers and body byte for byte, the requests
 each mock upstream received (method, path, headers, retries), and the storage tree at the end. It
-runs offline. Latest result: 62 scenarios, 57 identical, 5 allowed differences, 0 unexpected
+runs offline. Latest result: 66 scenarios, 58 identical, 8 allowed differences, 0 unexpected
 differences. Every allowed difference is listed with its reason in `compat/lib/rules.mjs`:
 
 | Allowed difference | Verdaccio | fastopm |
@@ -366,6 +498,7 @@ differences. Every allowed difference is listed with its reason in `compat/lib/r
 | Write routes (publish, unpublish, dist-tags, user, token, audit), 3 scenarios | its own auth and publish errors (for example `401`) | `405 {"error": "unsupported registry call"}` |
 | Invalid client `Authorization` header | `401` | ignored, request served; nothing from the header is sent upstream |
 | Path segment starting with `.` (`GET /.hidden`) | never answers | `404` |
+| `fastopm.refresh_on_miss: true` (opt-in, off by default), 3 scenarios | `404` for a version or tarball missing from metadata cached within `maxage` | fetches fresh metadata and serves it |
 
 The harness also runs in CI after the release build. That job does not fail the workflow yet
 (controlled by the `COMPAT_REQUIRED` repository variable).

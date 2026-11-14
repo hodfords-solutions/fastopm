@@ -78,6 +78,10 @@ ENV FASTOPM_APPDIR=/opt/fastopm \
     VERDACCIO_PORT=4873 \
     VERDACCIO_PROTOCOL=http \
     VERDACCIO_ADDRESS=[::]
+# mimalloc (fastopm's allocator) gives freed memory back to the OS after 10 ms instead of its
+# 1 s default: under a cold-cache `npm install` that keeps peak RSS ~30% lower, the difference
+# between surviving a 512Mi limit or being OOM-killed (bench/memtest.mjs, README "Memory").
+ENV MIMALLOC_PURGE_DELAY=10
 ENV HOME=$FASTOPM_APPDIR
 
 # ca-certificates: TLS to the uplinks; dumb-init: PID 1 like the Verdaccio image.

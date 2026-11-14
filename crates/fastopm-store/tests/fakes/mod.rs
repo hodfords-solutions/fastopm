@@ -207,6 +207,9 @@ pub struct UplinkState {
     pub manifest_calls: AtomicUsize,
     pub etags_sent: Mutex<Vec<Option<String>>>,
     pub manifest_delay: Mutex<Duration>,
+    /// Manifest requests in progress now, and the most seen at once.
+    pub in_flight: AtomicUsize,
+    pub max_in_flight: AtomicUsize,
     pub tarballs: Mutex<HashMap<String, TarballAnswer>>,
     pub tarball_calls: AtomicUsize,
 }
@@ -314,10 +317,13 @@ impl Uplink for FakeUplink {
     ) -> Result<ManifestFetch, UplinkError> {
         self.state.manifest_calls.fetch_add(1, Ordering::SeqCst);
         self.state.etags_sent.lock().unwrap().push(etag.map(str::to_owned));
+        let now = self.state.in_flight.fetch_add(1, Ordering::SeqCst) + 1;
+        self.state.max_in_flight.fetch_max(now, Ordering::SeqCst);
         let delay = *self.state.manifest_delay.lock().unwrap();
         if !delay.is_zero() {
             tokio::time::sleep(delay).await;
         }
+        self.state.in_flight.fetch_sub(1, Ordering::SeqCst);
         let answer = self.state.manifests.lock().unwrap().get(name).cloned();
         match answer.unwrap_or(ManifestAnswer::Err(UplinkError::NotFound)) {
             ManifestAnswer::Ok(manifest, etag) => Ok(ManifestFetch::Fetched { manifest, etag }),
@@ -379,6 +385,8 @@ pub fn uplink_config(name: &str, url: &str) -> UplinkConfig {
         http_proxy: None,
         https_proxy: None,
         no_proxy: None,
+        max_sockets: Some(40),
+        max_free_sockets: 10,
     }
 }
 
@@ -406,6 +414,7 @@ pub fn config(uplinks: &[(&str, &str)], packages: Vec<PackageRule>) -> Config {
         server_id: "test".into(),
         public_url: None,
         forwarded_proto_header: "x-forwarded-proto".into(),
+        fastopm: Default::default(),
         warnings: Vec::new(),
     }
 }
@@ -422,13 +431,41 @@ pub fn store_with(
     packages: Vec<PackageRule>,
     options: StoreOptions,
 ) -> TestStore {
+    store_with_config(uplinks, packages, options, |_| {})
+}
+
+/// [`store_with`], with a chance to change the config first.
+pub fn store_with_config(
+    uplinks: Vec<FakeUplink>,
+    packages: Vec<PackageRule>,
+    options: StoreOptions,
+    edit: impl FnOnce(&mut Config),
+) -> TestStore {
     let pairs: Vec<(String, String)> =
         uplinks.iter().map(|u| (u.name.clone(), u.url.clone())).collect();
     let refs: Vec<(&str, &str)> = pairs.iter().map(|(n, u)| (n.as_str(), u.as_str())).collect();
-    let cfg = Arc::new(config(&refs, packages));
+    let mut cfg = config(&refs, packages);
+    edit(&mut cfg);
     let map: IndexMap<String, FakeUplink> =
         uplinks.into_iter().map(|u| (u.name.clone(), u)).collect();
-    Store::new(cfg, FakeStorage::default(), map, options)
+    Store::new(Arc::new(cfg), FakeStorage::default(), map, options)
+}
+
+/// Like [`store`], with `fastopm.refresh_on_miss` on and the given minimum interval.
+pub fn store_refresh_on_miss(
+    uplinks: Vec<FakeUplink>,
+    proxy: &[&str],
+    min_interval: Duration,
+) -> TestStore {
+    let pairs: Vec<(String, String)> =
+        uplinks.iter().map(|u| (u.name.clone(), u.url.clone())).collect();
+    let refs: Vec<(&str, &str)> = pairs.iter().map(|(n, u)| (n.as_str(), u.as_str())).collect();
+    let mut cfg = config(&refs, vec![rule("**", proxy)]);
+    cfg.fastopm.refresh_on_miss = true;
+    cfg.fastopm.refresh_on_miss_min_interval = min_interval;
+    let map: IndexMap<String, FakeUplink> =
+        uplinks.into_iter().map(|u| (u.name.clone(), u)).collect();
+    Store::new(Arc::new(cfg), FakeStorage::default(), map, StoreOptions::default())
 }
 
 pub async fn collect(body: TarballBody) -> Result<Vec<u8>, io::Error> {

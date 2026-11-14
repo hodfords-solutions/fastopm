@@ -105,7 +105,14 @@ console.log(`candidate: ${candidateLabel}`);
 console.log(`scenarios: ${selected.length}${values.keep ? `  (temp: ${tmpRoot})` : ''}\n`);
 
 const t0 = Date.now();
-const opts = { baseline, candidate, candidatePatch, tmpRoot, keep: values.keep };
+const opts = {
+  baseline,
+  candidate,
+  candidatePatch,
+  candidateIsBin: Boolean(values['candidate-bin']),
+  tmpRoot,
+  keep: values.keep,
+};
 const results = await mapLimit(selected, Math.max(1, Number(values.jobs) || 1), async (s) => {
   const r = await runScenario(s, opts);
   printScenario(r, { verbose: values.verbose });

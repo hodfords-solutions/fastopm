@@ -6,6 +6,10 @@
 //! an `access` rule under `packages` (fastopm does not authenticate clients). A config file that
 //! Verdaccio accepts must load without error.
 //!
+//! The top-level `fastopm:` section holds fastopm-only options ([`FastopmConfig`]): behavior
+//! that differs from Verdaccio, every option off by default. Verdaccio ignores unknown top-level
+//! keys, so the same file still works for both.
+//!
 //! Verdaccio reference: `packages/config/src/` (`config.ts`, `parse.ts`, `config-path.ts`,
 //! `address.ts`, `uplinks.ts`, `package-access.ts`) and `getMatchedPackagesSpec` in
 //! `packages/core/core/src/auth-utils.ts`.
@@ -18,9 +22,11 @@ use indexmap::IndexMap;
 mod js;
 pub mod listen;
 mod load;
+pub mod memory;
 pub mod pattern;
 
 pub use listen::{ListenAddress, Scheme, parse_address};
+pub use memory::{MemoryOptions, MemoryPlan};
 pub use pattern::pattern_matches;
 
 /// Reads one environment variable. [`Config::load`] uses the process environment; tests pass a
@@ -104,9 +110,43 @@ pub struct Config {
     /// Lower-cased name of the header carrying the client protocol:
     /// `VERDACCIO_FORWARDED_PROTO` or `x-forwarded-proto`.
     pub forwarded_proto_header: String,
+    /// The `fastopm:` section (fastopm-only options, all off by default).
+    pub fastopm: FastopmConfig,
     /// Human-readable warnings collected during load (ignored keys, ignored `access` rules,
     /// multiple listen addresses...). The binary logs them once at startup.
     pub warnings: Vec<String>,
+}
+
+/// The top-level `fastopm:` section: improvements over Verdaccio that change what clients see,
+/// each off by default, and resource settings Verdaccio does not have (memory budgets). Absent or `null` → all defaults. Unknown keys inside it produce a
+/// warning; a value of the wrong type is a [`ConfigError::Invalid`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FastopmConfig {
+    /// `refresh_on_miss` (default `false`): when `GET /:package/:version` or
+    /// `GET /:package/-/:filename` asks for a version, dist-tag or tarball the cached manifest
+    /// does not have, and that manifest is being served from cache because it is within
+    /// `maxage`, sync it with the uplinks now (ignoring `maxage`) and look again. Verdaccio
+    /// answers 404 until `maxage` expires.
+    pub refresh_on_miss: bool,
+    /// `refresh_on_miss_min_interval` (default `30s`): minimum time between two such forced
+    /// syncs of the same package, so clients asking for versions that do not exist cannot turn
+    /// every request into an uplink request. Same interval syntax as `maxage`; `0` removes the
+    /// limit (concurrent requests still share one sync).
+    pub refresh_on_miss_min_interval: Duration,
+    /// Memory budgets: `memory_limit`, `manifest_cache`, `render_cache`, `work_memory` (sizes
+    /// such as `512mb`; `memory_limit: auto` is the default). Absent options are derived from
+    /// the container memory limit, see [`memory::MemoryPlan::resolve`].
+    pub memory: MemoryOptions,
+}
+
+impl Default for FastopmConfig {
+    fn default() -> Self {
+        Self {
+            refresh_on_miss: false,
+            refresh_on_miss_min_interval: Duration::from_secs(30),
+            memory: MemoryOptions::default(),
+        }
+    }
 }
 
 /// One entry of `uplinks`.
@@ -146,6 +186,13 @@ pub struct UplinkConfig {
     pub https_proxy: Option<String>,
     /// Per-uplink `no_proxy`; `None` when the key is absent (then the global list applies).
     pub no_proxy: Option<Vec<String>>,
+    /// `agent_options.maxSockets`: requests in flight to this uplink at once. Verdaccio's
+    /// default `agent_options` gives 40; an `agent_options` without `maxSockets` gives Node.js'
+    /// `Infinity` (`None`).
+    pub max_sockets: Option<u32>,
+    /// `agent_options.maxFreeSockets`: idle connections kept (10 by default, Node.js' 256 when
+    /// `agent_options` is set without it).
+    pub max_free_sockets: usize,
 }
 
 /// `uplinks.<name>.auth`.
@@ -200,11 +247,20 @@ pub struct LogConfig {
     pub format: LogFormat,
     /// `level`, default `http`.
     pub level: LogLevel,
+    /// `colors`: `Some(false)` never colors; otherwise colors only when stdout is a terminal
+    /// (Verdaccio's `hasColors` + `colorette`: `NO_COLOR` disables, `FORCE_COLOR` forces). Never
+    /// for `type: file`.
+    pub colors: Option<bool>,
 }
 
 impl Default for LogConfig {
     fn default() -> Self {
-        Self { target: LogTarget::Stdout, format: LogFormat::Pretty, level: LogLevel::Http }
+        Self {
+            target: LogTarget::Stdout,
+            format: LogFormat::Pretty,
+            level: LogLevel::Http,
+            colors: None,
+        }
     }
 }
 

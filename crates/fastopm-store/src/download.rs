@@ -12,6 +12,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 
 use bytes::Bytes;
+use fastopm_core::memory::PassiveHold;
 use fastopm_core::{RegistryError, TarballBody};
 use tokio::sync::Notify;
 
@@ -40,6 +41,8 @@ pub(crate) struct Download {
     state: Mutex<State>,
     notify: Notify,
     subscribers: AtomicUsize,
+    /// Keeps the buffered chunks counted in the work budget until the last client is done.
+    hold: Mutex<Option<PassiveHold>>,
 }
 
 impl Download {
@@ -49,6 +52,7 @@ impl Download {
             state: Mutex::new(State { head: Head::Pending, chunks: Vec::new(), end: None }),
             notify: Notify::new(),
             subscribers: AtomicUsize::new(0),
+            hold: Mutex::new(None),
         })
     }
 
@@ -79,6 +83,11 @@ impl Download {
 
     pub(crate) fn push(&self, chunk: Bytes) {
         self.update(|s| s.chunks.push(chunk));
+    }
+
+    /// Keep `hold` until this download is dropped (every client gone).
+    pub(crate) fn keep(&self, hold: PassiveHold) {
+        *self.hold.lock().unwrap_or_else(|e| e.into_inner()) = Some(hold);
     }
 
     pub(crate) fn finish(&self, end: Result<(), &io::Error>) {

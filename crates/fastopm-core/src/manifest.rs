@@ -125,9 +125,21 @@ impl Manifest {
     /// Storage form: compact JSON, the same bytes as Verdaccio's `JSON.stringify(manifest)`
     /// (JavaScript key order: integer-like keys first; JavaScript number forms).
     pub fn to_compact_vec(&self) -> Vec<u8> {
-        let mut out = Vec::with_capacity(4096);
+        // sized up front: a multi-megabyte buffer grown by doubling would briefly need 3×
+        let mut out = Vec::with_capacity(self.compact_len_estimate());
         crate::json::write_compact_object(&mut out, &self.0);
         out
+    }
+
+    /// About the length of [`Manifest::to_compact_vec`] (escapes included as a 3% margin).
+    pub fn compact_len_estimate(&self) -> usize {
+        let n = crate::json::compact_object_len_estimate(&self.0);
+        n + n / 32 + 64
+    }
+
+    /// Heap bytes of the parsed tree ([`crate::memory::value_heap_bytes`]).
+    pub fn heap_bytes(&self) -> usize {
+        crate::memory::map_heap_bytes(&self.0)
     }
 
     /// The underlying object.

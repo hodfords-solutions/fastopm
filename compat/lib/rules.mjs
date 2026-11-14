@@ -62,8 +62,18 @@ export const NORMALISATIONS = [
 
 /**
  * Scenarios (or steps) whose differences are expected by design and do not fail the run.
- * key: scenario name; value: { reason, steps?: [step names] (default: whole scenario) }.
+ * key: scenario name; value: { reason, steps?: [step names] (default: whole scenario),
+ * storage?: true (with `steps`: the end-of-scenario storage may differ too) }.
+ * A failed `candidateExpect` (runner.mjs) is never excused.
  */
+const REFRESH_ON_MISS_REASON =
+  'fastopm-only option `fastopm.refresh_on_miss` (off by default, Verdaccio ignores the section): ' +
+  'a version, dist-tag or tarball missing from a manifest cached within maxage makes fastopm sync ' +
+  'the manifest with the uplink (If-None-Match, merge, write) at most once per ' +
+  'refresh_on_miss_min_interval; Verdaccio answers 404 from cache until maxage expires. Hence the ' +
+  'extra uplink request, the 200 instead of 404, the newer cached package.json (and _rev) and, ' +
+  'after the sync, the newer data served. candidateExpect checks what fastopm answers there.';
+
 export const ALLOWED_DIFFS = {
   'metadata/package-name-edge-cases': {
     steps: ['GET /.hidden (dotfile segment)'],
@@ -86,6 +96,28 @@ export const ALLOWED_DIFFS = {
   },
   'write-routes/user-and-token': {
     reason: 'fastopm has no user/login/token routes: they answer 405 (PLAN §1).',
+  },
+  'fastopm/refresh-on-miss-new-version': {
+    steps: [
+      'GET /simple-pkg/1.2.0',
+      'GET /simple-pkg/-/simple-pkg-1.2.0.tgz',
+      'GET /simple-pkg/latest after the sync',
+    ],
+    storage: true,
+    reason: REFRESH_ON_MISS_REASON,
+  },
+  'fastopm/refresh-on-miss-tarball-first': {
+    steps: ['GET /simple-pkg/-/simple-pkg-1.2.0.tgz'],
+    storage: true,
+    reason: REFRESH_ON_MISS_REASON,
+  },
+  'fastopm/refresh-on-miss-rate-limit': {
+    steps: [
+      'GET /simple-pkg/9.9.9 (forced sync, 304)',
+      'GET simple-pkg-9.9.9.tgz (after interval: forced sync)',
+    ],
+    storage: true,
+    reason: REFRESH_ON_MISS_REASON,
   },
   'write-routes/dist-tags-and-audit': {
     reason:

@@ -4,8 +4,8 @@
 //! |---|---|
 //! | `GET /-/ping` | `200 {}` |
 //! | `GET /:package` | manifest; abbreviated when the top-priority `Accept` type is `application/vnd.npm.install-v1+json` |
-//! | `GET /:package/:version` | one version (exact version or dist-tag) |
-//! | `GET /:package/-/:filename` | tarball, `application/octet-stream`, `Content-Length` when known |
+//! | `GET /:package/:version` | one version (exact version or dist-tag); with `fastopm.refresh_on_miss`, a miss in a manifest cached within `maxage` syncs it first |
+//! | `GET /:package/-/:filename` | tarball, `application/octet-stream`, `Content-Length` when known (`refresh_on_miss`: as above) |
 //! | `GET /` | `404 {"error": "Web interface is disabled in the config file"}` |
 //! | other `GET`/`HEAD` | `404 {"error": "resource not found"}` |
 //! | `OPTIONS` (any path) | `204`, CORS preflight as `cors()` answers it |
@@ -40,7 +40,11 @@
 //! Every response carries `Access-Control-Allow-Origin: *` and `X-Powered-By: <user_agent>`
 //! (`X-Powered-By: Express` for the preflight and the dot-segment 404, which Verdaccio answers
 //! before its `user-agent` middleware). `Authorization` from clients is ignored. Rendered bodies
-//! are cached by `(name, generation, form, base URL)`.
+//! are cached by `(name, generation, form, base URL)` within [`ServerOptions::render_cache_bytes`];
+//! concurrent misses of one body share a single render, which takes its memory (and the
+//! manifest's, when it has to be read from disk) from the store's work budget
+//! ([`fastopm_store::Store::memory`]). A body too large for the cache keeps that memory counted
+//! until it has been sent.
 //!
 //! Verdaccio reference: `packages/server/express/src/server.ts`, `packages/api/src/package.ts`,
 //! `ping.ts`, `packages/middleware/src/middlewares/` (`encode-pkg.ts`, `antiLoop.ts`,
@@ -57,6 +61,7 @@ mod route;
 use std::convert::Infallible;
 use std::net::SocketAddr;
 use std::sync::Arc;
+use std::sync::atomic::AtomicUsize;
 use std::time::Instant;
 
 use axum::Router;
@@ -84,10 +89,13 @@ use crate::negotiate::Coding;
 const WEB_DISABLED: &str = "Web interface is disabled in the config file";
 /// Express `compression` default threshold.
 const COMPRESSION_THRESHOLD: usize = 1024;
-/// Byte budget of the rendered-body cache.
-const RENDER_CACHE_BYTES: usize = 64 * 1024 * 1024;
-/// Bodies at least this large are compressed on the blocking pool.
+/// Default byte budget of the rendered-body cache ([`ServerOptions`]).
+pub const DEFAULT_RENDER_CACHE_BYTES: usize = 64 * 1024 * 1024;
+/// Bodies at least this large are compressed on the [`fastopm_core::heavy`] pool.
 const BLOCKING_COMPRESSION_BYTES: usize = 256 * 1024;
+/// Manifests whose `package.json` is at least this large are rendered on the
+/// [`fastopm_core::heavy`] pool.
+const BLOCKING_RENDER_BYTES: u64 = 256 * 1024;
 /// `tracing` target of the access log (Verdaccio's `http` level).
 pub const ACCESS_LOG_TARGET: &str = "fastopm_server::access";
 
@@ -105,11 +113,41 @@ impl<S, U> Clone for AppState<S, U> {
     }
 }
 
+/// Tuning knobs of the server.
+#[derive(Debug, Clone)]
+pub struct ServerOptions {
+    /// Byte budget of the rendered-body cache (bodies plus room for compressed copies); `0`
+    /// disables it.
+    pub render_cache_bytes: usize,
+    /// Updated with the bytes the render cache counts (for the binary's memory report).
+    pub render_cache_used: Arc<AtomicUsize>,
+}
+
+impl Default for ServerOptions {
+    fn default() -> Self {
+        Self {
+            render_cache_bytes: DEFAULT_RENDER_CACHE_BYTES,
+            render_cache_used: Arc::new(AtomicUsize::new(0)),
+        }
+    }
+}
+
 /// Build the router. The binary serves it with `axum::serve` on the configured listener; serve
 /// it with `into_make_service_with_connect_info::<SocketAddr>()` so the client address reaches
 /// uplinks as `X-Forwarded-For` and the access log.
 pub fn router<S: PackageStorage, U: Uplink>(state: AppState<S, U>) -> Router {
-    let server = Arc::new(Server { state, cache: RenderCache::new(RENDER_CACHE_BYTES) });
+    router_with(state, ServerOptions::default())
+}
+
+/// [`router`] with explicit [`ServerOptions`].
+pub fn router_with<S: PackageStorage, U: Uplink>(
+    state: AppState<S, U>,
+    options: ServerOptions,
+) -> Router {
+    let memory = Arc::clone(state.store.memory());
+    let cache = RenderCache::new(options.render_cache_bytes, memory)
+        .with_gauge(Arc::clone(&options.render_cache_used));
+    let server = Arc::new(Server { state, cache });
     Router::new().fallback(move |request: Request| {
         let server = Arc::clone(&server);
         async move { server.handle(request).await }
@@ -341,7 +379,17 @@ impl<S: PackageStorage, U: Uplink> Server<S, U> {
         } else {
             Variant::Full
         };
-        let snapshot = self.state.store.get_manifest(name, ctx.remote.as_deref()).await?;
+        let store = &self.state.store;
+        let remote = ctx.remote.as_deref();
+        let handle = match &version {
+            None => store.open_manifest(name, remote).await?,
+            // `fastopm.refresh_on_miss`: a version or tag missing from a cached manifest
+            Some(query) => {
+                store
+                    .open_manifest_for(name, remote, |m| fastopm_render::has_version(m, query))
+                    .await?
+            }
+        };
         let config = &self.state.config;
         let forwarded_proto = ctx.header(&config.forwarded_proto_header);
         let base = fastopm_render::public_base_url(&BaseUrlInput {
@@ -355,27 +403,17 @@ impl<S: PackageStorage, U: Uplink> Server<S, U> {
             None => Form::Manifest(variant),
             Some(version) => Form::Version(version, variant),
         };
-        let body = match self.cache.get(name, snapshot.generation, &form, base.as_deref()) {
+        let generation = handle.generation();
+        let body = match self.cache.get(name, generation, &form, base.as_deref()) {
             Some(body) => body,
             None => {
-                let manifest = &snapshot.manifest;
-                let rendered = match &form {
-                    Form::Manifest(variant) => {
-                        fastopm_render::render_manifest(manifest, *variant, base.as_deref())
-                    }
-                    Form::Version(query, variant) => {
-                        fastopm_render::render_version(manifest, query, *variant, base.as_deref())?
-                    }
-                };
-                let body = Arc::new(CachedBody::new(rendered));
-                self.cache.insert(
-                    name,
-                    snapshot.generation,
-                    form,
-                    base.as_deref(),
-                    Arc::clone(&body),
-                );
-                body
+                let cell = self.cache.in_flight(name, generation, &form, base.as_deref());
+                let rendered = cell
+                    .get_or_try_init(|| self.render(name, handle, &form, base.as_deref()))
+                    .await
+                    .cloned();
+                self.cache.land(name, generation, &form, base.as_deref(), &cell);
+                rendered?
             }
         };
         Ok(Reply::Json(Json {
@@ -386,6 +424,67 @@ impl<S: PackageStorage, U: Uplink> Server<S, U> {
             extra: HeaderMap::new(),
             error: None,
         }))
+    }
+
+    /// Render a body missing from the cache (one caller per body, see [`RenderCache::in_flight`])
+    /// and cache it. The manifest is read first when it is not in RAM (that read counts its own
+    /// memory); the render then reserves room for the body and its compressed copy (1.5× the
+    /// `package.json` size for a full body, 2× for an abbreviated one).
+    async fn render(
+        &self,
+        name: &str,
+        handle: fastopm_store::PackageHandle,
+        form: &Form,
+        base: Option<&str>,
+    ) -> Result<Arc<CachedBody>, RegistryError> {
+        // Waiting for memory must not keep a large tree alive: a tree the manifest cache does
+        // not hold is read again within the reservation.
+        let mut handle = handle;
+        handle.release_uncached();
+        let file_len = usize::try_from(handle.file_len()).unwrap_or(usize::MAX);
+        // a full body is ~1.0–1.4× the file and its buffer is sized once; an abbreviated one is
+        // smaller but grows by doubling (up to ~1.6× the file); plus a compressed copy (~15%)
+        let estimate = match form {
+            Form::Manifest(Variant::Full) | Form::Version(_, Variant::Full) => file_len / 2 * 3,
+            Form::Manifest(Variant::Abbreviated) | Form::Version(_, Variant::Abbreviated) => {
+                file_len.saturating_mul(2)
+            }
+        };
+        let memory = self.state.store.memory();
+        let mut work = memory.reserve(estimate).await;
+        let snapshot = handle.load_within(&mut work).await?;
+        drop(handle);
+        // the file changed since the handle was made: a body of the new content may be cached
+        if let Some(body) = self.cache.get(name, snapshot.generation, form, base) {
+            return Ok(body);
+        }
+        let manifest = Arc::clone(&snapshot.manifest);
+        let (form_owned, base_owned) = (form.clone(), base.map(str::to_owned));
+        let render = move || match &form_owned {
+            Form::Manifest(variant) => {
+                Ok(fastopm_render::render_manifest(&manifest, *variant, base_owned.as_deref()))
+            }
+            Form::Version(query, variant) => {
+                fastopm_render::render_version(&manifest, query, *variant, base_owned.as_deref())
+            }
+        };
+        let rendered = if snapshot.file_len() >= BLOCKING_RENDER_BYTES {
+            fastopm_core::heavy::run(render).await?
+        } else {
+            render()?
+        };
+        let generation = snapshot.generation;
+        drop(snapshot);
+        let len = rendered.body.len();
+        let body = Arc::new(CachedBody::new(rendered));
+        if self.cache.would_keep(len) {
+            drop(work);
+            self.cache.insert(name, generation, form.clone(), base, Arc::clone(&body));
+        } else {
+            work.shrink_to(cache::body_cost(len));
+            body.set_hold(work.into_passive());
+        }
+        Ok(body)
     }
 
     /// Apply the response-wide rules and add the common headers.
@@ -452,24 +551,36 @@ impl<S: PackageStorage, U: Uplink> Server<S, U> {
         } else {
             negotiate::negotiate_coding(ctx.header(ACCEPT_ENCODING).as_deref())
         };
+        // a body outside the render cache stays counted in the work budget until it is sent
+        let keep = body.holds_memory().then(|| Arc::clone(&body));
         if coding == Coding::Identity {
             headers.insert(header::CONTENT_LENGTH, HeaderValue::from(raw.len()));
             if !ctx.head {
-                *response.body_mut() = Body::from(raw);
+                *response.body_mut() = match keep {
+                    None => Body::from(raw),
+                    // the explicit Content-Length still applies to a stream body
+                    Some(keep) => Body::from_stream(
+                        futures_util::stream::iter([Ok::<_, Infallible>(raw)]).map(move |chunk| {
+                            let _ = &keep;
+                            chunk
+                        }),
+                    ),
+                };
             }
             return response;
         }
         headers.insert(header::CONTENT_ENCODING, HeaderValue::from_static(coding.header_value()));
         let encoded = if raw.len() >= BLOCKING_COMPRESSION_BYTES {
             let body = Arc::clone(&body);
-            tokio::task::spawn_blocking(move || body.encoded(coding))
-                .await
-                .unwrap_or_else(|_| compress::encode(coding, &raw))
+            fastopm_core::heavy::run(move || body.encoded(coding)).await
         } else {
             body.encoded(coding)
         };
         // Express streams compressed bodies: chunked, no Content-Length.
-        let chunk = futures_util::stream::once(async move { Ok::<_, Infallible>(encoded) });
+        let chunk = futures_util::stream::iter([Ok::<_, Infallible>(encoded)]).map(move |c| {
+            let _ = &keep;
+            c
+        });
         *response.body_mut() = Body::from_stream(chunk);
         response
     }

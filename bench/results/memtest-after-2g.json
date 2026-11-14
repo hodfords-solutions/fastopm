@@ -1,0 +1,396 @@
+{
+ "label": "probe-v14-2g-env",
+ "image": "fastopm:memtest",
+ "date": "2026-11-14T09:44:02.223Z",
+ "options": {
+  "cpus": "6",
+  "roundsCold": 3,
+  "clones": 3,
+  "medium": 60,
+  "small": 200,
+  "concurrency": 256,
+  "fastopm": ""
+ },
+ "results": [
+  {
+   "limit": "2g",
+   "image": "fastopm:memtest",
+   "oomKilled": false,
+   "running": true,
+   "exitCode": 0,
+   "oomKillEvents": 0,
+   "peakRssMiB": 666,
+   "peakCgroupMiB": 1730,
+   "rssAfterLoadMiB": 390,
+   "settleSeconds": 15,
+   "loadSeconds": 45,
+   "rounds": [
+    {
+     "round": "cold-1",
+     "requests": 568,
+     "status": {
+      "200": 568
+     },
+     "errors": {},
+     "bytes": 79959845,
+     "ms": 10121,
+     "p50": 3509,
+     "p99": 5686,
+     "max": 6110,
+     "peakRssMiB": 580,
+     "atMs": 10873
+    },
+    {
+     "round": "cold-2",
+     "requests": 568,
+     "status": {
+      "200": 568
+     },
+     "errors": {},
+     "bytes": 79959680,
+     "ms": 7677,
+     "p50": 2824,
+     "p99": 4733,
+     "max": 5074,
+     "peakRssMiB": 666,
+     "atMs": 20556
+    },
+    {
+     "round": "cold-3",
+     "requests": 568,
+     "status": {
+      "200": 568
+     },
+     "errors": {},
+     "bytes": 79959864,
+     "ms": 11008,
+     "p50": 3978,
+     "p99": 7951,
+     "max": 8666,
+     "peakRssMiB": 666,
+     "atMs": 33573
+    },
+    {
+     "round": "warm",
+     "requests": 568,
+     "status": {
+      "200": 568
+     },
+     "errors": {},
+     "bytes": 79959864,
+     "ms": 5571,
+     "p50": 1909,
+     "p99": 2714,
+     "max": 3287,
+     "peakRssMiB": 666,
+     "atMs": 41153
+    }
+   ],
+   "extraEnv": [
+    "MIMALLOC_PURGE_DELAY=10"
+   ],
+   "timeline": [
+    [
+     0.1,
+     15,
+     12
+    ],
+    [
+     1.2,
+     38,
+     37
+    ],
+    [
+     2.4,
+     81,
+     85
+    ],
+    [
+     3.5,
+     323,
+     386
+    ],
+    [
+     4.5,
+     429,
+     580
+    ],
+    [
+     5.6,
+     426,
+     634
+    ],
+    [
+     6.6,
+     481,
+     749
+    ],
+    [
+     7.7,
+     391,
+     735
+    ],
+    [
+     8.8,
+     524,
+     878
+    ],
+    [
+     9.8,
+     428,
+     871
+    ],
+    [
+     10.9,
+     417,
+     859
+    ],
+    [
+     11.9,
+     417,
+     859
+    ],
+    [
+     13,
+     394,
+     836
+    ],
+    [
+     14,
+     451,
+     1025
+    ],
+    [
+     15.1,
+     487,
+     1150
+    ],
+    [
+     16.1,
+     523,
+     1199
+    ],
+    [
+     17.2,
+     472,
+     1166
+    ],
+    [
+     18.2,
+     587,
+     1337
+    ],
+    [
+     19.3,
+     425,
+     1259
+    ],
+    [
+     20.4,
+     392,
+     1217
+    ],
+    [
+     21.4,
+     395,
+     1221
+    ],
+    [
+     22.5,
+     395,
+     1221
+    ],
+    [
+     23.5,
+     548,
+     1490
+    ],
+    [
+     24.6,
+     583,
+     1563
+    ],
+    [
+     25.6,
+     477,
+     1474
+    ],
+    [
+     26.7,
+     478,
+     1520
+    ],
+    [
+     27.7,
+     459,
+     1484
+    ],
+    [
+     28.8,
+     550,
+     1583
+    ],
+    [
+     30,
+     416,
+     1504
+    ],
+    [
+     31.1,
+     497,
+     1614
+    ],
+    [
+     32.1,
+     427,
+     1584
+    ],
+    [
+     33.2,
+     531,
+     1724
+    ],
+    [
+     34.2,
+     436,
+     1627
+    ],
+    [
+     35.2,
+     436,
+     1628
+    ],
+    [
+     36.3,
+     494,
+     1685
+    ],
+    [
+     37.3,
+     531,
+     1726
+    ],
+    [
+     38.4,
+     529,
+     1721
+    ],
+    [
+     39.4,
+     406,
+     1599
+    ],
+    [
+     40.5,
+     499,
+     1673
+    ],
+    [
+     41.6,
+     395,
+     1568
+    ],
+    [
+     42.7,
+     395,
+     1568
+    ],
+    [
+     43.7,
+     395,
+     1568
+    ],
+    [
+     44.8,
+     395,
+     1568
+    ],
+    [
+     45.8,
+     395,
+     1567
+    ],
+    [
+     46.9,
+     395,
+     1567
+    ],
+    [
+     48,
+     395,
+     1568
+    ],
+    [
+     49,
+     395,
+     1567
+    ],
+    [
+     50.1,
+     395,
+     1567
+    ],
+    [
+     51.2,
+     390,
+     1564
+    ],
+    [
+     52.2,
+     390,
+     1565
+    ],
+    [
+     53.3,
+     390,
+     1565
+    ],
+    [
+     54.4,
+     390,
+     1565
+    ],
+    [
+     55.5,
+     390,
+     1565
+    ],
+    [
+     56.5,
+     390,
+     1565
+    ],
+    [
+     57.6,
+     390,
+     1565
+    ],
+    [
+     58.7,
+     390,
+     1565
+    ],
+    [
+     59.8,
+     390,
+     1565
+    ]
+   ],
+   "cgroupAtPeak": {
+    "anon": 532,
+    "file": 1137,
+    "kernel": 43,
+    "sock": 0,
+    "file_dirty": 166
+   },
+   "logTail": [
+    "INFO 200 GET /memtest-r3-31--express status=200 remote=::ffff:172.24.0.4 method=GET url=/memtest-r3-31--express elapsed_ms=2642.861918",
+    " INFO 200 GET /memtest-r3-2--firebase__firestore status=200 remote=::ffff:172.24.0.4 method=GET url=/memtest-r3-2--firebase__firestore elapsed_ms=2763.32546",
+    " INFO 200 GET /memtest-r3-0--zod status=200 remote=::ffff:172.24.0.4 method=GET url=/memtest-r3-0--zod elapsed_ms=2669.858751",
+    " INFO 200 GET /memtest-r3-0--zod status=200 remote=::ffff:172.24.0.4 method=GET url=/memtest-r3-0--zod elapsed_ms=2711.025001",
+    " INFO 200 GET /memtest-r3-2--firebase__firestore status=200 remote=::ffff:172.24.0.4 method=GET url=/memtest-r3-2--firebase__firestore elapsed_ms=2962.950335"
+   ],
+   "budgets": " WARN memory budgets memory_limit=2.0 GiB source=cgroup limit manifest_cache=122 MiB render_cache=204 MiB work_memory=245 MiB"
+  }
+ ]
+}

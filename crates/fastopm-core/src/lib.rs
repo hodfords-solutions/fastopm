@@ -1,12 +1,15 @@
 //! Shared types for every fastopm crate.
 //!
-//! This crate has no I/O. It defines the types that cross crate boundaries:
+//! This crate has no I/O (it uses Tokio only for the async [`memory::MemoryBudget`]). It defines the types that cross crate boundaries:
 //!
 //! - [`RegistryError`]: an HTTP status plus a message, rendered as `{"error": "..."}`.
 //!   The standard Verdaccio messages live in [`messages`].
 //! - [`Manifest`]: a package document (`package.json` in storage, packument on the wire),
 //!   a thin wrapper over an order-preserving JSON object.
 //! - [`TarballBody`]: a tarball as a byte stream with an optional length.
+//! - [`memory`]: heap size of parsed manifests and the [`memory::MemoryBudget`] that bounds the
+//!   memory of concurrent heavy work.
+//! - [`heavy`]: the small thread pool that parses, writes and renders large manifests.
 //! - Package and tarball name validation ([`name`]), nginx-style intervals ([`interval`]),
 //!   header names and values ([`headers`]) and other constants ([`constants`]).
 //!
@@ -16,9 +19,11 @@ pub mod body;
 pub mod constants;
 pub mod error;
 pub mod headers;
+pub mod heavy;
 pub mod interval;
 pub mod json;
 pub mod manifest;
+pub mod memory;
 pub mod name;
 pub mod util;
 

@@ -35,6 +35,7 @@ fn config() -> Config {
         server_id: "srv123".into(),
         public_url: None,
         forwarded_proto_header: "x-forwarded-proto".into(),
+        fastopm: Default::default(),
         warnings: Vec::new(),
     }
 }

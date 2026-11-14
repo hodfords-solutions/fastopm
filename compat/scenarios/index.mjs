@@ -7,6 +7,7 @@ import metadata from './metadata.mjs';
 import misc from './misc.mjs';
 import multiUplink from './multi-uplink.mjs';
 import preseeded from './preseeded.mjs';
+import refreshOnMiss from './refresh-on-miss.mjs';
 import tarballUrl from './tarball-url.mjs';
 import tarball from './tarball.mjs';
 import uplinkFailures from './uplink-failures.mjs';
@@ -25,6 +26,7 @@ export const SCENARIOS = [
   ...misc,
   ...preseeded,
   ...writeRoutes,
+  ...refreshOnMiss,
 ];
 
 const seen = new Set();

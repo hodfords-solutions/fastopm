@@ -11,7 +11,13 @@ publish.workspace = true
 name = "fastopm"
 path = "src/main.rs"
 
+[features]
+default = ["mimalloc"]
+## Use mimalloc as the global allocator (the system allocator otherwise).
+mimalloc = ["dep:mimalloc"]
+
 [dependencies]
+mimalloc = { workspace = true, optional = true }
 clap.workspace = true
 fastopm-config.workspace = true
 fastopm-storage.workspace = true
